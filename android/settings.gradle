@@ -1,0 +1,3 @@
+rootProject.name = 'msqrc4g'
+
+include ':app'
