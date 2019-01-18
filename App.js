@@ -7,7 +7,9 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, Button, AlertIOS} from 'react-native';
+//var TouchID = require('react-native-touch-id');
+import TouchID from 'react-native-touch-id';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -18,12 +20,26 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+  _onPress(){
+    TouchID.authenticate('to demo this react-native component')
+      .then(success => {
+        AlertIOS.alert('Authenticated Successfully');
+      })
+      .catch(error => {
+        AlertIOS.alert('Authentication Failed');
+      });
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome to React Native!</Text>
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
+        <Button
+            onPress={this._onPress}
+            title="Touch ID"
+        />
       </View>
     );
   }
