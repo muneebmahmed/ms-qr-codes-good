@@ -17,5 +17,6 @@ Additionally, you will need to bundle the Javascript from the project root:
 ```
 $ react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
 ```
-
+To run in terminal run command:
+react-native ios
 
