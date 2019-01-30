@@ -1,19 +1,33 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
-import Home from './home';
-import SignIn from './signIn';
-import CreateAccount from './createAccount';
-import ConfirmID from './confirmID';
-import TransactionHistory from './transactionHistory';
-import Settings from './settings';
-import CreateQR from './createQR';
-import SavedQR from './savedQR';
-import Payment from './payment';
-import Wallet from './wallet';
-import Info from './info';
-import Help from './help';
-import ForgotPassword from './forgotPassword';
-import {styles} from './styles';
+import {createStackNavigator, createAppNavigator, createAppContainer} from 'react-navigation';
+import Home from './app/home';
+import SignIn from './app/signIn';
+import CreateAccount from './app/createAccount';
+import ConfirmID from './app/confirmID';
+import TransactionHistory from './app/transactionHistory';
+import Settings from './app/settings';
+import CreateQR from './app/createQR';
+import SavedQR from './app/savedQR';
+import Payment from './app/payment';
+import Wallet from './app/wallet';
+import Info from './app/info';
+import Help from './app/help';
+import ForgotPassword from './app/forgotPassword';
+import PrimaryNav from './app/AppNavigation';
+import {styles} from './app/styles';
+
+const App = createAppContainer(PrimaryNav);
+
+export default App; 
+
+// export default class App extends Component {
+//   render(){
+//     return ( <PrimaryNav /> );
+//   }
+// }
+
+/*
 
 export default class App extends Component {
   constructor(props, context) {
@@ -53,4 +67,4 @@ export default class App extends Component {
       </View>
     );
   }
-}
+}*/
