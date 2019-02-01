@@ -4,11 +4,12 @@ import {styles} from './styles'
 
 export default class Settings extends React.Component {
   render() {
+    const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
         <Text>This is the Settings Page</Text>
         <Button
-            onPress={() => this.props.action('Home')}
+            onPress={() => navigate('Home')}
             title="go home"
         />
       </View>

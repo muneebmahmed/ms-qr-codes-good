@@ -4,17 +4,18 @@ import {styles} from './styles'
 
 export default class TransactionHistory extends React.Component {
   render() {
+    const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
         <Text style={styles.headline}>Transaction History </Text>
         <Button
-            onPress={() => this.props.action('Home')}
+            onPress={() => navigate('Home')}
             title="Received"
             type="outline"
             accessibilityLabel="See Received Transactions"
         />
         <Button
-            onPress={() => this.props.action('Home')}
+            onPress={() => navigate('Home')}
             title="Paid"
             type="outline"
             accessibilityLabel="See Paid Transactions"
