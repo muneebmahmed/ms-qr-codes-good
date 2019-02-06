@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, Button, Text} from 'react-native';
+import {StackActions, NavigationActions} from 'react-navigation';
 import {styles} from './styles'
 
 export default class Home extends Component {
@@ -16,6 +17,16 @@ export default class Home extends Component {
             fontWeight: 'bold',
         },
     };
+
+  resetNavigation(targetRoute) {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: targetRoute }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
 
   render() {
     const {navigate} = this.props.navigation;
@@ -56,7 +67,7 @@ export default class Home extends Component {
             title="go to Info"
         />
         <Button
-            onPress={() => navigate('LoginScreen')}
+            onPress={() => this.resetNavigation('LoginScreen')}
             title="Log Out"
         />
       </View>

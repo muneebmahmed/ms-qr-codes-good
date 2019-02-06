@@ -16,8 +16,9 @@ import Help from './app/help';
 import ForgotPassword from './app/forgotPassword';
 import AppNavigator from './app/AppNavigation';
 import {styles} from './app/styles';
+import MainNavigator from './app/MainNavigator';
 
-const App = createAppContainer(AppNavigator);
+const App = createAppContainer(MainNavigator);
 
 export default App; 
 

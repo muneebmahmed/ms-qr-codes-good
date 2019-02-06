@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native'
+import { Text, View, Button } from 'react-native'
 import {createStackNavigator, createDrawerNavigator, DrawerItems} from 'react-navigation';
 import {styles} from './styles';
 import Login from './signIn';
@@ -21,13 +21,13 @@ const DrawerContent = (props) => (
     <View
       style={{
         backgroundColor: '#46c487',
-        height: 140,
+        height: 100,
         alignItems: 'center',
         justifyContent: 'center',
       }}
     >
       <Text style={{ color: 'white', fontSize: 30 }}>
-        MS Give
+        User Profile
       </Text>
     </View>
     <DrawerItems {...props} />
@@ -36,7 +36,6 @@ const DrawerContent = (props) => (
 
 const AppNavigator = createDrawerNavigator({
 	Home: {screen: Home},
-	LoginScreen: {screen: Login},
 	"Transaction History": {screen: TransactionHistory},
 	Settings: {screen: Settings},
 	"Create QR": {screen: CreateQR},
@@ -45,7 +44,7 @@ const AppNavigator = createDrawerNavigator({
 	Wallet: { screen: Wallet},
 	Info: { screen: Info},
 	Help: { screen: Help},
-},
+  },
   {
     initialRouteName: 'Home',
     /* The header config from HomeScreen is now here */

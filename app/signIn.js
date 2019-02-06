@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Button, Text, TextInput, Image, View, Platform, AlertIOS } from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation';
 import TouchID from 'react-native-touch-id';
 //import {styles} from './styles'
 
@@ -14,11 +15,20 @@ class Login extends Component {
   static navigationOptions = {
     title: 'Login',
   };
+  resetNavigation(targetRoute) {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: targetRoute }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
   _confirmLogin(){
     const {navigate} = this.props.navigation;
-    var confirm = this.state.username == 'msgive' && this.state.password == 'QR4G';
+    var confirm = this.state.username == 'Msgive' && this.state.password == 'QR4G';
     if (confirm)
-        navigate('Home')
+        this.resetNavigation('Main')
     else
       if (Platform.OS ==='ios')
         AlertIOS.alert('Authentication Failure')
@@ -27,7 +37,7 @@ class Login extends Component {
     const {navigate} = this.props.navigation;
     TouchID.authenticate('Log in to Give')
     .then(success => {
-      navigate('Home')
+      this.resetNavigation('Main')
     })
     .catch(error => {
       if(Platform.OS ==='ios')
@@ -64,11 +74,11 @@ class Login extends Component {
         />
         <Text>This is the Sign In Page</Text>
         <Button
-            onPress={() => this.props.action('CreateAccount')}
+            onPress={() => navigate('Create')}
             title="create new account"
         />
         <Button
-            onPress={() => this.props.action('ForgotPassword')}
+            onPress={() => navigate('Forgot')}
             title="forgot password?"
         />
       </View>
