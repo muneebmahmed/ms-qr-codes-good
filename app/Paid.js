@@ -41,8 +41,9 @@ export default class App extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>1/22/2019</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>You paid John</Text>
+              <Image source={{uri: "https://github.com/muneebmahmed/ms-qr-codes-good/blob/amanda/app/images/user.png", width: 34, height: 34}}             />
+              <Text style={{fontSize:16, textAlign: 'right'}}>You paid</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}> John</Text>
             </View>
           </View>
           <View
@@ -58,8 +59,9 @@ export default class App extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>12/18/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>You paid Kim</Text>
+              <Image source={{uri: "https://github.com/muneebmahmed/ms-qr-codes-good/blob/amanda/app/images/anonymoususer.png", width: 34, height: 34}}             />
+              <Text style={{fontSize:16, textAlign: 'right'}}>You paid </Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}> Kim</Text>
             </View>
           </View>
           <View
@@ -75,8 +77,9 @@ export default class App extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>10/13/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>You paid Sally</Text>
+              <Image source={{uri: "https://github.com/muneebmahmed/ms-qr-codes-good/blob/amanda/app/images/user.png", width: 34, height: 34}}             />
+              <Text style={{fontSize:16, textAlign: 'right'}}>You paid</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}> Sally</Text>
             </View>
           </View>
           <View
@@ -92,8 +95,9 @@ export default class App extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>10/07/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>You paid Lara</Text>
+              <Image source={{uri: "https://github.com/muneebmahmed/ms-qr-codes-good/blob/amanda/app/images/anonymoususer.png", width: 34, height: 34}}             />
+              <Text style={{fontSize:16, textAlign: 'right'}}>You paid</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}> Lara</Text>
             </View>
           </View>
         <View
@@ -109,8 +113,9 @@ export default class App extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>9/30/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>You paid Jack</Text>
+              <Image source={{uri: "https://github.com/muneebmahmed/ms-qr-codes-good/blob/amanda/app/images/user.png", width: 34, height: 34}}             />
+              <Text style={{fontSize:16, textAlign: 'right'}}>You paid</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}> Jack</Text>
             </View>
           </View>
           <View
@@ -126,8 +131,9 @@ export default class App extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>10/13/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>You paid Sally</Text>
+              <Image source={{uri: "https://github.com/muneebmahmed/ms-qr-codes-good/blob/amanda/app/images/user.png", width: 34, height: 34}}             />
+              <Text style={{fontSize:16, textAlign: 'right'}}>You paid </Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}> Rachel</Text>
             </View>
           </View>
         </ScrollView>

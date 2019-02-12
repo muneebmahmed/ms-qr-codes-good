@@ -41,8 +41,9 @@ export default class App extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>12/22/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>You paid John</Text>
+              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}} />
+              <Text style={{fontSize:16, textAlign: 'right'}}>John</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
           </View>
           <View
@@ -59,7 +60,8 @@ export default class App extends React.Component {
             <Text style={{fontSize:16}}>4/12/2018</Text>
             <View style={styles.rightContainer}>
               <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>You paid Kim</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}>Kim</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
           </View>
           <View
@@ -76,7 +78,8 @@ export default class App extends React.Component {
             <Text style={{fontSize:16}}>03/01/2018</Text>
             <View style={styles.rightContainer}>
               <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>You paid Sally</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}>Sally</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
           </View>
           <View
@@ -93,7 +96,8 @@ export default class App extends React.Component {
             <Text style={{fontSize:16}}>02/14/2018</Text>
             <View style={styles.rightContainer}>
               <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>You paid Lara</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}>Lara</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
           </View>
         <View
@@ -110,7 +114,8 @@ export default class App extends React.Component {
             <Text style={{fontSize:16}}>01/20/2018</Text>
             <View style={styles.rightContainer}>
               <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>You paid Jack</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}>Jack</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
           </View>
           <View
@@ -127,7 +132,8 @@ export default class App extends React.Component {
             <Text style={{fontSize:16}}>01/13/2018</Text>
             <View style={styles.rightContainer}>
               <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>You paid Sally</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}>Sally</Text>
+              <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
           </View>
         </ScrollView>
