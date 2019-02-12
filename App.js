@@ -14,10 +14,11 @@ import Wallet from './app/wallet';
 import Info from './app/info';
 import Help from './app/help';
 import ForgotPassword from './app/forgotPassword';
-import PrimaryNav from './app/AppNavigation';
+import AppNavigator from './app/AppNavigation';
 import {styles} from './app/styles';
+import MainNavigator from './app/MainNavigator';
 
-const App = createAppContainer(PrimaryNav);
+const App = createAppContainer(MainNavigator);
 
 export default App; 
 
