@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button, ScrollView, Image } from 'react-native';
-import { Constants } from 'expo';
 
 // You can import from local files
-import AssetExample from './components/AssetExample';
+//import AssetExample from './components/AssetExample';
 
 // or any pure javascript modules available in npm
-import { Card } from 'react-native-paper';
+//import { Card } from 'react-native-paper';
 
-export default class App extends React.Component {
+export default class Received extends React.Component {
   render() {
+    const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
         <Text style={styles.headline}>Transaction History </Text>
@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf0f1',
     padding: 8,
   },

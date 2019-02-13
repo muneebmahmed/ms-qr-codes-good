@@ -6,7 +6,8 @@ import Login from './signIn';
 import Home from './home';
 import CreateAccount from './createAccount';
 import ConfirmID from './confirmID';
-import TransactionHistory from './transactionHistory';
+import Paid from './Paid';
+import Received from './Received';
 import Settings from './settings';
 import CreateQR from './createQR';
 import SavedQR from './savedQR';
@@ -36,7 +37,8 @@ const DrawerContent = (props) => (
 
 const AppNavigator = createDrawerNavigator({
 	Home: {screen: Home},
-	"Transaction History": {screen: TransactionHistory},
+	"Paid": {screen: Paid},
+  Received: { screen: Received},
 	Settings: {screen: Settings},
 	"Create QR": {screen: CreateQR},
 	"Saved QR": {screen: SavedQR},

@@ -5,7 +5,6 @@ import Home from './app/home';
 import SignIn from './app/signIn';
 import CreateAccount from './app/createAccount';
 import ConfirmID from './app/confirmID';
-import TransactionHistory from './app/transactionHistory';
 import Settings from './app/settings';
 import CreateQR from './app/createQR';
 import SavedQR from './app/savedQR';
