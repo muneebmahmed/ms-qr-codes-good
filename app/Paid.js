@@ -35,7 +35,7 @@ export default class Paid extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>1/22/2019</Text>
             <View style={styles.rightContainer}>
-              <Image source={require("./user.png"), width: 34, height: 34} />
+              <Image source={require('./images/user.png'), width: 34, height: 34} />
               <Text style={{fontSize:16, textAlign: 'right'}}>You paid</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> John</Text>
             </View>
@@ -71,7 +71,7 @@ export default class Paid extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>10/13/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={require("./user.png"), width: 34, height: 34} />
+              <Image source={require('./images/user.png'), width: 34, height: 34} />
               <Text style={{fontSize:16, textAlign: 'right'}}>You paid</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> Sally</Text>
             </View>
