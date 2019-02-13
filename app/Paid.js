@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button, ScrollView, Image } from 'react-native';
 
-// You can import from local files
-//import AssetExample from './components/AssetExample';
-
-// or any pure javascript modules available in npm
-//import { Card } from 'react-native-paper';
-
 export default class Paid extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
@@ -41,7 +35,7 @@ export default class Paid extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>1/22/2019</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://github.com/muneebmahmed/ms-qr-codes-good/blob/amanda/app/images/user.png", width: 34, height: 34}}             />
+              <Image source={require("./user.png"), width: 34, height: 34} />
               <Text style={{fontSize:16, textAlign: 'right'}}>You paid</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> John</Text>
             </View>
@@ -77,7 +71,7 @@ export default class Paid extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>10/13/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://github.com/muneebmahmed/ms-qr-codes-good/blob/amanda/app/images/user.png", width: 34, height: 34}}             />
+              <Image source={require("./user.png"), width: 34, height: 34} />
               <Text style={{fontSize:16, textAlign: 'right'}}>You paid</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> Sally</Text>
             </View>
