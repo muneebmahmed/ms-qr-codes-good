@@ -16,6 +16,7 @@ import Wallet from './wallet';
 import Info from './info';
 import Help from './help';
 import ForgotPassword from './forgotPassword';
+import transNavigator from './transactions';
 
 const DrawerContent = (props) => (
   <View>
@@ -37,8 +38,7 @@ const DrawerContent = (props) => (
 
 const AppNavigator = createDrawerNavigator({
 	Home: {screen: Home},
-	"Paid": {screen: Paid},
-  Received: { screen: Received},
+	"Transactions": {screen: transNavigator},
 	Settings: {screen: Settings},
 	"Create QR": {screen: CreateQR},
 	"Saved QR": {screen: SavedQR},

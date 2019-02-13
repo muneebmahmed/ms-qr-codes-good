@@ -6,21 +6,7 @@ export default class Received extends React.Component {
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Text style={styles.headline}>Transaction History </Text>
-        <View style={{flexDirection: 'row', textAlign: 'center', justifyContent: 'center'}}>
-          <Button
-            title="Received"
-            type="outline"
-            color="black"
-            accessibilityLabel="See Received Transactions"
-          />
-          <Button
-            onPress={() => navigate('Paid')}
-            title="Paid"
-            type="outline"
-            accessibilityLabel="See Paid Transactions"
-          />
-        </View>
+        <Text style={styles.headline}>Received </Text>
         <ScrollView>
         <View
             style={{
