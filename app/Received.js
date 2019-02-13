@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button, ScrollView, Image } from 'react-native';
 
-// You can import from local files
-//import AssetExample from './components/AssetExample';
-
-// or any pure javascript modules available in npm
-//import { Card } from 'react-native-paper';
-
 export default class Received extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
@@ -41,7 +35,9 @@ export default class Received extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>12/22/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}} />
+            <Image
+            style={styles.keepitsmall}
+            source={require('./images/user.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>John</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
@@ -59,7 +55,9 @@ export default class Received extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>4/12/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
+            <Image
+            style={styles.keepitsmall}
+            source={require('./images/user.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>Kim</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
@@ -77,8 +75,10 @@ export default class Received extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>03/01/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>Sally</Text>
+            <Image
+            style={styles.keepitsmall}
+            source={require('./images/anonymoususer.png')} />
+              <Text style={{fontSize:16, textAlign: 'right'}}>Anon</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
           </View>
@@ -95,7 +95,9 @@ export default class Received extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>02/14/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
+            <Image
+            style={styles.keepitsmall}
+            source={require('./images/user.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>Lara</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
@@ -113,8 +115,10 @@ export default class Received extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>01/20/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
-              <Text style={{fontSize:16, textAlign: 'right'}}>Jack</Text>
+            <Image
+            style={styles.keepitsmall}
+            source={require('./images/anonymoususer.png')} />
+              <Text style={{fontSize:16, textAlign: 'right'}}>Anon</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
           </View>
@@ -131,7 +135,9 @@ export default class Received extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>01/13/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 34, height: 34}}             />
+            <Image
+            style={styles.keepitsmall}
+            source={require('./images/user.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>Sally</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
@@ -162,6 +168,10 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     padding: 10,
     justifyContent: 'flex-end'
+  },
+  keepitsmall: {
+    width: 34,
+    height: 34
   },
    leftContainer: {
     flex: 1,

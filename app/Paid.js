@@ -35,7 +35,9 @@ export default class Paid extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>1/22/2019</Text>
             <View style={styles.rightContainer}>
-              <Image source={require('./images/user.png'), width: 34, height: 34} />
+              <Image
+              style={styles.keepitsmall}
+              source={require('./images/user.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>You paid</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> John</Text>
             </View>
@@ -53,7 +55,9 @@ export default class Paid extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>12/18/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://github.com/muneebmahmed/ms-qr-codes-good/blob/amanda/app/images/anonymoususer.png", width: 34, height: 34}}             />
+            <Image
+            style={styles.keepitsmall}
+            source={require('./images/anonymoususer.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>You paid </Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> Kim</Text>
             </View>
@@ -71,7 +75,9 @@ export default class Paid extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>10/13/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={require('./images/user.png'), width: 34, height: 34} />
+            <Image
+            style={styles.keepitsmall}
+            source={require('./images/user.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>You paid</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> Sally</Text>
             </View>
@@ -89,7 +95,9 @@ export default class Paid extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>10/07/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://github.com/muneebmahmed/ms-qr-codes-good/blob/amanda/app/images/anonymoususer.png", width: 34, height: 34}}             />
+            <Image
+            style={styles.keepitsmall}
+            source={require('./images/anonymoususer.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>You paid</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> Lara</Text>
             </View>
@@ -107,7 +115,9 @@ export default class Paid extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>9/30/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://github.com/muneebmahmed/ms-qr-codes-good/blob/amanda/app/images/user.png", width: 34, height: 34}}             />
+            <Image
+            style={styles.keepitsmall}
+            source={require('./images/user.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>You paid</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> Jack</Text>
             </View>
@@ -125,7 +135,9 @@ export default class Paid extends React.Component {
           <View style={styles.leftContainer}>
             <Text style={{fontSize:16}}>10/13/2018</Text>
             <View style={styles.rightContainer}>
-              <Image source={{uri: "https://github.com/muneebmahmed/ms-qr-codes-good/blob/amanda/app/images/user.png", width: 34, height: 34}}             />
+            <Image
+            style={styles.keepitsmall}
+            source={require('./images/user.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>You paid </Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> Rachel</Text>
             </View>
@@ -156,6 +168,10 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     padding: 10,
     justifyContent: 'flex-end'
+  },
+  keepitsmall: {
+    width: 34,
+    height: 34
   },
    leftContainer: {
     flex: 1,
