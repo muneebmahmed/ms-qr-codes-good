@@ -4,10 +4,21 @@ import { Card, Icon } from 'react-native-elements';
 import {styles} from './styles'
 
 export default class CreditCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { };
+  }
   render() {
     return (
       <View style={styles.container}>
-      <Text style={styles.headline}>Wallet</Text>
+      <View style={styles.row}>
+        <Text style={styles.headline}>Wallet</Text>
+        <Button
+          icon={<Icon name='code' color='#ffffff' />}
+          backgroundColor='#03A9F4'
+          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+          title='Edit' />
+      </View>
       <ScrollView>
       <Card
         title='VISA'>
@@ -17,11 +28,11 @@ export default class CreditCard extends React.Component {
         <Text style={{marginBottom: 10}}>
         Card Number: ************1234
         </Text>
-        <Button
-          icon={<Icon name='code' color='#ffffff' />}
-          backgroundColor='#03A9F4'
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          title='VIEW NOW' />
+        <CheckBox
+          title='Primary Payment Method'
+          checked={this.state.checked}
+          onPress={() => this.setState({checked: !this.state.checked})}
+        />
         </Card>
         <Card
         title='Apple Pay'>
@@ -31,11 +42,10 @@ export default class CreditCard extends React.Component {
         <Text style={{marginBottom: 10}}>
         Default Card: Mastercard 5678
         </Text>
-        <Button
-          icon={<Icon name='code' color='#ffffff' />}
-          backgroundColor='#03A9F4'
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          title='VIEW NOW' />
+        <CheckBox
+          title='Primary Payment Method'
+          checked={this.state.checked2}
+        />
         </Card>
         <Card
         title='Amex'>
@@ -45,11 +55,10 @@ export default class CreditCard extends React.Component {
         <Text style={{marginBottom: 10}}>
         Card Number: ************98765
         </Text>
-        <Button
-          icon={<Icon name='code' color='#ffffff' />}
-          backgroundColor='#03A9F4'
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          title='VIEW NOW' />
+        <CheckBox
+          title='Primary Payment Method'
+          checked={this.state.checked3}
+        />
         </Card>
         <Card
         title='Checking'>
@@ -59,13 +68,17 @@ export default class CreditCard extends React.Component {
         <Text style={{marginBottom: 10}}>
         Card Number: ************5432
         </Text>
+        <CheckBox
+          title='Primary Payment Method'
+          checked={this.state.checked4}
+        />
+        </Card>
+        </ScrollView>
         <Button
           icon={<Icon name='code' color='#ffffff' />}
           backgroundColor='#03A9F4'
           buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          title='VIEW NOW' />
-        </Card>
-        </ScrollView>
+          title='Add New Payment Method' />
         </View>
       );
   }
@@ -85,5 +98,11 @@ const styles = StyleSheet.create({
     marginTop: 0,
     width: '100%',
     padding: 10
+  },
+  row: {
+  flexDirection: "row",
+  padding: 10,
+  justifyContent: 'center',
+  marginRight: 0
   }
 });
