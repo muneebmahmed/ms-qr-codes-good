@@ -1,7 +1,7 @@
 import React from 'react';
-import {Button, Text, View } from 'react-native';
-import { Card, Icon } from 'react-native-elements';
-import {styles} from './styles'
+import {Button, Text, View, ScrollView, Alert, StyleSheet } from 'react-native';
+import { Card, Icon, CheckBox } from 'react-native-elements';
+import {styles} from './styles';
 
 export default class CreditCard extends React.Component {
   constructor(props) {
@@ -76,6 +76,9 @@ export default class CreditCard extends React.Component {
         </ScrollView>
         <Button
           icon={<Icon name='code' color='#ffffff' />}
+          onPress={() => {
+            Alert.alert('You tapped the button!');
+          }}
           backgroundColor='#03A9F4'
           buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
           title='Add New Payment Method' />
