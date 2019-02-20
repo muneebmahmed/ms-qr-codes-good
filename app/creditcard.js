@@ -1,0 +1,108 @@
+import React from 'react';
+import {Button, Text, View } from 'react-native';
+import { Card, Icon } from 'react-native-elements';
+import {styles} from './styles'
+
+export default class CreditCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { };
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+      <View style={styles.row}>
+        <Text style={styles.headline}>Wallet</Text>
+        <Button
+          icon={<Icon name='code' color='#ffffff' />}
+          backgroundColor='#03A9F4'
+          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+          title='Edit' />
+      </View>
+      <ScrollView>
+      <Card
+        title='VISA'>
+        <Text style={{marginBottom: 10}}>
+        Card Holder: Timothy Smithony
+        </Text>
+        <Text style={{marginBottom: 10}}>
+        Card Number: ************1234
+        </Text>
+        <CheckBox
+          title='Primary Payment Method'
+          checked={this.state.checked}
+          onPress={() => this.setState({checked: !this.state.checked})}
+        />
+        </Card>
+        <Card
+        title='Apple Pay'>
+         <Text style={{marginBottom: 10}}>
+        Card Holder: Tim Smithony
+        </Text>
+        <Text style={{marginBottom: 10}}>
+        Default Card: Mastercard 5678
+        </Text>
+        <CheckBox
+          title='Primary Payment Method'
+          checked={this.state.checked2}
+        />
+        </Card>
+        <Card
+        title='Amex'>
+         <Text style={{marginBottom: 10}}>
+        Card Holder: Timothy R. Smithony
+        </Text>
+        <Text style={{marginBottom: 10}}>
+        Card Number: ************98765
+        </Text>
+        <CheckBox
+          title='Primary Payment Method'
+          checked={this.state.checked3}
+        />
+        </Card>
+        <Card
+        title='Checking'>
+        <Text style={{marginBottom: 10}}>
+        Card Holder: Timothy Randolph Smithony
+        </Text>
+        <Text style={{marginBottom: 10}}>
+        Card Number: ************5432
+        </Text>
+        <CheckBox
+          title='Primary Payment Method'
+          checked={this.state.checked4}
+        />
+        </Card>
+        </ScrollView>
+        <Button
+          icon={<Icon name='code' color='#ffffff' />}
+          backgroundColor='#03A9F4'
+          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+          title='Add New Payment Method' />
+        </View>
+      );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#ecf0f1',
+    padding: 8,
+  },
+   headline: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 36,
+    marginTop: 0,
+    width: '100%',
+    padding: 10
+  },
+  row: {
+  flexDirection: "row",
+  padding: 10,
+  justifyContent: 'center',
+  marginRight: 0
+  }
+});
