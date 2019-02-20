@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button } from 'react-native'
+import { Text, View, Button, ScrollView } from 'react-native'
 import {createStackNavigator, createDrawerNavigator, DrawerItems} from 'react-navigation';
 import {styles} from './styles';
 import Login from './signIn';
@@ -17,6 +17,7 @@ import Info from './info';
 import Help from './help';
 import ForgotPassword from './forgotPassword';
 import transNavigator from './transactions';
+import Settings2 from './settings2';
 
 const DrawerContent = (props) => (
   <View>
@@ -32,7 +33,9 @@ const DrawerContent = (props) => (
         User Profile
       </Text>
     </View>
-    <DrawerItems {...props} />
+    <ScrollView>
+      <DrawerItems {...props} />
+    </ScrollView>
   </View>
 )
 
@@ -40,6 +43,7 @@ const AppNavigator = createDrawerNavigator({
 	Home: {screen: Home},
 	"Transactions": {screen: transNavigator},
 	Settings: {screen: Settings},
+  Setting2: {screen : Settings2},
 	"Create QR": {screen: CreateQR},
 	"Saved QR": {screen: SavedQR},
 	Payment: {screen: Payment},

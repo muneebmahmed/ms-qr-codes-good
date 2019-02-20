@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
-import { AppRegistry, Text, Switch, TextInput, View, Button,StyleSheet, Alert } from 'react-native';
+import { AppRegistry, Text, Switch, TextInput, View, Button,StyleSheet, Alert, ScrollView } from 'react-native';
 
-export default class test extends Component {
+export default class Settings2 extends Component {
 state = {
   switchValue1: false,
 
@@ -39,7 +39,7 @@ switchValue3: !state.switchValue3,
   render() {
     return (
 
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
       <Text style={styles.TextHeader}> Settings </Text>
       <Text style={styles.Text}> Payment </Text>
         <View style={styles.ButtonContainer}>
@@ -140,7 +140,7 @@ switchValue3: !state.switchValue3,
           />
         </View>
 
-      </View>
+      </ScrollView>
 
     );
   }
@@ -149,7 +149,7 @@ switchValue3: !state.switchValue3,
 const styles = StyleSheet.create({
     container: {
    flex: 1,
-   paddingTop: 70
+   paddingTop: 10
 
   },
   TextHeader: {
