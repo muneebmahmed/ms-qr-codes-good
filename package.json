@@ -12,10 +12,11 @@
     "react-native-camera": "^1.6.4",
     "react-native-elements": "^1.0.0",
     "react-native-gesture-handler": "^1.0.15",
+    "react-native-qrcode-scanner": "^1.1.2",
     "react-native-touch-id": "^4.3.0",
     "react-native-vector-icons": "^6.2.0",
     "react-navigation": "^3.0.9",
-    "react-native-qrcode-scanner": "^1.1.2"
+    "tcomb-form-native": "^0.6.20"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
