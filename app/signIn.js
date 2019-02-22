@@ -4,6 +4,8 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import TouchID from 'react-native-touch-id';
 //import {styles} from './styles'
 
+const host = 'http://104.42.36.29:3001';
+
 class Login extends Component {
   constructor(props){
     super(props);
@@ -26,12 +28,36 @@ class Login extends Component {
   }
   _confirmLogin(){
     const {navigate} = this.props.navigation;
-    var confirm = this.state.username == 'Msgive' && this.state.password == 'QR4G';
-    if (confirm)
-        this.resetNavigation('Main')
-    else
-      if (Platform.OS ==='ios')
-        AlertIOS.alert('Authentication Failure')
+    var endpoint = host + '/api/user/login';
+    fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: this.state.username,
+        inputPassword: this.state.password,
+      }),
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      var confirm = responseJson['loggedIn'];
+      if (confirm)
+        this.resetNavigation('Main');
+      else
+        if (Platform.OS === 'ios')
+          AlertIOS.alert('Authentication Failure')
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    // var confirm = this.state.username == 'Msgive' && this.state.password == 'QR4G';
+    // if (confirm)
+    //     this.resetNavigation('Main')
+    // else
+    //   if (Platform.OS ==='ios')
+    //     AlertIOS.alert('Authentication Failure')
   }
   _touchLogin(){
     const {navigate} = this.props.navigation;
