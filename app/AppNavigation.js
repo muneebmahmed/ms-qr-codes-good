@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, View, Button } from 'react-native'
+import React, {Component} from 'react';
+import { Text, View, Button, ScrollView } from 'react-native'
 import {createStackNavigator, createDrawerNavigator, DrawerItems} from 'react-navigation';
 import {styles} from './styles';
 import Login from './signIn';
@@ -17,6 +17,8 @@ import Info from './info';
 import Help from './help';
 import ForgotPassword from './forgotPassword';
 import transNavigator from './transactions';
+import Settings2 from './settings2';
+import {store} from './store'
 
 const DrawerContent = (props) => (
   <View>
@@ -29,17 +31,21 @@ const DrawerContent = (props) => (
       }}
     >
       <Text style={{ color: 'white', fontSize: 30 }}>
-        User Profile
+        {store.name}
       </Text>
     </View>
-    <DrawerItems {...props} />
+    <ScrollView>
+      <DrawerItems {...props} />
+    </ScrollView>
   </View>
 )
+
 
 const AppNavigator = createDrawerNavigator({
 	Home: {screen: Home},
 	"Transactions": {screen: transNavigator},
 	Settings: {screen: Settings},
+  Setting2: {screen : Settings2},
 	"Create QR": {screen: CreateQR},
 	"Saved QR": {screen: SavedQR},
 	Payment: {screen: Payment},
@@ -62,5 +68,16 @@ const AppNavigator = createDrawerNavigator({
     contentComponent: DrawerContent,
   }
 );
+
+AppNavigator.navigationOptions = ({ navigation }) => {
+  const { routeName } = navigation.state.routes[navigation.state.index];
+
+  // You can do whatever you like here to pick the title based on the route name
+  const headerTitle = routeName;
+
+  return {
+    headerTitle,
+  };
+};
 
 export default AppNavigator;

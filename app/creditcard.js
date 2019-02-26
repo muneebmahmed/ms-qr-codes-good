@@ -12,7 +12,6 @@ export default class CreditCard extends React.Component {
     return (
       <View style={styles.container}>
       <View style={styles.row}>
-        <Text style={styles.headline}>Wallet</Text>
         <Button
           icon={<Icon name='code' color='#ffffff' />}
           backgroundColor='#03A9F4'

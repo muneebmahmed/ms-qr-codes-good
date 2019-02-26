@@ -3,11 +3,11 @@ import {Button, Text, View, TextInput } from 'react-native';
 import {styles} from './styles'
 
 export default class Payments extends React.Component {
-  render() {
-    constructor(props) {
+  constructor(props) {
       super(props);
       this.state = { text: '$10.00' };
-    }
+  }
+  render() {
     return (
       <View>
         <TextInput
