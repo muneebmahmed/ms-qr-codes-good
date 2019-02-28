@@ -18,6 +18,7 @@ import Help from './help';
 import ForgotPassword from './forgotPassword';
 import transNavigator from './transactions';
 import Settings2 from './settings2';
+import LogOut from './LogOut';
 import {store} from './store'
 
 const DrawerContent = (props) => (
@@ -52,6 +53,7 @@ const AppNavigator = createDrawerNavigator({
 	Wallet: { screen: Wallet},
 	Info: { screen: Info},
 	Help: { screen: Help},
+  "Log Out": { screen: LogOut},
   },
   {
     initialRouteName: 'Home',

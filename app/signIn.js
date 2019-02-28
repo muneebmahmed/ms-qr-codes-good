@@ -68,6 +68,29 @@ class Login extends Component {
     const {navigate} = this.props.navigation;
     TouchID.authenticate('Log in to Give')
     .then(success => {
+          var endpoint = host + loginEndpoint;
+      fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          touchIDtoken: store.touchToken,
+        }),
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        var confirm = responseJson['loggedIn'];
+        if (confirm) {
+          store.name = responseJson['name'];
+          store.loggedIn = true;
+          this.resetNavigation('Main');
+        }
+      })
+      .catch((error) => {
+        //console.error(error);
+      });
       store.loggedIn = true;
       this.resetNavigation('Main');
     })
