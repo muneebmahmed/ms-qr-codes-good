@@ -40,7 +40,6 @@ switchValue3: !state.switchValue3,
     return (
 
       <ScrollView style={styles.container}>
-      <Text style={styles.TextHeader}> Settings </Text>
       <Text style={styles.Text}> Payment </Text>
         <View style={styles.ButtonContainer}>
           <Button

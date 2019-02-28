@@ -2,9 +2,11 @@ import React, {Component} from 'react';
 import {StyleSheet, Button, Text, TextInput, Image, View, Platform, AlertIOS } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import TouchID from 'react-native-touch-id';
+import {store} from './store';
 //import {styles} from './styles'
 
 const host = 'http://104.42.36.29:3001';
+const loginEndpoint = '/api/user/login';
 
 class Login extends Component {
   constructor(props){
@@ -28,7 +30,7 @@ class Login extends Component {
   }
   _confirmLogin(){
     const {navigate} = this.props.navigation;
-    var endpoint = host + '/api/user/login';
+    var endpoint = host + loginEndpoint;
     fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -43,8 +45,11 @@ class Login extends Component {
     .then((response) => response.json())
     .then((responseJson) => {
       var confirm = responseJson['loggedIn'];
-      if (confirm)
+      if (confirm) {
+        store.name = responseJson['name'];
+        store.loggedIn = true;
         this.resetNavigation('Main');
+      }
       else
         if (Platform.OS === 'ios')
           AlertIOS.alert('Authentication Failure')
@@ -63,7 +68,31 @@ class Login extends Component {
     const {navigate} = this.props.navigation;
     TouchID.authenticate('Log in to Give')
     .then(success => {
-      this.resetNavigation('Main')
+          var endpoint = host + loginEndpoint;
+      fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          touchIDtoken: store.touchToken,
+        }),
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        var confirm = responseJson['loggedIn'];
+        if (confirm) {
+          store.name = responseJson['name'];
+          store.loggedIn = true;
+          this.resetNavigation('Main');
+        }
+      })
+      .catch((error) => {
+        //console.error(error);
+      });
+      store.loggedIn = true;
+      this.resetNavigation('Main');
     })
     .catch(error => {
       if(Platform.OS ==='ios')
