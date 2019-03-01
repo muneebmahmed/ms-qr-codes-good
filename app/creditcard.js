@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Text, View, ScrollView, Alert, StyleSheet } from 'react-native';
 import { Card, Icon, CheckBox } from 'react-native-elements';
-import {styles} from './styles';
+//import {styles} from './styles';
 
 export default class CreditCard extends React.Component {
   constructor(props) {

@@ -19,10 +19,16 @@ import ForgotPassword from './forgotPassword';
 import transNavigator from './transactions';
 import Settings2 from './settings2';
 import LogOut from './LogOut';
+import CreditCard from './creditcard'
 import {store} from './store'
 
 const DrawerContent = (props) => (
-  <View>
+  <View style={
+    {
+      flex: 1,
+    }
+  }
+  >
     <View
       style={{
         backgroundColor: '#46c487',
@@ -50,7 +56,7 @@ const AppNavigator = createDrawerNavigator({
 	"Create QR": {screen: CreateQR},
 	"Saved QR": {screen: SavedQR},
 	Payment: {screen: Payment},
-	Wallet: { screen: Wallet},
+	Wallet: { screen: CreditCard},
 	Info: { screen: Info},
 	Help: { screen: Help},
   "Log Out": { screen: LogOut},
