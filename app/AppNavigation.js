@@ -22,11 +22,15 @@ import LogOut from './LogOut';
 import {store} from './store'
 
 const DrawerContent = (props) => (
-  <View>
+  <View style={
+    {
+      flex: 1,
+    }
+  }>
     <View
       style={{
         backgroundColor: '#46c487',
-        height: 100,
+        height: 80,
         alignItems: 'center',
         justifyContent: 'center',
       }}
