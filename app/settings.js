@@ -5,6 +5,10 @@ import {styles} from './styles'
 import {store} from './store'
 
 export default class Settings extends React.Component {
+  constructor(props){
+    super(props);
+    this.authenticate();
+  }
   changeName (Aname) {
    store.name = Aname;
   }
@@ -16,6 +20,11 @@ export default class Settings extends React.Component {
       ],
     });
     this.props.navigation.dispatch(resetAction);
+  }
+  authenticate(){
+    if (!store.loggedIn){
+      this.resetNavigation('LoginScreen');
+    }
   }
   render() {
     const {navigate} = this.props.navigation;

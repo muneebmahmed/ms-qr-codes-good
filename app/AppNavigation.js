@@ -18,14 +18,19 @@ import Help from './help';
 import ForgotPassword from './forgotPassword';
 import transNavigator from './transactions';
 import Settings2 from './settings2';
+import LogOut from './LogOut';
 import {store} from './store'
 
 const DrawerContent = (props) => (
-  <View>
+  <View style={
+    {
+      flex: 1,
+    }
+  }>
     <View
       style={{
         backgroundColor: '#46c487',
-        height: 100,
+        height: 80,
         alignItems: 'center',
         justifyContent: 'center',
       }}
@@ -52,6 +57,7 @@ const AppNavigator = createDrawerNavigator({
 	Wallet: { screen: Wallet},
 	Info: { screen: Info},
 	Help: { screen: Help},
+  "Log Out": { screen: LogOut},
   },
   {
     initialRouteName: 'Home',

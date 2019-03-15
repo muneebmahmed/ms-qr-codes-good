@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
-import {StyleSheet, Button, Text, TextInput, Image, View, Platform, AlertIOS } from 'react-native';
+import {StyleSheet, Button, Text, TextInput, Image, View, Platform, AlertIOS, Alert } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import TouchID from 'react-native-touch-id';
+import DeviceInfo from 'react-native-device-info';
+import {store} from './store';
 //import {styles} from './styles'
 
-const host = 'http://104.42.36.29:3001';
+const host = 'https://qrcodes4good.com:8080';
+const loginEndpoint = '/api/user/login';
+const touchEndpoint = '/api/user/bioLogin';
 
 class Login extends Component {
   constructor(props){
@@ -28,7 +32,7 @@ class Login extends Component {
   }
   _confirmLogin(){
     const {navigate} = this.props.navigation;
-    var endpoint = host + '/api/user/login';
+    var endpoint = host + loginEndpoint;
     fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -38,36 +42,63 @@ class Login extends Component {
       body: JSON.stringify({
         email: this.state.username,
         inputPassword: this.state.password,
+        devID: DeviceInfo.getUniqueID(),
       }),
     })
     .then((response) => response.json())
     .then((responseJson) => {
       var confirm = responseJson['loggedIn'];
-      if (confirm)
+      if (confirm) {
+        store.name = responseJson['name'];
+        store.authToken = responseJson['loginAuthToken'];
+        store.touchToken = responseJson['touchAuthToken'];
+        store.loggedIn = true;
         this.resetNavigation('Main');
+      }
       else
-        if (Platform.OS === 'ios')
-          AlertIOS.alert('Authentication Failure')
+        Alert.alert('Authentication Failure')
+
     })
     .catch((error) => {
       console.error(error);
     });
-    // var confirm = this.state.username == 'Msgive' && this.state.password == 'QR4G';
-    // if (confirm)
-    //     this.resetNavigation('Main')
-    // else
-    //   if (Platform.OS ==='ios')
-    //     AlertIOS.alert('Authentication Failure')
   }
   _touchLogin(){
     const {navigate} = this.props.navigation;
     TouchID.authenticate('Log in to Give')
     .then(success => {
-      this.resetNavigation('Main')
+          var endpoint = host + touchEndpoint;
+      fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          touchAuthToken: store.touchToken,
+          devID: DeviceInfo.getUniqueID(),
+        }),
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        var confirm = responseJson['loggedIn'];
+        if (confirm) {
+          store.name = responseJson['name'];
+          store.authToken = responseJson['loginAuthToken'];
+          store.loggedIn = true;
+          this.resetNavigation('Main');
+        }
+        else{
+          Alert.alert(responseJson['message']);
+        }
+      })
+      .catch((error) => {
+        //console.error(error);
+        Alert.alert('Authentication Failure')
+      });
     })
     .catch(error => {
-      if(Platform.OS ==='ios')
-        AlertIOS.alert('Authentication Failure')
+      Alert.alert('Authentication Failure')
     })
   }
 
