@@ -1,4 +1,5 @@
 export let store = {
     name: "Joe",
-    qrcode: "this QrCode"
+    qrcode: "this QrCode",
+    screen: "MS Give"
 }
