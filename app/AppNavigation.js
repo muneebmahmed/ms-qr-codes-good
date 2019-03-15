@@ -27,12 +27,11 @@ const DrawerContent = (props) => (
     {
       flex: 1,
     }
-  }
-  >
+  }>
     <View
       style={{
         backgroundColor: '#46c487',
-        height: 100,
+        height: 80,
         alignItems: 'center',
         justifyContent: 'center',
       }}
