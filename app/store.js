@@ -1,5 +1,5 @@
 export let store = {
-    name: "Joe",
+    name: null,
     qrcode: "this QrCode",
     screen: "MS Give",
     loggedIn: false,
