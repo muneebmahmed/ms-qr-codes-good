@@ -6,7 +6,7 @@ export default class myQR extends React.Component {
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Text style={styles.headline}>Payments </Text>
+        <Text style={styles.headline}>Saved QR Codes </Text>
         <ScrollView>
         <View
             style={{

@@ -10,7 +10,7 @@ import Paid from './Paid';
 import Received from './Received';
 import Settings from './settings';
 import CreateQR from './createQR';
-import SavedQR from './savedQR';
+import qrNavigator from './ViewQR';
 import Payment from './payment';
 import Wallet from './wallet';
 import Info from './info';
@@ -52,7 +52,7 @@ const AppNavigator = createDrawerNavigator({
 	Settings: {screen: Settings},
   Setting2: {screen : Settings2},
 	"Create QR": {screen: CreateQR},
-	"Saved QR": {screen: SavedQR},
+	"Saved QR": {screen: qrNavigator},
 	Payment: {screen: Payment},
 	Wallet: { screen: Wallet},
 	Info: { screen: Info},
