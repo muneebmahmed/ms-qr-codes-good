@@ -4,5 +4,8 @@ export let store = {
     screen: "MS Give",
     loggedIn: false,
     authToken: null,
-    touchToken: null
+    touchToken: null,
+    scannedId: null,
+    scannedAmount: null,
+    scannedType: null,
 }
