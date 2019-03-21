@@ -1,12 +1,28 @@
 import React from 'react';
 import {Button, Text, View, ScrollView, Alert, StyleSheet } from 'react-native';
 import { Card, Icon, CheckBox } from 'react-native-elements';
-//import {styles} from './styles';
+import {StackActions, NavigationActions} from 'react-navigation';
+import {store} from './store';
 
 export default class CreditCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = { };
+    this.authenticate();
+  }
+  resetNavigation(targetRoute) {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: targetRoute }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+  authenticate(){
+    if (!store.loggedIn){
+      this.resetNavigation('LoginScreen');
+    }
   }
   render() {
     return (
