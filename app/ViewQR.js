@@ -6,8 +6,8 @@ import myQR from './myQR';
 import otherQR from'./otherQR';
 
 const qrNavigator = createMaterialTopTabNavigator({
-	Mine: {screen: Paid},
-	Others: {screen: Received},
+	Mine: {screen: myQR},
+	Others: {screen: otherQR},
 })
 
 export default qrNavigator;

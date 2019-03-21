@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Text, View } from 'react-native';
+import {Button, Text, View, TextInput } from 'react-native';
 import {styles} from './styles'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
@@ -13,20 +13,15 @@ constructor(props) {
   super(props);
   this.state = {amount: ''};
 }
-getInitialState: function() {
+getInitialState() {
   return {
     value: 0,
   }
-},
+}
   render() {
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Text>This is the Create QR Code Page</Text>
-        <Button
-            onPress={() => navigate('Home')}
-            title="go home"
-        />
         <TextInput
           style={{height: 40}}
           placeholder="Enter default amount"

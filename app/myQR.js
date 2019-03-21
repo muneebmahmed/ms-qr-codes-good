@@ -42,6 +42,7 @@ export default class myQR extends React.Component {
             <Text style={{fontSize:20}}>$10.00</Text>
             </View>
             <Text style={{fontSize:20}}>                Me</Text>
+            </View>
           </View>
         </ScrollView>
       </View>
