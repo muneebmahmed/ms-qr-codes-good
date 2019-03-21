@@ -50,6 +50,7 @@ class Login extends Component {
       var confirm = responseJson['loggedIn'];
       if (confirm) {
         store.name = responseJson['name'];
+        store.email = this.state.username;
         store.authToken = responseJson['loginAuthToken'];
         store.touchToken = responseJson['touchAuthToken'];
         try {
@@ -58,7 +59,11 @@ class Login extends Component {
           console.log(error);
         }
         store.loggedIn = true;
-        this.resetNavigation('Main');
+        if (responseJson['tosAccepted']) {
+          this.resetNavigation('Main');
+        } else {
+          this.resetNavigation('Tos');
+        }
       }
       else
         Alert.alert('Authentication Failure')

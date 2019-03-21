@@ -1,5 +1,6 @@
 import React from 'react';
 import { AppRegistry, Text, Switch, TextInput, View, Button,StyleSheet, Alert } from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 const host = 'https://qrcodes4good.com:8080';
 const createEndpoint = '/api/user/create';
@@ -15,6 +16,16 @@ export default class CreateAccount extends React.Component {
         Password: '',
         ConfirmPassword: '',
     };
+  }
+
+  resetNavigation(targetRoute) {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: targetRoute }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
   }
 
   _onPressButton() {
@@ -37,6 +48,7 @@ export default class CreateAccount extends React.Component {
       var confirm = responseJson['accountCreated'];
       if (confirm) {
         Alert.alert('Account Created!');
+        this.resetNavigation('LoginScreen');
       }
       else
         Alert.alert(responseJson['message']);
