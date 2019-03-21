@@ -5,7 +5,6 @@ import {styles} from './styles';
 import Login from './signIn';
 import Home from './home';
 import CreateAccount from './createAccount';
-import ConfirmID from './confirmID';
 import Paid from './Paid';
 import Received from './Received';
 import Settings from './settings';
@@ -18,7 +17,6 @@ import Help from './help';
 import ForgotPassword from './forgotPassword';
 import transNavigator from './transactions';
 import LogOut from './LogOut';
-import CreditCard from './creditcard'
 import {store} from './store'
 
 const DrawerContent = (props) => (
@@ -54,7 +52,7 @@ const AppNavigator = createDrawerNavigator({
 	"Create QR": {screen: CreateQR},
 	"Saved QR": {screen: qrNavigator},
 	Payment: {screen: Payment},
-	Wallet: { screen: CreditCard},
+	Wallet: { screen: Wallet},
 	Info: { screen: Info},
 	Help: { screen: Help},
   "Log Out": { screen: LogOut},
