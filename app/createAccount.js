@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppRegistry, Text, Switch, TextInput, View, Button,StyleSheet, Alert } from 'react-native';
 
-const host = 'http://104.42.36.29:3001';
+const host = 'https://qrcodes4good.com:8080';
 const createEndpoint = '/api/user/create';
 
 export default class CreateAccount extends React.Component {
@@ -39,7 +39,7 @@ export default class CreateAccount extends React.Component {
         Alert.alert('Account Created!');
       }
       else
-        Alert.alert('Creation Failure');
+        Alert.alert(responseJson['message']);
     })
     .catch((error) => {
       console.error(error);

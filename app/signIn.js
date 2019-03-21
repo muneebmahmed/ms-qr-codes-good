@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Button, Text, TextInput, Image, View, Platform, AlertIOS, Alert } from 'react-native';
+import {StyleSheet, Button, Text, TextInput, Image, View, Platform, Alert, AsyncStorage } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import TouchID from 'react-native-touch-id';
 import DeviceInfo from 'react-native-device-info';
@@ -52,6 +52,11 @@ class Login extends Component {
         store.name = responseJson['name'];
         store.authToken = responseJson['loginAuthToken'];
         store.touchToken = responseJson['touchAuthToken'];
+        try {
+          AsyncStorage.setItem('TouchToken', responseJson['touchAuthToken']);
+        } catch(error){
+          console.log(error);
+        }
         store.loggedIn = true;
         this.resetNavigation('Main');
       }
@@ -67,34 +72,38 @@ class Login extends Component {
     const {navigate} = this.props.navigation;
     TouchID.authenticate('Log in to Give')
     .then(success => {
-          var endpoint = host + touchEndpoint;
-      fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          touchAuthToken: store.touchToken,
-          devID: DeviceInfo.getUniqueID(),
-        }),
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        var confirm = responseJson['loggedIn'];
-        if (confirm) {
-          store.name = responseJson['name'];
-          store.authToken = responseJson['loginAuthToken'];
-          store.loggedIn = true;
-          this.resetNavigation('Main');
-        }
-        else{
-          Alert.alert(responseJson['message']);
-        }
-      })
-      .catch((error) => {
-        //console.error(error);
-        Alert.alert('Authentication Failure')
+      AsyncStorage.getItem('TouchToken')
+      .then((touchToken) => {
+
+        var endpoint = host + touchEndpoint;
+        fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            touchAuthToken: touchToken,
+            devID: DeviceInfo.getUniqueID(),
+          }),
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          var confirm = responseJson['loggedIn'];
+          if (confirm) {
+            store.name = responseJson['name'];
+            store.authToken = responseJson['loginAuthToken'];
+            store.loggedIn = true;
+            this.resetNavigation('Main');
+          }
+          else{
+            Alert.alert(responseJson['message']);
+          }
+        })
+        .catch((error) => {
+          //console.error(error);
+          Alert.alert('Authentication Failure')
+        });
       });
     })
     .catch(error => {

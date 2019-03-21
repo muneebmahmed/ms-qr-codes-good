@@ -1,11 +1,29 @@
 import React from 'react';
 import {Button, Text, View, TextInput } from 'react-native';
-import {styles} from './styles'
+import {StackActions, NavigationActions} from 'react-navigation';
+import {styles} from './styles';
+import {store} from './store';
+
 
 export default class Payments extends React.Component {
-  constructor(props) {
-      super(props);
-      this.state = { text: '$10.00' };
+  constructor(props){
+    super(props);
+    this.state = { text: '$10.00' };
+    this.authenticate();
+  }
+  resetNavigation(targetRoute) {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: targetRoute }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+  authenticate(){
+    if (!store.loggedIn){
+      this.resetNavigation('LoginScreen');
+    }
   }
   render() {
     return (

@@ -1,6 +1,8 @@
 import React from 'react';
 import {Button, Text, View, TextInput } from 'react-native';
+import {StackActions, NavigationActions} from 'react-navigation';
 import {styles} from './styles'
+import {store} from './store'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 var radio_props = [
@@ -9,15 +11,30 @@ var radio_props = [
 ];
 
 export default class CreateQR extends React.Component {
-constructor(props) {
-  super(props);
-  this.state = {amount: ''};
-}
-getInitialState() {
-  return {
-    value: 0,
+  constructor(props) {
+    super(props);
+    this.state = {amount: ''};
+    this.authenticate();
   }
-}
+  getInitialState() {
+    return {
+      value: 0,
+    }
+  }
+  resetNavigation(targetRoute) {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: targetRoute }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+  authenticate(){
+    if (!store.loggedIn){
+      this.resetNavigation('LoginScreen');
+    }
+  }
   render() {
     const {navigate} = this.props.navigation;
     return (
