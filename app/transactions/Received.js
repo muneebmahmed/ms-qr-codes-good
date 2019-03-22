@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button, ScrollView, Image } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
-import {store} from './store';
+import {store} from '../store';
 
 export default class Received extends React.Component {
   constructor(props){
@@ -43,7 +43,7 @@ export default class Received extends React.Component {
             <View style={styles.rightContainer}>
             <Image
             style={styles.keepitsmall}
-            source={require('./images/user.png')} />
+            source={require('../images/user.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>John</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
@@ -63,7 +63,7 @@ export default class Received extends React.Component {
             <View style={styles.rightContainer}>
             <Image
             style={styles.keepitsmall}
-            source={require('./images/user.png')} />
+            source={require('../images/user.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>Kim</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
@@ -83,7 +83,7 @@ export default class Received extends React.Component {
             <View style={styles.rightContainer}>
             <Image
             style={styles.keepitsmall}
-            source={require('./images/anonymoususer.png')} />
+            source={require('../images/anonymoususer.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>Anon</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
@@ -103,7 +103,7 @@ export default class Received extends React.Component {
             <View style={styles.rightContainer}>
             <Image
             style={styles.keepitsmall}
-            source={require('./images/user.png')} />
+            source={require('../images/user.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>Lara</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
@@ -123,7 +123,7 @@ export default class Received extends React.Component {
             <View style={styles.rightContainer}>
             <Image
             style={styles.keepitsmall}
-            source={require('./images/anonymoususer.png')} />
+            source={require('../images/anonymoususer.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>Anon</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>
@@ -143,7 +143,7 @@ export default class Received extends React.Component {
             <View style={styles.rightContainer}>
             <Image
             style={styles.keepitsmall}
-            source={require('./images/user.png')} />
+            source={require('../images/user.png')} />
               <Text style={{fontSize:16, textAlign: 'right'}}>Sally</Text>
               <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
             </View>

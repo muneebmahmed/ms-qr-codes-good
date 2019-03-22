@@ -2,13 +2,13 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import {createStackNavigator, createDrawerNavigator, NavigationActions, DrawerActions} from 'react-navigation';
-import {styles} from './styles';
-import Login from './signIn';
-import CreateAccount from './createAccount';
-import ForgotPassword from './forgotPassword';
+import {styles} from '../styles';
+import Login from '../login/signIn';
+import CreateAccount from '../login/createAccount';
+import ForgotPassword from '../login/forgotPassword';
 import AppNavigator from './AppNavigation';
-import Tos from './tos'
-import {store} from './store';
+import Tos from '../login/tos'
+import {store} from '../store';
 
 // const MenuButton = (
 // 	<View>

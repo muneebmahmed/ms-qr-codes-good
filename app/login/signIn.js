@@ -3,7 +3,7 @@ import {StyleSheet, Button, Text, TextInput, Image, View, Platform, Alert, Async
 import { StackActions, NavigationActions } from 'react-navigation';
 import TouchID from 'react-native-touch-id';
 import DeviceInfo from 'react-native-device-info';
-import {store} from './store';
+import {store} from '../store';
 //import {styles} from './styles'
 
 const host = 'https://qrcodes4good.com:8080';

@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, Text, View, TextInput } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
-import {styles} from './styles'
-import {store} from './store'
+import {styles} from '../styles'
+import {store} from '../store'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 var radio_props = [

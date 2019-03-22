@@ -1,12 +1,32 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button, ScrollView, Image } from 'react-native';
+import {StackActions, NavigationActions} from 'react-navigation';
+import {store} from '../store';
 
 export default class myQR extends React.Component {
+  constructor(props) {
+    super(props);
+    this.authenticate();
+  }
+  resetNavigation(targetRoute) {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: targetRoute }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+  authenticate(){
+    if (!store.loggedIn){
+      this.resetNavigation('LoginScreen');
+    }
+  }
   render() {
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Text style={styles.headline}>Saved QR Codes </Text>
+        <Text style={styles.headline}>My QR Codes </Text>
         <ScrollView>
         <View
             style={{

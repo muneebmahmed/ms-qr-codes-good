@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import {createStackNavigator, createAppNavigator, createAppContainer} from 'react-navigation';
-import AppNavigator from './app/AppNavigation';
 import {styles} from './app/styles';
-import MainNavigator from './app/MainNavigator';
+import MainNavigator from './app/navigation/MainNavigator';
 
 const App = createAppContainer(MainNavigator);
 

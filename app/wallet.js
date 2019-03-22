@@ -70,7 +70,7 @@ export default class Wallet extends React.Component {
     checked = this.state.checked;
     for (i in checked){
       if (num == i){
-        checked[i] = !checked[i];
+        checked[i] = true;
       }
       else{
         checked[i] = false;

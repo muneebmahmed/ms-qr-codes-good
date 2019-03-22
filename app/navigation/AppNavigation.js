@@ -1,23 +1,18 @@
 import React, {Component} from 'react';
 import { Text, View, Button, ScrollView } from 'react-native'
 import {createStackNavigator, createDrawerNavigator, DrawerItems} from 'react-navigation';
-import {styles} from './styles';
-import Login from './signIn';
-import Home from './home';
-import CreateAccount from './createAccount';
-import Paid from './Paid';
-import Received from './Received';
-import Settings from './settings';
-import CreateQR from './createQR';
-import qrNavigator from './ViewQR';
-import Payment from './payment';
-import Wallet from './wallet';
-import Info from './info';
-import Help from './help';
-import ForgotPassword from './forgotPassword';
-import transNavigator from './transactions';
-import LogOut from './LogOut';
-import {store} from './store'
+import {styles} from '../styles';
+import Home from '../home';
+import Settings from '../settings';
+import CreateQR from '../qr-codes/createQR';
+import qrNavigator from '../qr-codes/ViewQR';
+import Payment from '../payment';
+import Wallet from '../wallet';
+import Info from '../info';
+import Help from '../help';
+import transNavigator from '../transactions/transactions';
+import LogOut from '../LogOut';
+import {store} from '../store'
 
 const DrawerContent = (props) => (
   <View style={
@@ -34,7 +29,7 @@ const DrawerContent = (props) => (
         justifyContent: 'center',
       }}
     >
-      <Text style={{ color: 'white', fontSize: 30 }}>
+      <Text style={{ color: 'white', fontSize: 30 }} onPress={() => props.navigation.navigate('Settings')}>
         {store.name}
       </Text>
     </View>
@@ -47,12 +42,12 @@ const DrawerContent = (props) => (
 
 const AppNavigator = createDrawerNavigator({
 	Home: {screen: Home},
+  Settings: {screen: Settings},
 	"Transactions": {screen: transNavigator},
-	Settings: {screen: Settings},
+  Wallet: { screen: Wallet},
 	"Create QR": {screen: CreateQR},
-	"Saved QR": {screen: qrNavigator},
+	"Saved QR Codes": {screen: qrNavigator},
 	Payment: {screen: Payment},
-	Wallet: { screen: Wallet},
 	Info: { screen: Info},
 	Help: { screen: Help},
   "Log Out": { screen: LogOut},
