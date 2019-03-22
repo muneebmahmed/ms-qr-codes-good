@@ -1,13 +1,16 @@
 import React from 'react';
-import {Button, Text, View, ScrollView, Alert, StyleSheet } from 'react-native';
+import {Button, Text, View, ScrollView, Alert, StyleSheet, RefreshControl } from 'react-native';
 import { Card, Icon, CheckBox } from 'react-native-elements';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {store} from './store';
 
-export default class CreditCard extends React.Component {
+const host = 'https://qrcodes4good.com:8080';
+const cardEndpoint = '/api/user/getCards/';
+
+export default class Wallet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { };
+    this.state = { dataAvailable: false, checked: [], refreshing: false};
     this.authenticate();
   }
   resetNavigation(targetRoute) {
@@ -24,70 +27,100 @@ export default class CreditCard extends React.Component {
       this.resetNavigation('LoginScreen');
     }
   }
+  fetchCardData(){
+    this.setState({refreshing: true});
+    var endpoint = host + cardEndpoint + store.email;
+    fetch(endpoint, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': store.authToken,
+      },
+    })
+    .then((response) => response.json())
+    .then((responseJson) =>{
+      this.setState({
+        dataAvailable: true,
+        refreshing: false
+      })
+    })
+    .catch((error) =>{
+      console.error(error);
+      this.setState({
+        refreshing: false
+      })
+    });
+
+    //temp code for testing below
+    var checked = [];
+    for (card of store.cardData){
+      checked.push(card.isPrimary);
+    }
+    this.setState({
+      dataAvailable: true,
+      cards: store.cardData,
+      checked: checked
+    })
+    return store.cardData;
+  }
+  updateCheck(num){
+    checked = this.state.checked;
+    for (i in checked){
+      if (num == i){
+        checked[i] = !checked[i];
+      }
+      else{
+        checked[i] = false;
+      }
+    }
+    //make call to server here
+    this.setState({checked: checked});
+  }
+  getCards(){
+    var text = [];
+    for (i in this.state.cards){
+      let card = this.state.cards[i];
+      text.push( 
+          <Card title={card.title}>
+            <Text style={{marginBottom: 10}}> Card Holder: {card.user} </Text>
+            <Text sytle={{marginBottom: 10}}> Card Number: {card.number} </Text>
+            <CheckBox title='Primary Payment Method' checked={this.state.checked[i]} onPress={this.updateCheck.bind(this, i)} />
+          </Card>
+      )
+    }
+    return text;
+
+  }
+  componentDidMount(){
+    this.fetchCardData();
+  }
   render() {
+    if (!this.state.dataAvailable){
+      return (
+        <View style={styles.container}>
+        <Text> Data Unavailable </Text>
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
-      <View style={styles.row}>
-        <Button
-          icon={<Icon name='code' color='#ffffff' />}
-          backgroundColor='#03A9F4'
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-          title='Edit' />
-      </View>
-      <ScrollView>
-      <Card
-        title='VISA'>
-        <Text style={{marginBottom: 10}}>
-        Card Holder: Timothy Smithony
-        </Text>
-        <Text style={{marginBottom: 10}}>
-        Card Number: ************1234
-        </Text>
-        <CheckBox
-          title='Primary Payment Method'
-          checked={this.state.checked}
-          onPress={() => this.setState({checked: !this.state.checked})}
-        />
-        </Card>
-        <Card
-        title='Apple Pay'>
-         <Text style={{marginBottom: 10}}>
-        Card Holder: Tim Smithony
-        </Text>
-        <Text style={{marginBottom: 10}}>
-        Default Card: Mastercard 5678
-        </Text>
-        <CheckBox
-          title='Primary Payment Method'
-          checked={this.state.checked2}
-        />
-        </Card>
-        <Card
-        title='Amex'>
-         <Text style={{marginBottom: 10}}>
-        Card Holder: Timothy R. Smithony
-        </Text>
-        <Text style={{marginBottom: 10}}>
-        Card Number: ************98765
-        </Text>
-        <CheckBox
-          title='Primary Payment Method'
-          checked={this.state.checked3}
-        />
-        </Card>
-        <Card
-        title='Checking'>
-        <Text style={{marginBottom: 10}}>
-        Card Holder: Timothy Randolph Smithony
-        </Text>
-        <Text style={{marginBottom: 10}}>
-        Card Number: ************5432
-        </Text>
-        <CheckBox
-          title='Primary Payment Method'
-          checked={this.state.checked4}
-        />
-        </Card>
+        <View style={styles.row}>
+          <Button
+            icon={<Icon name='code' color='#ffffff' />}
+            backgroundColor='#03A9F4'
+            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+            title='Edit' />
+        </View>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.fetchCardData.bind(this)}
+            />
+          }
+        >
+          {this.getCards()}
         </ScrollView>
         <Button
           icon={<Icon name='code' color='#ffffff' />}
@@ -97,8 +130,8 @@ export default class CreditCard extends React.Component {
           backgroundColor='#03A9F4'
           buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
           title='Add New Payment Method' />
-        </View>
-      );
+      </View>
+    );
   }
 }
 

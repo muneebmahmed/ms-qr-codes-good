@@ -98,6 +98,11 @@ class Login extends Component {
           if (confirm) {
             store.name = responseJson['name'];
             store.authToken = responseJson['loginAuthToken'];
+            try {
+              AsyncStorage.setItem('TouchToken', responseJson['touchAuthToken']);
+            } catch(error){
+              console.log(error);
+            }
             store.loggedIn = true;
             this.resetNavigation('Main');
           }
