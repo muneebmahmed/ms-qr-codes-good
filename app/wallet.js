@@ -6,6 +6,7 @@ import {store} from './store';
 
 const host = 'https://qrcodes4good.com:8080';
 const cardEndpoint = '/api/user/getCards/';
+const debug = true;
 
 export default class Wallet extends React.Component {
   constructor(props) {
@@ -30,6 +31,7 @@ export default class Wallet extends React.Component {
   fetchCardData(){
     this.setState({refreshing: true});
     var endpoint = host + cardEndpoint + store.email;
+    if (!debug){
     fetch(endpoint, {
       method: 'GET',
       headers: {
@@ -42,6 +44,8 @@ export default class Wallet extends React.Component {
     .then((responseJson) =>{
       this.setState({
         dataAvailable: true,
+        cards: responseJson,
+        checked: responseJson.primaryCard,
         refreshing: false
       })
     })
@@ -51,17 +55,15 @@ export default class Wallet extends React.Component {
         refreshing: false
       })
     });
-
+    }else{
     //temp code for testing below
-    var checked = [];
-    for (card of store.cardData){
-      checked.push(card.isPrimary);
-    }
     this.setState({
       dataAvailable: true,
       cards: store.cardData,
-      checked: checked
+      checked: store.cardData.primaryCard,
+      refreshing: false
     })
+    }
     return store.cardData;
   }
   updateCheck(num){
@@ -79,12 +81,14 @@ export default class Wallet extends React.Component {
   }
   getCards(){
     var text = [];
-    for (i in this.state.cards){
-      let card = this.state.cards[i];
+    for (i in this.state.cards.title){
+      let title = this.state.cards.title[i];
+      let user = this.state.cards.name[i];
+      let cardNumber = '*'.repeat(this.state.cards.numberOfDigits[i]) + this.state.cards.creditCardLastDigits[i];
       text.push( 
-          <Card title={card.title}>
-            <Text style={{marginBottom: 10}}> Card Holder: {card.user} </Text>
-            <Text sytle={{marginBottom: 10}}> Card Number: {card.number} </Text>
+          <Card title={title}>
+            <Text style={{marginBottom: 10}}> Card Holder: {user} </Text>
+            <Text sytle={{marginBottom: 10}}> Card Number: {cardNumber} </Text>
             <CheckBox title='Primary Payment Method' checked={this.state.checked[i]} onPress={this.updateCheck.bind(this, i)} />
           </Card>
       )
