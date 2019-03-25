@@ -16,6 +16,8 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
+      dataAvailable: false,
+      bioString: '',
     };
   };
   static navigationOptions = {
@@ -120,8 +122,37 @@ class Login extends Component {
       Alert.alert('Authentication Failure')
     })
   }
+  getBioString(){
+    TouchID.isSupported()
+    .then(biometryType => {
+      if (biometryType == 'FaceID'){
+        this.setState({
+          dataAvailable: true,
+          bioString: 'Face ID',
+        });
+      }
+      else{
+        this.setState({
+          dataAvailable: true,
+          bioString: 'Touch ID',
+        })
+      }
+    })
+    .catch(error =>{
+      this.setState({
+        dataAvailable: true,
+        bioString: 'None',
+      })
+    });
+  }
+  componentDidMount(){
+    this.getBioString();
+  }
 
   render() {
+    if (!this.state.dataAvailable){
+      return null
+    }
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
@@ -144,7 +175,7 @@ class Login extends Component {
           onPress={this._confirmLogin.bind(this)}
         />
         <Button
-          title={'Use Touch ID'}
+          title={'Use ' + this.state.bioString}
           style={styles.input}
           onPress={this._touchLogin.bind(this)}
         />

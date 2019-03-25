@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button, ScrollView, Image } from 'react-native';
+import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {store} from '../store';
 
 export default class Received extends React.Component {
   constructor(props){
     super(props);
+    this.state = { dataAvailable: false, refreshing: false };
     this.authenticate();
   }
   resetNavigation(targetRoute) {
@@ -22,132 +23,102 @@ export default class Received extends React.Component {
       this.resetNavigation('LoginScreen');
     }
   }
+  fetchData(){
+    var debug = true;
+    this.setState({ refreshing: true })
+    var endpoint = '';
+    if (!debug){
+    fetch(endpoint, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': store.authToken,
+      },
+    })
+    .then((response) => response.json())
+    .then((responseJson) =>{
+      this.setState({
+        dataAvailable: true,
+        names: responseJson.names,
+        amounts: responseJson.amounts,
+        dates: responseJson.dates,
+        anonymous: responseJson.anonymous,
+        refreshing: false
+      })
+    })
+    .catch((error) =>{
+      console.error(error);
+      this.setState({
+        refreshing: false
+      })
+    });
+    }
+    this.setState({
+      dataAvailable: true,
+      refreshing: false,
+      names: ['John', 'Kim', '', 'Lara', '', 'Sally'],
+      amounts: [5, 15, 6, 5, 2.5, 9],
+      dates: [new Date(2018, 11, 22), new Date(2018, 3, 12), new Date(2018, 2, 1), new Date(2018, 1, 14), new Date(2018, 0, 20), new Date(2018, 0, 13)],
+      anonymous: [false, false, true, false, true, false]
+    })
+  }
+  getData(){
+    var jsx = [];
+    for (i in this.state.names){
+      let name = this.state.anonymous[i]? 'Anon' : this.state.names[i];
+      let amount = this.state.amounts[i];
+      let date = this.state.dates[i];
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      let year = date.getFullYear();
+      let imgsource = this.state.anonymous[i]? require('../images/anonymoususer.png') : require('../images/user.png');
+      jsx.push(
+        <View>
+        <View style={{
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+          }} 
+        />
+        <View style={{flexDirection: 'row'}}>
+          <Text style={{fontSize:26}}>+</Text>
+          <Text style={{fontSize:26}}>${amount.toFixed(2)}</Text>
+        </View>
+        <View style={styles.leftContainer}>
+          <Text style={{fontSize:16}}>{month}/{day}/{year}</Text>
+          <View style={styles.rightContainer}>
+            <Image
+              style={styles.keepitsmall}
+              source={imgsource} />
+            <Text style={{fontSize:16, textAlign: 'right'}}>{name}</Text>
+            <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
+          </View>
+        </View>
+        </View>
+      );
+    }
+    return jsx;
+  }
+  componentDidMount(){
+    this.fetchData();
+  }
   render() {
     const {navigate} = this.props.navigation;
+    if (!this.state.dataAvailable){
+      return null;
+    }
     return (
       <View style={styles.container}>
         <Text style={styles.headline}>Received </Text>
-        <ScrollView>
-        <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 1,
-            }}
-          />
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{fontSize:26}}>+</Text>
-            <Text style={{fontSize:26}}>$5.00</Text>
-          </View>
-          <View style={styles.leftContainer}>
-            <Text style={{fontSize:16}}>12/22/2018</Text>
-            <View style={styles.rightContainer}>
-            <Image
-            style={styles.keepitsmall}
-            source={require('../images/user.png')} />
-              <Text style={{fontSize:16, textAlign: 'right'}}>John</Text>
-              <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
-            </View>
-          </View>
-          <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 1,
-            }}
-          />
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{fontSize:26}}>+</Text>
-            <Text style={{fontSize:26}}>$15.00</Text>
-          </View>
-          <View style={styles.leftContainer}>
-            <Text style={{fontSize:16}}>4/12/2018</Text>
-            <View style={styles.rightContainer}>
-            <Image
-            style={styles.keepitsmall}
-            source={require('../images/user.png')} />
-              <Text style={{fontSize:16, textAlign: 'right'}}>Kim</Text>
-              <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
-            </View>
-          </View>
-          <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 1,
-            }}
-          />
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{fontSize:26}}>+</Text>
-            <Text style={{fontSize:26}}>$6.00</Text>
-          </View>
-          <View style={styles.leftContainer}>
-            <Text style={{fontSize:16}}>03/01/2018</Text>
-            <View style={styles.rightContainer}>
-            <Image
-            style={styles.keepitsmall}
-            source={require('../images/anonymoususer.png')} />
-              <Text style={{fontSize:16, textAlign: 'right'}}>Anon</Text>
-              <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
-            </View>
-          </View>
-          <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 1,
-            }}
-          />
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{fontSize:26}}>+</Text>
-            <Text style={{fontSize:26}}>$5.00</Text>
-          </View>
-          <View style={styles.leftContainer}>
-            <Text style={{fontSize:16}}>02/14/2018</Text>
-            <View style={styles.rightContainer}>
-            <Image
-            style={styles.keepitsmall}
-            source={require('../images/user.png')} />
-              <Text style={{fontSize:16, textAlign: 'right'}}>Lara</Text>
-              <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
-            </View>
-          </View>
-        <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 1,
-            }}
-          />
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{fontSize:26}}>+</Text>
-            <Text style={{fontSize:26}}>$2.50</Text>
-          </View>
-          <View style={styles.leftContainer}>
-            <Text style={{fontSize:16}}>01/20/2018</Text>
-            <View style={styles.rightContainer}>
-            <Image
-            style={styles.keepitsmall}
-            source={require('../images/anonymoususer.png')} />
-              <Text style={{fontSize:16, textAlign: 'right'}}>Anon</Text>
-              <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
-            </View>
-          </View>
-          <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 1,
-            }}
-          />
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{fontSize:26}}>+</Text>
-            <Text style={{fontSize:26}}>$9.00</Text>
-          </View>
-          <View style={styles.leftContainer}>
-            <Text style={{fontSize:16}}>01/13/2018</Text>
-            <View style={styles.rightContainer}>
-            <Image
-            style={styles.keepitsmall}
-            source={require('../images/user.png')} />
-              <Text style={{fontSize:16, textAlign: 'right'}}>Sally</Text>
-              <Text style={{fontSize:16, textAlign: 'right'}}> paid you</Text>
-            </View>
-          </View>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.fetchData.bind(this)}
+            />
+          }
+        >
+          {this.getData()}
         </ScrollView>
       </View>
       );
