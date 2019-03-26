@@ -27,7 +27,7 @@ export default class CreateQR extends React.Component {
     }
   }
   onPressSubmit() {
-    const {navigate} = this.props.navigation;
+    //const {navigate} = this.props.navigation;
     var endpoint = host + generateQREndpoint;
     fetch(endpoint, {
       method: 'POST',
