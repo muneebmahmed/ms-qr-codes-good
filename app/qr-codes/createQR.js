@@ -37,6 +37,7 @@ export default class CreateQR extends React.Component {
       store.createdCode = responseJson.qrcodeData;
       Alert.alert(responseJson.qrcodeData);
       Alert.alert(responseJson.message);
+      this.resetNavigation('Generated');
     })
     .catch((error) => {
       console.error(error);
