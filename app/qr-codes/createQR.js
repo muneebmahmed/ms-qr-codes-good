@@ -26,7 +26,7 @@ export default class CreateQR extends React.Component {
       value: 0,
     }
   }
-  onPressSubmit(){
+  onPressSubmit() {
     const {navigate} = this.props.navigation;
     var endpoint = host + generateQREndpoint;
     fetch(endpoint, {
@@ -88,8 +88,8 @@ export default class CreateQR extends React.Component {
           onPress={(value) => {this.setState({value:value})}}
         />
         <Button
-          onPress={onPressSubmit}
-          title="Learn More"
+          onPress={this.onPressSubmit}
+          title="Submit"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
         />
