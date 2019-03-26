@@ -73,11 +73,13 @@ export default class CreateQR extends React.Component {
     return (
       <View style={styles.container}>
       <TextInput
+        value={this.state.QRcodeName}
         style={{height: 40}}
         placeholder="Enter QR code name"
         onChangeText={(QRcodeName) => this.setState({QRcodeName})}
       />
         <TextInput
+          value={this.state.amount}
           style={{height: 40}}
           placeholder="Enter default amount"
           onChangeText={(amount) => this.setState({amount})}
