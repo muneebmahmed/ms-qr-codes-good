@@ -12,7 +12,8 @@ export default class generatedQR extends React.Component {
         <View style={styles.container}>
         <QRCode
           logo={{uri: base64Logo}}
-          logoSize={90}
+          size={400}
+          logoSize={400}
           logoBackgroundColor='transparent'
         />
         </View>
