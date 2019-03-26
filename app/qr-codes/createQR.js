@@ -90,7 +90,7 @@ export default class CreateQR extends React.Component {
           onPress={(value) => {this.setState({value:value})}}
         />
         <Button
-          onPress={this.onPressSubmit}
+          onPress={this.onPressSubmit.bind(this)}
           title="Submit"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
