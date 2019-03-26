@@ -46,3 +46,9 @@ https://www.christianengvall.se/install-react-native/
     version you have [downloaded](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 6. After working through any errors, repeat step 4. Once you receive a "BUILD SUCCESSFUL" in the command prompt, look for a new app on the phone entitled "Give". Open the app, and select Allow when asked "Allow Give to take pictures and record video?" App should now be fully accessible!
 
+#Android Reloading Tip
+Whenever the code is updated, you can't just re-run the app. It needs to be rebundled to do all of the new cool code you added!
+Type
+react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+
+to rebundle it before you run react-native run-android. No need to push to the repo after small changes to get the app running, bt be sure to push changes after a little while because you don't want to lose your progress.
