@@ -12,6 +12,7 @@ import Info from '../info';
 import Help from '../help';
 import transNavigator from '../transactions/transactions';
 import LogOut from '../LogOut';
+import generatedQR from '../qr-codes/generatedQR';
 import {store} from '../store'
 
 const DrawerContent = (props) => (
@@ -50,6 +51,7 @@ const AppNavigator = createDrawerNavigator({
 	Info: { screen: Info},
 	Help: { screen: Help},
   "Log Out": { screen: LogOut},
+  Generated: {screen: generatedQR},
   },
   {
     initialRouteName: 'Home',

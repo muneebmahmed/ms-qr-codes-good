@@ -1,17 +1,11 @@
 import React from 'react';
-import {Button, Text, View, TextInput, Image } from 'react-native';
+import {Button, Text, View, TextInput, Image, Alert } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {styles} from '../styles'
 import {store} from '../store'
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 const host = 'https://qrcodes4good.com:8080';
 const generateQREndpoint = '/api/user/generateQRCode';
-
-var radio_props = [
-  {label: 'Service', value: 0 },
-  {label: 'Donation', value: 1 }
-];
 
 export default class CreateQR extends React.Component {
   constructor(props) {
@@ -21,25 +15,21 @@ export default class CreateQR extends React.Component {
       QRcodeName: ''};
     this.authenticate();
   }
-  getInitialState() {
-    return {
-      value: 0,
-    }
-  }
-  onPressSubmit(){
-    const {navigate} = this.props.navigation;
+  onPressSubmit() {
+    //const {navigate} = this.props.navigation;
     var endpoint = host + generateQREndpoint;
     fetch(endpoint, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': store.authToken,
       },
       body: JSON.stringify({
-        email: store.email, //ok?
+        email: store.email, //FIXME not guaranteed to exist, remove from body
         defaultAmount: this.state.amount,
-        loginAuthToken: store.authToken, //where?
-        paymentType: this.state.value,
+        loginAuthToken: store.authToken, //FIXME remove from body
+        paymentType: 1,
         qrCodeGivenName: this.state.QRcodeName,
       }),
     })
@@ -47,11 +37,33 @@ export default class CreateQR extends React.Component {
     .then((responseJson) => {
       store.createdCode = responseJson.qrcodeData;
       Alert.alert(responseJson.qrcodeData);
+      Alert.alert(responseJson.message);
+      this.pushNavigation('Generated');
     })
     .catch((error) => {
       console.error(error);
     });
   }
+
+  resetNavigation(targetRoute) {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: targetRoute }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+  pushNavigation(targetRoute){
+    const pushAction = StackActions.push({
+      routeName: targetRoute,
+    });
+    this.props.navigation.dispatch(pushAction);
+  }
+  authenticate(){
+    if (!store.loggedIn){
+      this.resetNavigation('LoginScreen');
+    }
   }
 
   render() {
@@ -59,23 +71,20 @@ export default class CreateQR extends React.Component {
     return (
       <View style={styles.container}>
       <TextInput
+        value={this.state.QRcodeName}
         style={{height: 40}}
         placeholder="Enter QR code name"
         onChangeText={(QRcodeName) => this.setState({QRcodeName})}
       />
         <TextInput
+          value={this.state.amount}
           style={{height: 40}}
           placeholder="Enter default amount"
           onChangeText={(amount) => this.setState({amount})}
         />
-        <RadioForm
-          radio_props={radio_props}
-          initial={0}
-          onPress={(value) => {this.setState({value:value})}}
-        />
         <Button
-          onPress={onPressSubmit}
-          title="Learn More"
+          onPress={this.onPressSubmit.bind(this)}
+          title="Submit"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
         />

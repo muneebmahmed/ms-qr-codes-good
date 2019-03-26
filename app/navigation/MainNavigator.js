@@ -8,7 +8,8 @@ import CreateAccount from '../login/createAccount';
 import ForgotPassword from '../login/forgotPassword';
 import AppNavigator from './AppNavigation';
 import Payment from '../payment';
-import Tos from '../login/tos'
+import Tos from '../login/tos';
+import generatedQR from '../qr-codes/generatedQR';
 import {store} from '../store';
 
 // const MenuButton = (
@@ -26,6 +27,7 @@ const MainNavigator = createStackNavigator({
 	Create: { screen: CreateAccount},
 	Tos: {screen : Tos},
 	Payment: {screen: Payment},
+	Generated: {screen: generatedQR},
 	Main: { screen: AppNavigator,
 		navigationOptions: ({ navigation }) => ({
         title: "MS Give",
