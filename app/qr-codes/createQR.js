@@ -52,7 +52,6 @@ export default class CreateQR extends React.Component {
       console.error(error);
     });
   }
-  }
 
   render() {
     const {navigate} = this.props.navigation;
