@@ -29,9 +29,25 @@ export default class Home extends Component {
     });
     this.props.navigation.dispatch(resetAction);
   }
+  pushNavigation(targetRoute){
+    const pushAction = StackActions.push({
+      routeName: 'Payment',
+    });
+    this.props.navigation.dispatch(pushAction);
+  }
+  authenticate(){
+    if (!store.loggedIn){
+      this.resetNavigation('LoginScreen');
+    }
+  }
 
-  alertName() {
-      alert(store.name);
+  goToPayment() {
+    if (!store.loggedIn){
+      this.resetNavigation('LoginScreen');
+    }
+    else{
+      this.pushNavigation('Payment');
+    }
   }
 
   render() {
@@ -39,10 +55,10 @@ export default class Home extends Component {
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Text style={{marginTop: 100}}>Go to settings to change the name</Text>
+        <Text style={{marginTop: 100}}></Text>
         <Button 
-            onPress={() => this.alertName()} 
-            title="Alert Name"
+            onPress={this.goToPayment.bind(this)} 
+            title="Go to Payments Page"
         />
         <CameraView/>
       </View>

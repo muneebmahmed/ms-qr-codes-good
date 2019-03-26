@@ -6,6 +6,7 @@ export let store = {
     loggedIn: false,
     authToken: null,
     touchToken: null,
+    pendingPayment: false,
     scannedId: null,
     scannedAmount: null,
     scannedType: null,

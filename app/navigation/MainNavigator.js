@@ -7,6 +7,7 @@ import Login from '../login/signIn';
 import CreateAccount from '../login/createAccount';
 import ForgotPassword from '../login/forgotPassword';
 import AppNavigator from './AppNavigation';
+import Payment from '../payment';
 import Tos from '../login/tos'
 import {store} from '../store';
 
@@ -24,6 +25,7 @@ const MainNavigator = createStackNavigator({
 	Forgot: { screen: ForgotPassword },
 	Create: { screen: CreateAccount},
 	Tos: {screen : Tos},
+	Payment: {screen: Payment},
 	Main: { screen: AppNavigator,
 		navigationOptions: ({ navigation }) => ({
         title: "MS Give",

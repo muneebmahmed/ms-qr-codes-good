@@ -47,7 +47,6 @@ const AppNavigator = createDrawerNavigator({
   Wallet: { screen: Wallet},
 	"Create QR": {screen: CreateQR},
 	"Saved QR Codes": {screen: qrNavigator},
-	Payment: {screen: Payment},
 	Info: { screen: Info},
 	Help: { screen: Help},
   "Log Out": { screen: LogOut},
