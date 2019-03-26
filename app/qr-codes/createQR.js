@@ -1,17 +1,11 @@
 import React from 'react';
-import {Button, Text, View, TextInput, Image } from 'react-native';
+import {Button, Text, View, TextInput, Image, Alert } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {styles} from '../styles'
 import {store} from '../store'
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 const host = 'https://qrcodes4good.com:8080';
 const generateQREndpoint = '/api/user/generateQRCode';
-
-var radio_props = [
-  {label: 'Service', value: 0 },
-  {label: 'Donation', value: 1 }
-];
 
 export default class CreateQR extends React.Component {
   constructor(props) {
@@ -20,11 +14,6 @@ export default class CreateQR extends React.Component {
       amount: '',
       QRcodeName: ''};
     this.authenticate();
-  }
-  getInitialState() {
-    return {
-      value: 0,
-    }
   }
   onPressSubmit() {
     //const {navigate} = this.props.navigation;
@@ -39,7 +28,7 @@ export default class CreateQR extends React.Component {
         email: store.email, //ok?
         defaultAmount: this.state.amount,
         loginAuthToken: store.authToken, //where?
-        paymentType: this.state.value,
+        paymentType: 1,
         qrCodeGivenName: this.state.QRcodeName,
       }),
     })
@@ -47,6 +36,7 @@ export default class CreateQR extends React.Component {
     .then((responseJson) => {
       store.createdCode = responseJson.qrcodeData;
       Alert.alert(responseJson.qrcodeData);
+      Alert.alert(responseJson.message);
     })
     .catch((error) => {
       console.error(error);
@@ -83,11 +73,6 @@ export default class CreateQR extends React.Component {
           style={{height: 40}}
           placeholder="Enter default amount"
           onChangeText={(amount) => this.setState({amount})}
-        />
-        <RadioForm
-          radio_props={radio_props}
-          initial={0}
-          onPress={(value) => {this.setState({value:value})}}
         />
         <Button
           onPress={this.onPressSubmit.bind(this)}
