@@ -31,7 +31,7 @@ export default class Home extends Component {
   }
   pushNavigation(targetRoute){
     const pushAction = StackActions.push({
-      routeName: 'Payment',
+      routeName: targetRoute,
     });
     this.props.navigation.dispatch(pushAction);
   }
