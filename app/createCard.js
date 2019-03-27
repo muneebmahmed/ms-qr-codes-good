@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, ScrollView, Button, Alert } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, Button, Alert, KeyboardAvoidingView } from 'react-native';
 import { styles } from './styles';
 import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input";
 import {store} from './store';
@@ -76,7 +76,7 @@ export default class CreateCard extends React.Component {
   _onChange(formData) { this.setState({ formData }); }
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
 
         <View style={{ width: 400 }}>
           <CreditCardInput
@@ -99,7 +99,7 @@ export default class CreateCard extends React.Component {
           backgroundColor='#03A9F4'
           title='Submit' />
 
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

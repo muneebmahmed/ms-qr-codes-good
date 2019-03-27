@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry, Text, Switch, TextInput, View, Button,StyleSheet, Alert } from 'react-native';
+import { AppRegistry, Text, Switch, TextInput, View, Button,StyleSheet, Alert, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 
 const host = 'https://qrcodes4good.com:8080';
@@ -63,6 +63,7 @@ export default class CreateAccount extends React.Component {
 <View style={styles.container}>
 
 <Text style={styles.TextHeader}> Create Account </Text>
+<KeyboardAvoidingView behavior="padding" enabled>
 
   <View style={styles.Parent}>
         <Text style={styles.Text}> First Name: </Text>
@@ -118,7 +119,7 @@ export default class CreateAccount extends React.Component {
           />
         </View>
 
-
+</KeyboardAvoidingView>
 
 </View>
       ); 
