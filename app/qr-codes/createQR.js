@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, Text, View, TextInput, Image, Alert } from 'react-native';
+import { Card, Icon, CheckBox } from 'react-native-elements';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {styles} from '../styles'
 import {store} from '../store'
@@ -12,7 +13,9 @@ export default class CreateQR extends React.Component {
     super(props);
     this.state = {
       amount: '',
-      QRcodeName: ''};
+      QRcodeName: '',
+      checked: []
+    };
     this.authenticate();
   }
   onPressSubmit() {
@@ -25,10 +28,10 @@ export default class CreateQR extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: store.email, //ok?
+        //email: store.email, //ok?
         defaultAmount: this.state.amount,
         loginAuthToken: store.authToken, //where?
-        paymentType: 1,
+        paymentType: this.state.checked[0]? 0 : 1,
         qrCodeGivenName: this.state.QRcodeName,
       }),
     })
@@ -59,6 +62,15 @@ export default class CreateQR extends React.Component {
     }
   }
 
+  updateCheck(num){
+
+    checked = this.state.checked;
+    checked[num] = true;
+    checked[1-num] = false;
+    //make call to server here
+    this.setState({checked: checked});
+  }
+
   render() {
     const {navigate} = this.props.navigation;
     return (
@@ -75,6 +87,8 @@ export default class CreateQR extends React.Component {
           placeholder="Enter default amount"
           onChangeText={(amount) => this.setState({amount})}
         />
+        <CheckBox title='Service' checked={this.state.checked[0]} onPress={this.updateCheck.bind(this, 0)} />
+        <CheckBox title='Donation' checked={this.state.checked[1]} onPress={this.updateCheck.bind(this, 1)} />
         <Button
           onPress={this.onPressSubmit.bind(this)}
           title="Submit"

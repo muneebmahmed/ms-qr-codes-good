@@ -79,13 +79,14 @@ export default class Wallet extends React.Component {
     //make call to server here
     this.setState({checked: checked});
   }
+
   getCards(){
     var text = [];
     for (i in this.state.cards.title){
       let title = this.state.cards.title[i];
       let user = this.state.cards.name[i];
       let cardNumber = '*'.repeat(this.state.cards.numberOfDigits[i]) + this.state.cards.creditCardLastDigits[i];
-      text.push( 
+      text.push(
           <Card title={title}>
             <Text style={{marginBottom: 10}}> Card Holder: {user} </Text>
             <Text sytle={{marginBottom: 10}}> Card Number: {cardNumber} </Text>
