@@ -15,7 +15,7 @@ class CameraView extends Component {
     return false;
   }
   onSuccess(e) {
-    if (validateData(e.data)){
+    if (this.validateData(e.data) && this.props.navigator.isFocused()){
       alert(e.data);
       this.pushNavigation('Payment');
     }
