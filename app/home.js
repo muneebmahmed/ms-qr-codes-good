@@ -60,7 +60,7 @@ export default class Home extends Component {
             onPress={this.goToPayment.bind(this)} 
             title="Go to Payments Page"
         />
-        <CameraView/>
+        <CameraView navigator={this.props.navigation}/>
       </View>
     );
   }
