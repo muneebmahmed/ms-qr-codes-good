@@ -11,6 +11,7 @@ import Payment from '../payment';
 import Tos from '../login/tos';
 import generatedQR from '../qr-codes/generatedQR';
 import confirmPay from '../confirmPayment';
+import CreateCard from '../createCard'
 import {store} from '../store';
 
 // const MenuButton = (
@@ -30,6 +31,7 @@ const MainNavigator = createStackNavigator({
 	Payment: {screen: Payment},
 	Generated: {screen: generatedQR},
 	"Confirm Payment": {screen: confirmPay},
+	CreateCard: {screen : CreateCard},
 	Main: { screen: AppNavigator,
 		navigationOptions: ({ navigation }) => ({
         title: "MS Give",
