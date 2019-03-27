@@ -39,6 +39,9 @@ export default class myQR extends React.Component {
         'Content-Type': 'application/json',
         'Authorization': store.authToken,
       },
+      body: JSON.stringify({
+        loginAuthToken: store.authToken //where?
+      }),
     })
     .then((response) => response.json())
     .then((responseJson) =>{
