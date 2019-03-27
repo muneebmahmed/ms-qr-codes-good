@@ -1,12 +1,16 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
+import QRCode from 'react-native-qrcode-svg';
 import {store} from '../store';
+
+const host = 'https://qrcodes4good.com:8080';
+const getQRCodes = '/api/user/getQRCodes';
 
 export default class myQR extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { dataAvailable: false, refreshing: false };
+    this.state = { dataAvailable: false, refreshing: false, qrcodes: [] };
     this.authenticate();
   }
   resetNavigation(targetRoute) {
@@ -24,24 +28,26 @@ export default class myQR extends React.Component {
     }
   }
   fetchQR(){
-    var debug = true;
+    var debug = false;
     this.setState( { refreshing: true })
-    var endpoint = '';
-    if (!debug){
+    var endpoint = host + getQRCodes;
+    if (!debug) {
     fetch(endpoint, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'Authorization': store.authToken,
       },
+      body: JSON.stringify({
+        loginAuthToken: store.authToken //where?
+      }),
     })
     .then((response) => response.json())
     .then((responseJson) =>{
       this.setState({
         dataAvailable: true,
-        names: responseJson.names,
-        amounts: responseJson.amounts,
+        qrcodes: JSON.stringify(responseJson.qrcodes[0].qrcodeData),
         refreshing: false
       })
     })
@@ -52,19 +58,23 @@ export default class myQR extends React.Component {
       })
     });
     }
-    this.setState({
-      dataAvailable: true,
-      refreshing: false,
-      names: ['Donation', 'Donation'],
-      amounts: [10, 10],
-    })
+    else {
+      this.setState({
+        dataAvailable: true,
+        refreshing: false,
+        qrcodes: [],
+        names: ['Donation', 'Donation'],
+        amounts: [10, 10],
+      })
+    }
   }
+
   getQR(){
     var jsx = [];
-    for (i in this.state.amounts){
-      let name = this.state.names[i];
-      let amount = this.state.amounts[i];
-      let imgsource = null;
+    for (i in this.state.qrcodes){
+      //let name = this.state.names[i];
+      //let amount = this.state.amounts[i];
+      let imgsource = this.state.qrcodes[i].qrcodeData;
       jsx.push(
         <View>
           <View
@@ -74,18 +84,26 @@ export default class myQR extends React.Component {
             }}
           />
           <View style={styles.container}>
+            <QRCode
+              logo={{uri: imgsource}}
+              size={40}
+              logoSize={40}
+              logoBackgroundColor='transparent'
+              />
               <Text style={{fontSize:26}}>
-                <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 70, height: 70}}             />
-              {name}
+              Hello
               </Text>
               <View style={{flexDirection: 'row'}}>
                 <Text style={{fontSize:20}}>                Default: </Text>
-                <Text style={{fontSize:20}}>${amount.toFixed(2)}</Text>
+
               </View>
               <Text style={{fontSize:20}}>                Me</Text>
           </View>
         </View>
       );
+    }
+    if (!this.state.qrcodes || this.state.qrcodes.length < 1){
+      jsx.push(<View><Text>No codes here!</Text></View>);
     }
     return jsx;
   }
@@ -99,7 +117,7 @@ export default class myQR extends React.Component {
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Text style={styles.headline}>My QR Codes </Text>
+        <Text style={styles.headline}> My QR Codes </Text>
         <ScrollView
           refreshControl={
             <RefreshControl

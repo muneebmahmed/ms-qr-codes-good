@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
+import QRCode from 'react-native-qrcode-svg';
 import {store} from '../store';
 
 export default class otherQR extends React.Component {
@@ -64,7 +65,7 @@ export default class otherQR extends React.Component {
     for (i in this.state.amounts){
       let name = this.state.names[i];
       let amount = this.state.amounts[i];
-      let imgsource = null;
+      let imgsource2 = '';
       jsx.push(
         <View>
           <View
@@ -74,8 +75,13 @@ export default class otherQR extends React.Component {
             }}
           />
           <View style={styles.container}>
+            <QRCode
+              logo={{uri: imgsource2}}
+              size={50}
+              logoSize={50}
+              logoBackgroundColor='transparent'
+            />
             <Text style={{fontSize:26}}>
-              <Image source={{uri: "https://facebook.github.io/react-native/img/favicon.png", width: 70, height: 70}}             />
               Donation
             </Text>
             <View style={{flexDirection: 'row'}}>
