@@ -20,6 +20,12 @@ export default class Payments extends React.Component {
     });
     this.props.navigation.dispatch(resetAction);
   }
+  pushNavigation(targetRoute){
+    const pushAction = StackActions.push({
+      routeName: targetRoute,
+    });
+    this.props.navigation.dispatch(pushAction);
+  }
   authenticate(){
     if (!store.loggedIn){
       this.resetNavigation('LoginScreen');
@@ -36,6 +42,7 @@ export default class Payments extends React.Component {
     })
   }
   render() {
+    const {navigate} = this.props.navigation;
     return (
       <View>
         <TextInput
@@ -50,6 +57,10 @@ export default class Payments extends React.Component {
         <Button
           onPress={this.decrease.bind(this)}
           title="Minus One"/>
+        <Button
+          title="Next"
+          onPress={() => this.pushNavigation('Confirm Payment')}
+        />
       </View>
       );
 
