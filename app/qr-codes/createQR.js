@@ -26,11 +26,12 @@ export default class CreateQR extends React.Component {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': store.authToken,
       },
       body: JSON.stringify({
         //email: store.email, //ok?
         defaultAmount: this.state.amount,
-        loginAuthToken: store.authToken, //where?
+        loginAuthToken: store.authToken, //FIXME remove from body
         paymentType: this.state.checked[0]? 0 : 1,
         qrCodeGivenName: this.state.QRcodeName,
       }),
@@ -40,7 +41,7 @@ export default class CreateQR extends React.Component {
       store.createdCode = responseJson.qrcodeData;
       Alert.alert(responseJson.qrcodeData);
       Alert.alert(responseJson.message);
-      this.resetNavigation('Generated');
+      this.pushNavigation('Generated');
     })
     .catch((error) => {
       console.error(error);
@@ -55,6 +56,12 @@ export default class CreateQR extends React.Component {
       ],
     });
     this.props.navigation.dispatch(resetAction);
+  }
+  pushNavigation(targetRoute){
+    const pushAction = StackActions.push({
+      routeName: targetRoute,
+    });
+    this.props.navigation.dispatch(pushAction);
   }
   authenticate(){
     if (!store.loggedIn){

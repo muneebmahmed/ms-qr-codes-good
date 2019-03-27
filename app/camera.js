@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {StackActions, NavigationActions} from 'react-navigation';
 import {
   View,
   Text,
@@ -7,9 +8,24 @@ import {
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
 class CameraView extends Component {
+  validateData(data){
+    if (data){
+      return true;
+    }
+    return false;
+  }
   onSuccess(e) {
-    alert(e.data);
+    if (this.validateData(e.data) && this.props.navigator.isFocused()){
+      alert(e.data);
+      this.pushNavigation('Payment');
+    }
     setTimeout(() => {this.scanner.reactivate()}, 3000);
+  }
+  pushNavigation(targetRoute){
+    const pushAction = StackActions.push({
+      routeName: targetRoute,
+    });
+    this.props.navigator.dispatch(pushAction);
   }
 
   render() {
