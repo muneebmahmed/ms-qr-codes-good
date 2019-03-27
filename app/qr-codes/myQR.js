@@ -10,7 +10,7 @@ const getQRCodes = '/api/user/getQRCodes';
 export default class myQR extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { dataAvailable: false, refreshing: false };
+    this.state = { dataAvailable: false, refreshing: false, qrcodes: [] };
     this.authenticate();
   }
   resetNavigation(targetRoute) {
@@ -62,6 +62,7 @@ export default class myQR extends React.Component {
       this.setState({
         dataAvailable: true,
         refreshing: false,
+        qrcodes: [],
         names: ['Donation', 'Donation'],
         amounts: [10, 10],
       })
@@ -70,7 +71,7 @@ export default class myQR extends React.Component {
 
   getQR(){
     var jsx = [];
-    for (i in this.state.amounts){
+    for (i in this.state.qrcodes){
       //let name = this.state.names[i];
       //let amount = this.state.amounts[i];
       let imgsource = this.state.qrcodes[i].qrcodeData;
@@ -101,6 +102,9 @@ export default class myQR extends React.Component {
         </View>
       );
     }
+    if (!this.state.qrcodes || this.state.qrcodes.length < 1){
+      jsx.push(<View><Text>No codes here!</Text></View>);
+    }
     return jsx;
   }
   componentDidMount(){
@@ -121,7 +125,7 @@ export default class myQR extends React.Component {
               onRefresh={this.fetchQR.bind(this)}
             />
           }
-          >
+        >
           {this.getQR()}
         </ScrollView>
       </View>

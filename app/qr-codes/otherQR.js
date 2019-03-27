@@ -65,7 +65,7 @@ export default class otherQR extends React.Component {
     for (i in this.state.amounts){
       let name = this.state.names[i];
       let amount = this.state.amounts[i];
-      let imgsource2 = null;
+      let imgsource2 = '';
       jsx.push(
         <View>
           <View
