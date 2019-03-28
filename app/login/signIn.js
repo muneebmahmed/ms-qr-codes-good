@@ -4,11 +4,8 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import TouchID from 'react-native-touch-id';
 import DeviceInfo from 'react-native-device-info';
 import {store} from '../store';
+import {host, loginEndpoint, touchEndpoint} from '../constants';
 //import {styles} from './styles'
-
-const host = 'https://qrcodes4good.com:8080';
-const loginEndpoint = '/api/user/login';
-const touchEndpoint = '/api/user/bioLogin';
 
 class Login extends Component {
   constructor(props){
@@ -100,6 +97,7 @@ class Login extends Component {
           if (confirm) {
             store.name = responseJson['name'];
             store.authToken = responseJson['loginAuthToken'];
+            store.email = responseJson['email'];
             try {
               AsyncStorage.setItem('TouchToken', responseJson['touchAuthToken']);
             } catch(error){

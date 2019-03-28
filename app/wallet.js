@@ -3,9 +3,8 @@ import {Button, Text, View, ScrollView, Alert, StyleSheet, RefreshControl } from
 import { Card, Icon, CheckBox } from 'react-native-elements';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {store} from './store';
+import {host, cardEndpoint} from './constants';
 
-const host = 'https://qrcodes4good.com:8080';
-const cardEndpoint = '/api/user/getCards/';
 const debug = true;
 
 export default class Wallet extends React.Component {

@@ -4,9 +4,7 @@ import { Card, Icon, CheckBox } from 'react-native-elements';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {styles} from '../styles'
 import {store} from '../store'
-
-const host = 'https://qrcodes4good.com:8080';
-const generateQREndpoint = '/api/user/generateQRCode';
+import {host, generateQREndpoint} from '../constants';
 
 export default class CreateQR extends React.Component {
   constructor(props) {
@@ -84,14 +82,15 @@ export default class CreateQR extends React.Component {
       <View style={styles.container}>
       <TextInput
         value={this.state.QRcodeName}
-        style={{height: 40}}
+        style={{height: 40, width: 100}}
         placeholder="Enter QR code name"
         onChangeText={(QRcodeName) => this.setState({QRcodeName})}
       />
         <TextInput
           value={this.state.amount}
-          style={{height: 40}}
+          style={{height: 40, width: 50}}
           placeholder="Enter default amount"
+          keyboardType='numeric'
           onChangeText={(amount) => this.setState({amount})}
         />
         <CheckBox title='Service' checked={this.state.checked[0]} onPress={this.updateCheck.bind(this, 0)} />

@@ -44,7 +44,7 @@ export default class Payments extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
     return (
-      <View>
+      <View style={styles.container}>
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1, justifyContent: 'center'}}
           keyboardType='numeric'

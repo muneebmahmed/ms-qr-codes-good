@@ -3,9 +3,7 @@ import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl } fro
 import {StackActions, NavigationActions} from 'react-navigation';
 import QRCode from 'react-native-qrcode-svg';
 import {store} from '../store';
-
-const host = 'https://qrcodes4good.com:8080';
-const getQRCodes = '/api/user/getQRCodes';
+import {host, getQRCodes} from '../constants';
 
 export default class myQR extends React.Component {
   constructor(props) {

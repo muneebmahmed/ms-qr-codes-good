@@ -1,9 +1,7 @@
 import React from 'react';
 import { AppRegistry, Text, Switch, TextInput, View, Button,StyleSheet, Alert, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
-
-const host = 'https://qrcodes4good.com:8080';
-const createEndpoint = '/api/user/create';
+import {host, createEndpoint} from '../constants';
 
 export default class CreateAccount extends React.Component {
 
