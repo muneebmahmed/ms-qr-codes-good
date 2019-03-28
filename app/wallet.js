@@ -130,7 +130,7 @@ export default class Wallet extends React.Component {
         </ScrollView>
         <Button
           icon={<Icon name='code' color='#ffffff' />}
-          onPress={() => navigate('CreateCard')}
+          onPress={() => navigate('AddPayment')}
           backgroundColor='#03A9F4'
           buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
           title='Add New Payment Method' />

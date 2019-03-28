@@ -59,7 +59,7 @@ export default class Payments extends React.Component {
           title="Minus One"/>
         <Button
           title="Next"
-          onPress={() => this.pushNavigation('Confirm Payment')}
+          onPress={() => this.pushNavigation('ConfirmPayment')}
         />
       </View>
       );
