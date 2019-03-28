@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View, StyleSheet, ScrollView, Button, Alert, KeyboardAvoidingView } from 'react-native';
-import { styles } from './styles';
+import { styles } from '../styles';
 import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input";
-import {store} from './store';
+import {store} from '../store';
 
 const host = 'https://qrcodes4good.com:8080';
 const createEndpoint = '/api/user/updateStripe';
@@ -58,6 +58,9 @@ export default class CreateCard extends React.Component {
           number : data.values.number,
           postalCode : data.values.postalCode,
           type: data.values.type,
+          card: true,
+		      routing_number: null,
+		      account_number: null
         }),
       })
       .then((response) => response.json())
@@ -71,6 +74,8 @@ export default class CreateCard extends React.Component {
       .catch((error) => {
         console.error(error);
       });
+    } else {
+      Alert.alert('Invalid Card!');
     }
   }
   _onChange(formData) { this.setState({ formData }); }
