@@ -8,6 +8,9 @@ import otherQR from'./otherQR';
 const qrNavigator = createMaterialTopTabNavigator({
 	Mine: {screen: myQR},
 	Others: {screen: otherQR},
+},
+{
+	swipeEnabled: false,
 })
 
 export default qrNavigator;

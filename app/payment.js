@@ -8,7 +8,8 @@ import {store} from './store';
 export default class Payments extends React.Component {
   constructor(props){
     super(props);
-    this.state = { text: '$10.00', amount: 10 };
+    this.state = { text: '$10.00', amount: (store.scannedAmount == null)? 10 : store.scannedAmount };
+    store.pendingPayment = false;
     this.authenticate();
   }
   resetNavigation(targetRoute) {
@@ -28,17 +29,20 @@ export default class Payments extends React.Component {
   }
   authenticate(){
     if (!store.loggedIn){
+      store.pendingPayment = true;
       this.resetNavigation('LoginScreen');
     }
   }
   increase(){
+    store.scannedAmount = this.state.amount + 1;
     this.setState({
-      amount: this.state.amount+1
+      amount: store.scannedAmount
     })
   }
   decrease(){
+    store.scannedAmount = this.state.amount <= 1? 0 : this.state.amount - 1;
     this.setState({
-      amount: this.state.amount <= 1? 0 : this.state.amount - 1
+      amount: store.scannedAmount
     })
   }
   render() {

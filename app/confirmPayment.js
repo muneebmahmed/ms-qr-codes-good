@@ -4,16 +4,51 @@ import {StackActions, NavigationActions} from 'react-navigation';
 import {store} from './store';
 import {host, cardEndpoint} from './constants';
 
-const debug = true;
-
 export default class confirmPay extends React.Component {
 	constructor(props){
 		super(props);
-		this.state = {dataAvailable: false, modalVisible: false, selected: 0}
+		this.state = {
+			dataAvailable: false,
+			modalVisible: false,
+			selected: 0,
+			username: '',
+			password: '',
+		}
+	}
+	initiatePayment(){
+		var endpoint = '';
+		var debug = true;
+		if (!debug){
+		fetch(endpoint, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': store.authToken,
+			},
+			body: JSON.stringify({
+				username: this.state.username,
+				password: this.state.password,
+				receiver: store.scannedId,
+				amount: store.scannedAmount,
+				cardIndex: this.state.selected,
+			}),
+		})
+		.then((response) => response.json())
+		.then((responseJson) => {
+			Alert.alert(Json.stringify(responseJson));
+		})
+		.catch((error) =>{
+			console.error(error);
+			Alert.alert(error);
+		});
+		}else{
+			Alert.alert('Payment of $' + store.scannedAmount + ' inititated with card ' + this.state.cards.title[this.state.selected]);
+		}
 	}
 	fetchCardData(){
-	    this.setState({refreshing: true});
 	    var endpoint = host + cardEndpoint + store.email;
+	    var debug = false;
 	    if (!debug){
 	    fetch(endpoint, {
 	      method: 'GET',
@@ -55,7 +90,7 @@ export default class confirmPay extends React.Component {
   		return(
   			<View>
   				<TouchableHighlight style={styles.input} onPress={() => {this.setState({modalVisible: true})}}>
-  					<Text>{this.state.cards.title[this.state.selected]}</Text>
+  					<Text>{this.state.cards.title[this.state.selected]} {this.state.cards.creditCardLastDigits[this.state.selected]}</Text>
   				</TouchableHighlight>
   			</View>
   		);
@@ -71,7 +106,7 @@ export default class confirmPay extends React.Component {
 	        </View>
 	      );
     	}
-    	var options = ['VISA', 'Apple Pay', 'Amex', 'Checking'];
+    	var options = this.state.cards.title;
 		return(
 			<View style={styles.container}>
 				{this.getDefaultCard()}
@@ -84,7 +119,7 @@ export default class confirmPay extends React.Component {
 				>
 					<View style={styles.container}>
 						<Picker
-							style={{height: 50, width: 100, paddingBottom: 300, flexDirection: 'column'}}
+							style={{height: 50, width: 200, paddingBottom: 300, flexDirection: 'column'}}
 							mode="dropdown"
 							selectedValue={this.state.selected}
 							onValueChange={(value, index) => {this.setState({selected: value})}}
@@ -113,7 +148,7 @@ export default class confirmPay extends React.Component {
 		        <Button
 		          title={'Pay'}
 		          style={styles.input}
-		          onPress={() => Alert.alert('{Initiate server call here}')}
+		          onPress={this.initiatePayment.bind(this)}
 		        />
 			</View>
 		);

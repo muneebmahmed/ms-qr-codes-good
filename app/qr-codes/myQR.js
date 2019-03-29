@@ -31,15 +31,13 @@ export default class myQR extends React.Component {
     var endpoint = host + getQRCodes;
     if (!debug) {
     fetch(endpoint, {
-      method: 'POST',
+      method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'Authorization': store.authToken,
       },
-      body: JSON.stringify({
-        loginAuthToken: store.authToken //where?
-      }),
+      body: null,
     })
     .then((response) => response.json())
     .then((responseJson) =>{

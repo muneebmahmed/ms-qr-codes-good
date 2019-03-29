@@ -5,7 +5,7 @@ import {StackActions, NavigationActions} from 'react-navigation';
 import {store} from './store';
 import {host, cardEndpoint} from './constants';
 
-const debug = true;
+const debug = false;
 
 export default class Wallet extends React.Component {
   constructor(props) {

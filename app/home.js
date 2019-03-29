@@ -42,6 +42,7 @@ export default class Home extends Component {
   }
 
   goToPayment() {
+    store.pendingPayment = true;
     if (!store.loggedIn){
       this.resetNavigation('LoginScreen');
     }
@@ -53,6 +54,16 @@ export default class Home extends Component {
   render() {
     
     const {navigate} = this.props.navigation;
+    const didFocusSubscription = this.props.navigation.addListener(
+      'didFocus',
+      payload => {
+        console.debug('didFocus', payload);
+        if (store.pendingPayment){
+          store.pendingPayment = false;
+          this.pushNavigation('Payment');
+        }
+      }
+    );
     return (
       <View style={styles.container}>
         <Text style={{marginTop: 100}}></Text>
