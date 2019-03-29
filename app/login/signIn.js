@@ -52,6 +52,9 @@ class Login extends Component {
         store.email = this.state.username;
         store.authToken = responseJson['loginAuthToken'];
         store.touchToken = responseJson['touchAuthToken'];
+        var now = new Date();
+        now.setMinutes(now.getMinutes() + 10);
+        store.logOutTime = now;
         try {
           AsyncStorage.setItem('TouchToken', responseJson['touchAuthToken']);
         } catch(error){
@@ -98,6 +101,9 @@ class Login extends Component {
             store.name = responseJson['name'];
             store.authToken = responseJson['loginAuthToken'];
             store.email = responseJson['email'];
+            var now = new Date();
+            now.setMinutes(now.getMinutes() + 10);
+            store.logOutTime = now;
             try {
               AsyncStorage.setItem('TouchToken', responseJson['touchAuthToken']);
             } catch(error){

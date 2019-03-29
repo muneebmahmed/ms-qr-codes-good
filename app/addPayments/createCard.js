@@ -3,9 +3,7 @@ import { Text, View, StyleSheet, ScrollView, Button, Alert, KeyboardAvoidingView
 import { styles } from '../styles';
 import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input";
 import {store} from '../store';
-
-const host = 'https://qrcodes4good.com:8080';
-const createEndpoint = '/api/user/updateStripe';
+import {host, updateStripeEndpoint} from '../constants';
 
 const s = StyleSheet.create({
   switch: {
@@ -43,12 +41,13 @@ export default class CreateCard extends React.Component {
       data.status.name == "valid" &&
       data.status.number == "valid") {
       console.log("lets add a card")
-      var endpoint = host + createEndpoint;
+      var endpoint = host + updateStripeEndpoint;
       fetch(endpoint, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
+          'Authorization': store.authToken,
         },
         body: JSON.stringify({
           email: store.email,

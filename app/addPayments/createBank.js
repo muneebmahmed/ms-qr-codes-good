@@ -2,9 +2,8 @@ import React from 'react';
 import { Text, View, StyleSheet, ScrollView, Button, Alert, KeyboardAvoidingView } from 'react-native';
 import { styles } from '../styles';
 import {store} from '../store';
+import {host, updateStripeEndpoint} from '../constants';
 import t from 'tcomb-form-native';
-const host = 'https://qrcodes4good.com:8080';
-const createEndpoint = '/api/user/updateStripe';
 
 
 
@@ -71,12 +70,13 @@ export default class CreateBank extends React.Component {
     console.log(data);
     if (data) {
       console.log("lets add a bank")
-      var endpoint = host + createEndpoint;
+      var endpoint = host + updateStripeEndpoint;
       fetch(endpoint, {
           method: 'POST',
           headers: {
               Accept: 'application/json',
               'Content-Type': 'application/json',
+              'Authorization': store.authToken,
           },
           body: JSON.stringify({
               email: store.email,

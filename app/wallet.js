@@ -29,7 +29,7 @@ export default class Wallet extends React.Component {
   }
   fetchCardData(){
     this.setState({refreshing: true});
-    var endpoint = host + cardEndpoint + store.email;
+    var endpoint = host + cardEndpoint + encodeURIComponent(store.email);
     if (!debug){
     fetch(endpoint, {
       method: 'GET',

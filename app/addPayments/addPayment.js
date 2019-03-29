@@ -8,6 +8,9 @@ import CreateBank from'./createBank';
 const AddPayNavigator = createMaterialTopTabNavigator({
 	Card: {screen: CreateCard},
 	Bank: {screen: CreateBank},
+},
+{
+	swipeEnabled: false,
 })
 
 export default AddPayNavigator;

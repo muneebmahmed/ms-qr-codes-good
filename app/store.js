@@ -4,6 +4,7 @@ export let store = {
     qrcode: "this QrCode",
     screen: "MS Give",
     loggedIn: false,
+    logOutTime: new Date(),
     authToken: null,
     touchToken: null,
     pendingPayment: false,

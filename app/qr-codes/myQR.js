@@ -45,7 +45,7 @@ export default class myQR extends React.Component {
     .then((responseJson) =>{
       this.setState({
         dataAvailable: true,
-        qrcodes: JSON.stringify(responseJson.qrcodes[0].qrcodeData),
+        qrcodes: responseJson.qrcodes,
         refreshing: false
       })
     })
@@ -70,9 +70,9 @@ export default class myQR extends React.Component {
   getQR(){
     var jsx = [];
     for (i in this.state.qrcodes){
-      //let name = this.state.names[i];
-      //let amount = this.state.amounts[i];
-      let imgsource = this.state.qrcodes[i].qrcodeData;
+      let name = this.state.qrcodes[i].qrCodeName;
+      let amount = this.state.qrcodes[i].qrCodeDefaultAmount;
+      let imgsource = this.state.qrcodes[i].qrCodeData;
       jsx.push(
         <View>
           <View
@@ -89,11 +89,11 @@ export default class myQR extends React.Component {
               logoBackgroundColor='transparent'
               />
               <Text style={{fontSize:26}}>
-              Hello
+              {name}
               </Text>
               <View style={{flexDirection: 'row'}}>
                 <Text style={{fontSize:20}}>                Default: </Text>
-
+                <Text style={{fontSize:20}}>${Number(amount).toFixed(2)}</Text>
               </View>
               <Text style={{fontSize:20}}>                Me</Text>
           </View>
