@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Text, View, TextInput, Modal, TouchableHighlight, Picker, StyleSheet, Alert } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {store} from './store';
-import {host, cardEndpoint} from './constants';
+import {host, cardEndpoint, transaction} from './constants';
 
 export default class confirmPay extends React.Component {
 	constructor(props){
@@ -16,9 +16,10 @@ export default class confirmPay extends React.Component {
 		}
 	}
 	initiatePayment(){
-		var endpoint = '';
-		var debug = true;
-		if (!debug){
+		const {navigate} = this.props.navigation;
+		console.log(store.email, store.scannedId, store.scannedAmount, store.authToken);
+		var endpoint = host + transaction;
+
 		fetch(endpoint, {
 			method: 'POST',
 			headers: {
@@ -27,25 +28,25 @@ export default class confirmPay extends React.Component {
 				'Authorization': store.authToken,
 			},
 			body: JSON.stringify({
-				username: this.state.username,
-				password: this.state.password,
-				receiver: store.scannedId,
+				email: store.email,
+				receiverID: store.scannedId,
 				amount: store.scannedAmount,
-				cardIndex: this.state.selected,
 			}),
 		})
 		.then((response) => response.json())
 		.then((responseJson) => {
-			Alert.alert(Json.stringify(responseJson));
+			var confirm = responseJson['success'];
+			if (confirm) {
+				Alert.alert('Transfer Completed!');
+				navigate('Main')
+			} else
+				Alert.alert(responseJson['message']);
 		})
-		.catch((error) =>{
+		.catch((error) => {
 			console.error(error);
-			Alert.alert(error);
 		});
-		}else{
-			Alert.alert('Payment of $' + store.scannedAmount + ' inititated with card ' + this.state.cards.title[this.state.selected]);
-		}
 	}
+
 	fetchCardData(){
 	    var endpoint = host + cardEndpoint + store.email;
 	    var debug = false;
