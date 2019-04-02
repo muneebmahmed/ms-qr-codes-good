@@ -22,7 +22,11 @@ export default class Settings2 extends Component {
   }
   authenticate(){
     if (new Date() > store.logOutTime || !store.loggedIn){
-      store.loggedIn = false;
+      if (store.loggedIn){
+        Alert.alert("Your token has expired");
+      }
+      store.pendingRedirect = true;
+      store.redirectDest = 'Settings';
       this.resetNavigation('LoginScreen');
     }
   }
@@ -54,7 +58,10 @@ state = {
   _onPressButton(message) {
     Alert.alert(message)
   }
-
+  
+  componentDidUpdate(){
+    this.authenticate();
+  }
   render() {
     const {navigate} = this.props.navigation;
     return (

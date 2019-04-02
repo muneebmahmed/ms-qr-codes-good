@@ -19,11 +19,19 @@ export default class Info extends React.Component {
   }
   authenticate(){
     if (new Date() > store.logOutTime || !store.loggedIn){
+      if (store.loggedIn){
+        Alert.alert("Your token has expired");
+      }
+      store.pendingRedirect = true;
+      store.redirectDest = 'Info';
       this.resetNavigation('LoginScreen');
     }
   }
   _onPressButton() {
     Alert.alert('You tapped the button!')
+  }
+  componentDidUpdate(){
+    this.authenticate();
   }
   render() {
     const {navigate} = this.props.navigation;

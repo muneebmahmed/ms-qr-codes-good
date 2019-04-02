@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl } from 'react-native';
+import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, Alert } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import QRCode from 'react-native-qrcode-svg';
+import Swipeout from 'react-native-swipeout';
 import {store} from '../store';
 
 export default class otherQR extends React.Component {
@@ -21,6 +22,11 @@ export default class otherQR extends React.Component {
   }
   authenticate(){
     if (new Date() > store.logOutTime || !store.loggedIn){
+      if (store.loggedIn){
+        Alert.alert("Your token has expired");
+      }
+      store.pendingRedirect = true;
+      store.redirectDest = 'Saved QR Codes';
       this.resetNavigation('LoginScreen');
     }
   }
@@ -60,6 +66,35 @@ export default class otherQR extends React.Component {
       amounts: [10, 10, 10, 10, 10, 10],
     })
   }
+  _renderItem(item, index){
+    var swipeoutBtns = [
+      {
+        text: 'Delete',
+        type: 'delete',
+      }
+    ]
+    return(
+      <Swipeout right={swipeoutBtns} autoClose={true}>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1,}} />
+          <View style={styles.container}>
+            <QRCode
+              logo={{uri: item.qrCodeData}}
+              size={40}
+              logoSize={40}
+              logoBackgroundColor='transparent'
+            />
+            <Text style={{fontSize:26}}>
+              {item.qrCodeName}
+            </Text>
+            <View style={{flexDirection: 'row'}}>
+                <Text style={{fontSize:20}}>                Default: </Text>
+                <Text style={{fontSize:20}}>${Number(item.qrCodeDefaultAmount).toFixed(2)}</Text>
+            </View>
+              <Text style={{fontSize:20}}>                Me</Text>
+            </View>
+      </Swipeout>
+    );
+  }
   getQR(){
     var jsx = [];
     for (i in this.state.amounts){
@@ -97,6 +132,9 @@ export default class otherQR extends React.Component {
   }
   componentDidMount(){
     this.fetchQR();
+  }
+  componentDidUpdate(){
+    this.authenticate();
   }
   render() {
     if (!this.state.dataAvailable){

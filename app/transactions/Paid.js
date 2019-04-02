@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl } from 'react-native';
+import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, Alert } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {store} from '../store';
 
@@ -20,6 +20,11 @@ export default class Paid extends React.Component {
   }
   authenticate(){
     if (new Date() > store.logOutTime || !store.loggedIn){
+      if (store.loggedIn){
+        Alert.alert("Your token has expired");
+      }
+      store.pendingRedirect = true;
+      store.redirectDest = 'Transactions';
       this.resetNavigation('LoginScreen');
     }
   }
@@ -101,6 +106,9 @@ export default class Paid extends React.Component {
   }
   componentDidMount(){
     this.fetchData();
+  }
+  componentDidUpdate(){
+    this.authenticate();
   }
   render() {
     const {navigate} = this.props.navigation;

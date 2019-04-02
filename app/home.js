@@ -58,17 +58,17 @@ export default class Home extends Component {
   }
 
   componentDidMount(){
-    const willFocusSubscription = this.props.navigation.addListener(
+    this.willFocusSubscription = this.props.navigation.addListener(
         'willFocus', payload => {
             this.setState({cameraVisible: true } );
         }
     );
-    const willBlurSubscription = this.props.navigation.addListener(
+    this.willBlurSubscription = this.props.navigation.addListener(
         'willBlur', payload => {
             this.setState({cameraVisible: false } );
         }
     );
-    const didFocusSubscription = this.props.navigation.addListener(
+    this.didFocusSubscription = this.props.navigation.addListener(
       'didFocus',
       payload => {
         console.debug('didFocus', payload);
@@ -76,8 +76,17 @@ export default class Home extends Component {
           store.pendingPayment = false;
           this.pushNavigation('Payment');
         }
+        else if (store.pendingRedirect){
+          store.pendingRedirect = false;
+          this.props.navigation.navigate(store.redirectDest);
+        }
       }
     );
+  }
+  componentWillUnmount(){
+    this.willFocusSubscription.remove();
+    this.didFocusSubscription.remove();
+    this.willBlurSubscription.remove();
   }
   render() {
     

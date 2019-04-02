@@ -62,6 +62,11 @@ export default class CreateQR extends React.Component {
   }
   authenticate(){
     if (new Date() > store.logOutTime || !store.loggedIn){
+      if (store.loggedIn){
+        Alert.alert("Your token has expired");
+      }
+      store.pendingRedirect = true;
+      store.redirectDest = 'Create QR';
       this.resetNavigation('LoginScreen');
     }
   }
@@ -73,6 +78,10 @@ export default class CreateQR extends React.Component {
     checked[1-num] = false;
     //make call to server here
     this.setState({checked: checked});
+  }
+
+  componentDidUpdate(){
+    this.authenticate();
   }
 
   render() {

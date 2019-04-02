@@ -1,7 +1,8 @@
 import React from 'react';
-import {Button, Text, View, ScrollView, Alert, StyleSheet, RefreshControl } from 'react-native';
+import {Button, Text, View, ScrollView, Alert, StyleSheet, RefreshControl, FlatList } from 'react-native';
 import { Card, Icon, CheckBox } from 'react-native-elements';
 import {StackActions, NavigationActions} from 'react-navigation';
+import Swipeout from 'react-native-swipeout';
 import {store} from './store';
 import {host, cardEndpoint} from './constants';
 
@@ -24,7 +25,11 @@ export default class Wallet extends React.Component {
   }
   authenticate(){
     if (new Date() > store.logOutTime || !store.loggedIn){
-      store.loggedIn =false;
+      if (store.loggedIn){
+        Alert.alert("Your token has expired");
+      }
+      store.pendingRedirect = true;
+      store.redirectDest = 'Wallet';
       this.resetNavigation('LoginScreen');
     }
   }
@@ -82,6 +87,26 @@ export default class Wallet extends React.Component {
 
   getCards(){
     var text = [];
+    cards = [];
+    for (i in this.state.cards.title){
+      cards.push({
+        title: this.state.cards.title[i],
+        user: this.state.cards.name[i],
+        cardNumber: '*'.repeat(this.state.cards.numberOfDigits[i]) + this.state.cards.creditCardLastDigits[i],
+        numberOfDigits: this.state.cards.numberOfDigits[i],
+        lastDigits: this.state.cards.creditCardLastDigits[i],
+        default: this.state.checked[i],
+      })
+    }
+    return(
+      <View>
+        <FlatList
+          data={cards}
+          renderItem={({item, index}) => this._renderItem(item, index)}
+        />
+      </View>
+    );
+    /*
     for (i in this.state.cards.title){
       let title = this.state.cards.title[i];
       let user = this.state.cards.name[i];
@@ -94,11 +119,30 @@ export default class Wallet extends React.Component {
           </Card>
       )
     }
-    return text;
-
+    return text;*/
+  }
+  _renderItem(item, index){
+    var swipeoutBtns = [
+      {
+        text: 'Delete',
+        type: 'delete',
+      }
+    ]
+    return(
+      <Swipeout right={swipeoutBtns} autoClose={true}>
+          <Card title={item.title}>
+            <Text style={{marginBottom: 10}}> Card Holder: {item.user} </Text>
+            <Text sytle={{marginBottom: 10}}> Card Number: {item.cardNumber} </Text>
+            <CheckBox title='Primary Payment Method' checked={item.default} onPress={this.updateCheck.bind(this, index)} />
+          </Card>
+      </Swipeout>
+    );
   }
   componentDidMount(){
     this.fetchCardData();
+  }
+  componentDidUpdate(){
+    this.authenticate();
   }
   render() {
     const {navigate} = this.props.navigation;

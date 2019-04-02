@@ -2,8 +2,9 @@ import * as React from 'react';
 import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, FlatList, TouchableHighlight, Alert } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import QRCode from 'react-native-qrcode-svg';
+import Swipeout from 'react-native-swipeout';
 import {store} from '../store';
-import {host, getQRCodes} from '../constants';
+import {host, getQRCodes, deleteQRCode} from '../constants';
 
 export default class myQR extends React.Component {
   constructor(props) {
@@ -22,7 +23,11 @@ export default class myQR extends React.Component {
   }
   authenticate(){
     if (new Date() > store.logOutTime || !store.loggedIn){
-      store.loggedIn = false;
+      if (store.loggedIn){
+        Alert.alert("Your token has expired");
+      }
+      store.pendingRedirect = true;
+      store.redirectDest = 'Saved QR Codes';
       this.resetNavigation('LoginScreen');
     }
   }
@@ -65,29 +70,43 @@ export default class myQR extends React.Component {
       })
     }
   }
-  _renderQuickActions(item, index){
-    return (
-      <View style={styles.container}>
-        <TouchableHighlight
-          style={{alignContent: 'flex-end'}}
-          title="Delete"
-          onPress={() => {
-            Alert.alert("Delete QR Code " + this.state.qrcodes[index].qrCodeName);
-          }}>
-          <Text style={{alignContent: 'flex-end'}}>Delete</Text>
-        </TouchableHighlight>
-      </View>
-    )
-  };
-  getQR(){
-    var jsx = [];
+  deleteCode(index){
+    var endpoint = host + deleteQRCode;
+    fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': store.authToken,
+      },
+      body: JSON.stringify({
+        loginAuthToken: store.authToken,
+        deleteID: this.state.qrcodes[index].qrCodeID,
+      }),
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState({
+        qrcodes: responseJson.qrcodes,
+      })
+      Alert.alert(responseJson.message);
+    })
+    .catch((error) => {
+      //console.error(error);
+      //Alert.alert(error);
+    });
+  }
+  _renderItem(item, index){
+    var swipeoutBtns = [
+      {
+        text: 'Delete',
+        type: 'delete',
+        onPress: this.deleteCode.bind(this, index)
+      }
+    ]
     return(
-      <View>
-        <FlatList
-          data={this.state.qrcodes}
-          maxSwipeDistance={160}
-          bounceFirstRowOnMount={false}
-          renderItem={({item}) => <View><View style={{borderBottomColor: 'black', borderBottomWidth: 1,}} />
+      <Swipeout right={swipeoutBtns} autoClose={true}>
+          <View style={{borderBottomColor: 'black', borderBottomWidth: 1,}} />
           <View style={styles.container}>
             <QRCode
               logo={{uri: item.qrCodeData}}
@@ -103,9 +122,17 @@ export default class myQR extends React.Component {
                 <Text style={{fontSize:20}}>${Number(item.qrCodeDefaultAmount).toFixed(2)}</Text>
             </View>
               <Text style={{fontSize:20}}>                Me</Text>
-          </View></View>
-          }
-          renderQuickActions={({item, index}) => this._renderQuickActions(item, index)}
+            </View>
+      </Swipeout>
+    );
+  }
+  getQR(){
+    var jsx = [];
+    return(
+      <View>
+        <FlatList
+          data={this.state.qrcodes}
+          renderItem={({item, index}) => this._renderItem(item, index)}
         />
       </View>
     );
@@ -147,6 +174,9 @@ export default class myQR extends React.Component {
   }
   componentDidMount(){
     this.fetchQR();
+  }
+  componentDidUpdate(){
+    this.authenticate();
   }
   render() {
     if (!this.state.dataAvailable){

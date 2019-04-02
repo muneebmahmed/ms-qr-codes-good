@@ -8,6 +8,8 @@ export let store = {
     logOutTime: new Date(),
     authToken: null,
     touchToken: null,
+    pendingRedirect: false,
+    redirectDest: null,
     pendingPayment: false,
     scannedId: null,
     scannedAmount: null,
