@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Text, View, TextInput, Image, Alert } from 'react-native';
+import {Button, Text, View, TextInput, Image, Alert, StyleSheet } from 'react-native';
 import { Card, Icon, CheckBox } from 'react-native-elements';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {styles} from '../styles'
@@ -37,7 +37,6 @@ export default class CreateQR extends React.Component {
     .then((response) => response.json())
     .then((responseJson) => {
       store.createdCode = responseJson.qrcodeData;
-      Alert.alert(responseJson.qrcodeData);
       Alert.alert(responseJson.message);
       this.pushNavigation('Generated');
     })
@@ -82,19 +81,19 @@ export default class CreateQR extends React.Component {
       <View style={styles.container}>
       <TextInput
         value={this.state.QRcodeName}
-        style={{height: 40, width: 100}}
+        style={s.input}
         placeholder="Enter QR code name"
         onChangeText={(QRcodeName) => this.setState({QRcodeName})}
       />
         <TextInput
           value={this.state.amount}
-          style={{height: 40, width: 50}}
+          style={s.input}
           placeholder="Enter default amount"
           keyboardType='numeric'
           onChangeText={(amount) => this.setState({amount})}
         />
-        <CheckBox title='Service' checked={this.state.checked[0]} onPress={this.updateCheck.bind(this, 0)} />
-        <CheckBox title='Donation' checked={this.state.checked[1]} onPress={this.updateCheck.bind(this, 1)} />
+        <CheckBox containerStyle={{width: 130}} title='Service' checked={this.state.checked[0]} onPress={this.updateCheck.bind(this, 0)} />
+        <CheckBox containerStyle={{width: 130}} title='Donation' checked={this.state.checked[1]} onPress={this.updateCheck.bind(this, 1)} />
         <Button
           onPress={this.onPressSubmit.bind(this)}
           title="Submit"
@@ -106,3 +105,14 @@ export default class CreateQR extends React.Component {
 
   }
 }
+
+const s = StyleSheet.create({
+  input: {
+    width: 200,
+    height: 44,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    marginBottom: 10,
+  },
+});

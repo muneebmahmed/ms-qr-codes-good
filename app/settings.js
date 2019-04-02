@@ -8,7 +8,9 @@ export default class Settings2 extends Component {
   constructor(props){
     super(props);
     this.authenticate();
+    this._onPressButton = this._onPressButton.bind(this);
   }
+
   resetNavigation(targetRoute) {
     const resetAction = StackActions.reset({
       index: 0,
@@ -24,59 +26,55 @@ export default class Settings2 extends Component {
     }
   }
 state = {
-  switchValue1: false,
-
+  switchValue1: store.faceID,
   switchValue2: false,
-
   switchValue3: false,
+  switchValue4: false,
 };
 
-_handleToggleSwitch1 = () => this.setState(state => ({
+  _handleToggleSwitch1 = () => {
+    this.setState(state => ({
+      switchValue1: !state.switchValue1,
+    }));
+    store.faceID= this.state.switchValue1;
+  }
 
-switchValue1: !state.switchValue1,
+  _handleToggleSwitch2 = () => this.setState(state => ({
+    switchValue2: !state.switchValue2,
+  }))
 
-}))
+  _handleToggleSwitch3 = () => this.setState(state => ({
+    switchValue3: !state.switchValue3,
+  }))
+  _handleToggleSwitch4 = () => this.setState(state => ({
+    switchValue4: !state.switchValue4,
+  }))
 
-_handleToggleSwitch2 = () => this.setState(state => ({
-
-switchValue2: !state.switchValue2,
-
-}))
-
-_handleToggleSwitch3 = () => this.setState(state => ({
-
-switchValue3: !state.switchValue3,
-
-}))
-
-;
-
-
-  _onPressButton() {
-    Alert.alert('You tapped the button!')
+  _onPressButton(message) {
+    Alert.alert(message)
   }
 
   render() {
+    const {navigate} = this.props.navigation;
     return (
-
       <ScrollView style={styles.container}>
       <Text style={styles.Text}> Payment </Text>
         <View style={styles.ButtonContainer}>
           <Button
-            onPress={this._onPressButton}
+            onPress={() => navigate('Wallet')}
             title="Bank Account"
           />
         </View>
         <View style={styles.ButtonContainer}>
           <Button
-            onPress={this._onPressButton}
+            onPress={() => navigate('Wallet')}
             title="Saved Credit Cards"
             //color="#841584"
           />
         </View>
         <View style={styles.ButtonContainer}>
           <Button
-            onPress={this._onPressButton}
+            onPress={() => navigate('AddPayment')}
             title="Add Payment Method"
             //color="#841584"
           />
@@ -84,32 +82,31 @@ switchValue3: !state.switchValue3,
         <Text style={styles.Text}> Account </Text>
         <View style={styles.ButtonContainer}>
           <Button
-            onPress={this._onPressButton}
+            onPress={() => this._onPressButton(store.email)}
             title="Email"
             //color="#841584"
           />
         </View>
-                <View style={styles.ButtonContainer}>
+        <View style={styles.ButtonContainer}>
           <Button
-            onPress={this._onPressButton}
+            onPress={() => this._onPressButton("Coming Soon!")}
             title="Change Password"
             //color="#841584"
           />
         </View>
-
-<Text style={styles.Text}> Security </Text>
-                <View style={styles.ButtonContainer}>
+        <Text style={styles.Text}> Security </Text>
+        <View style={styles.ButtonContainer}>
           <Button
-            onPress={this._onPressButton}
-            title="Passcode"
+            onPress={() => this._onPressButton("Coming Soon!")}
+            title="Change Passcode"
             //color="#841584"
           />
         </View>
 
 <View style={styles.SwitchParent}>
     <Button
-      onPress={this._onPressButton}
-      title="Enable Face ID"
+      onPress={void(0)}
+      title="Enable Face/Touch ID"
       />
    <View style={styles.SwitchButton}>
     <Switch
@@ -119,12 +116,12 @@ switchValue3: !state.switchValue3,
   </View>
 </View>
 
-        <Text style={styles.Text}> Notification </Text>
+        <Text style={styles.Text}> Notifications </Text>
 
 <View style={styles.SwitchParent}>
     <Button
-      onPress={this._onPressButton}
-      title="Push Notification"
+      onPress={void(0)}
+      title="Enable Push Notifications"
       />
    <View style={styles.SwitchButton}>
     <Switch
@@ -136,8 +133,8 @@ switchValue3: !state.switchValue3,
 
 <View style={styles.SwitchParent}>
     <Button
-      onPress={this._onPressButton}
-      title="Email"
+      onPress={void(0)}
+      title="Enable Emails"
       />
 
    <View style={styles.SwitchButton}>
@@ -151,12 +148,18 @@ switchValue3: !state.switchValue3,
         <Text style={styles.Text}> Privacy </Text>
 
 
-  <View style={styles.ButtonContainer}>
+        <View style={styles.SwitchParent}>
           <Button
-            onPress={this._onPressButton}
+            onPress={void(0)}
             title="Send Annonymous Statistics"
             //color="#841584"
           />
+          <View style={styles.SwitchButton}>
+    <Switch
+      onValueChange={this._handleToggleSwitch4}
+      value={this.state.switchValue4}
+      />
+  </View>
         </View>
 
       </ScrollView>

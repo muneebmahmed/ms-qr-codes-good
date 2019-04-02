@@ -50,7 +50,8 @@ export default class Payments extends React.Component {
     return (
       <View style={styles.container}>
         <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1, justifyContent: 'center'}}
+          style={{height: 40, width: 100, borderColor: 'gray', borderWidth: 1, justifyContent: 'center'}}
+          textAlign={'center'}
           keyboardType='numeric'
           onChangeText={(text) => this.setState({amount: text})}
           value={Number(this.state.amount).toFixed(2)}

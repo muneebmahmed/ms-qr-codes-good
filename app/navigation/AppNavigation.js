@@ -43,11 +43,11 @@ const DrawerContent = (props) => (
 
 const AppNavigator = createDrawerNavigator({
 	Home: {screen: Home},
-  Settings: {screen: Settings},
 	"Transactions": {screen: transNavigator},
   Wallet: { screen: Wallet},
 	"Create QR": {screen: CreateQR},
-	"Saved QR Codes": {screen: qrNavigator},
+  "Saved QR Codes": {screen: qrNavigator},
+  Settings: {screen: Settings},
 	Info: { screen: Info},
 	Help: { screen: Help},
   "Log Out": { screen: LogOut},

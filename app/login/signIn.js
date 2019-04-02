@@ -183,18 +183,18 @@ class Login extends Component {
           style={styles.input}
           onPress={this._touchLogin.bind(this)}
         />
-        <Text>This is the Sign In Page</Text>
         <Button
             onPress={() => navigate('Create')}
-            title="create new account"
+            title="Create New Account"
         />
-        <Button
-            onPress={() => navigate('Forgot')}
-            title="forgot password?"
-        />
+        
       </View>
       ); 
-
+        /* TODO: forgot password page
+        <Button
+            onPress={() => navigate('Forgot')}
+            title="Forgot Password?"
+        />*/
   }
 };
 
