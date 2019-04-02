@@ -21,7 +21,8 @@ export default class Settings2 extends Component {
     this.props.navigation.dispatch(resetAction);
   }
   authenticate(){
-    if (!store.loggedIn){
+    if (new Date() > store.logOutTime || !store.loggedIn){
+      store.loggedIn = false;
       this.resetNavigation('LoginScreen');
     }
   }

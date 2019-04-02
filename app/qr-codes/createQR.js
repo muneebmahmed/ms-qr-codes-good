@@ -61,7 +61,7 @@ export default class CreateQR extends React.Component {
     this.props.navigation.dispatch(pushAction);
   }
   authenticate(){
-    if (!store.loggedIn){
+    if (new Date() > store.logOutTime || !store.loggedIn){
       this.resetNavigation('LoginScreen');
     }
   }

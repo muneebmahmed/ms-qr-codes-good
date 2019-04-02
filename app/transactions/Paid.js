@@ -19,7 +19,7 @@ export default class Paid extends React.Component {
     this.props.navigation.dispatch(resetAction);
   }
   authenticate(){
-    if (!store.loggedIn){
+    if (new Date() > store.logOutTime || !store.loggedIn){
       this.resetNavigation('LoginScreen');
     }
   }

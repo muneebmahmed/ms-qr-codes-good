@@ -28,7 +28,7 @@ export default class Payments extends React.Component {
     this.props.navigation.dispatch(pushAction);
   }
   authenticate(){
-    if (!store.loggedIn){
+    if (new Date() > store.logOutTime || !store.loggedIn){
       store.pendingPayment = true;
       this.resetNavigation('LoginScreen');
     }

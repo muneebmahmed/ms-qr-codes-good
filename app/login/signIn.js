@@ -10,6 +10,7 @@ import {host, loginEndpoint, touchEndpoint} from '../constants';
 class Login extends Component {
   constructor(props){
     super(props);
+    store.loggedIn = false;
     this.state = {
       username: '',
       password: '',

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl } from 'react-native';
+import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, FlatList, TouchableHighlight, Alert } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import QRCode from 'react-native-qrcode-svg';
 import {store} from '../store';
@@ -21,7 +21,8 @@ export default class myQR extends React.Component {
     this.props.navigation.dispatch(resetAction);
   }
   authenticate(){
-    if (!store.loggedIn){
+    if (new Date() > store.logOutTime || !store.loggedIn){
+      store.loggedIn = false;
       this.resetNavigation('LoginScreen');
     }
   }
@@ -64,10 +65,51 @@ export default class myQR extends React.Component {
       })
     }
   }
-
+  _renderQuickActions(item, index){
+    return (
+      <View style={styles.container}>
+        <TouchableHighlight
+          style={{alignContent: 'flex-end'}}
+          title="Delete"
+          onPress={() => {
+            Alert.alert("Delete QR Code " + this.state.qrcodes[index].qrCodeName);
+          }}>
+          <Text style={{alignContent: 'flex-end'}}>Delete</Text>
+        </TouchableHighlight>
+      </View>
+    )
+  };
   getQR(){
     var jsx = [];
-    for (i in this.state.qrcodes){
+    return(
+      <View>
+        <FlatList
+          data={this.state.qrcodes}
+          maxSwipeDistance={160}
+          bounceFirstRowOnMount={false}
+          renderItem={({item}) => <View><View style={{borderBottomColor: 'black', borderBottomWidth: 1,}} />
+          <View style={styles.container}>
+            <QRCode
+              logo={{uri: item.qrCodeData}}
+              size={40}
+              logoSize={40}
+              logoBackgroundColor='transparent'
+            />
+            <Text style={{fontSize:26}}>
+              {item.qrCodeName}
+            </Text>
+            <View style={{flexDirection: 'row'}}>
+                <Text style={{fontSize:20}}>                Default: </Text>
+                <Text style={{fontSize:20}}>${Number(item.qrCodeDefaultAmount).toFixed(2)}</Text>
+            </View>
+              <Text style={{fontSize:20}}>                Me</Text>
+          </View></View>
+          }
+          renderQuickActions={({item, index}) => this._renderQuickActions(item, index)}
+        />
+      </View>
+    );
+    /*for (i in this.state.qrcodes){
       let name = this.state.qrcodes[i].qrCodeName;
       let amount = this.state.qrcodes[i].qrCodeDefaultAmount;
       let imgsource = this.state.qrcodes[i].qrCodeData;
@@ -101,7 +143,7 @@ export default class myQR extends React.Component {
     if (!this.state.qrcodes || this.state.qrcodes.length < 1){
       jsx.push(<View><Text>No codes here!</Text></View>);
     }
-    return jsx;
+    return jsx;*/
   }
   componentDidMount(){
     this.fetchQR();

@@ -23,7 +23,8 @@ export default class Wallet extends React.Component {
     this.props.navigation.dispatch(resetAction);
   }
   authenticate(){
-    if (!store.loggedIn){
+    if (new Date() > store.logOutTime || !store.loggedIn){
+      store.loggedIn =false;
       this.resetNavigation('LoginScreen');
     }
   }

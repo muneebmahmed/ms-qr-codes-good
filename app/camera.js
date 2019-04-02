@@ -30,7 +30,8 @@ class CameraView extends Component {
       store.scannedType = obj['p'];
       this.pushNavigation('Payment');
     }
-    setTimeout(() => {this.scanner.reactivate()}, 3000);
+    //setTimeout(() => {this.scanner.reactivate()}, 3000);
+    this.scanner.reactivate();
   }
   pushNavigation(targetRoute){
     const pushAction = StackActions.push({

@@ -6,6 +6,12 @@ import CameraView from './camera';
 import {store} from './store';
 
 export default class Home extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            cameraVisible: true,
+        };
+    }
 
     static navigationOptions = {
         title: 'Home',
@@ -51,9 +57,17 @@ export default class Home extends Component {
     }
   }
 
-  render() {
-    
-    const {navigate} = this.props.navigation;
+  componentDidMount(){
+    const willFocusSubscription = this.props.navigation.addListener(
+        'willFocus', payload => {
+            this.setState({cameraVisible: true } );
+        }
+    );
+    const willBlurSubscription = this.props.navigation.addListener(
+        'willBlur', payload => {
+            this.setState({cameraVisible: false } );
+        }
+    );
     const didFocusSubscription = this.props.navigation.addListener(
       'didFocus',
       payload => {
@@ -64,6 +78,17 @@ export default class Home extends Component {
         }
       }
     );
+  }
+  render() {
+    
+    const {navigate} = this.props.navigation;
+    var cameraComponent = function() {
+        if (this.state.cameraVisible) {
+            return (<CameraView navigator={this.props.navigation}/>)
+        }else{
+            return null
+        }
+    }.bind(this)
     return (
       <View style={styles.container}>
         <Text style={{marginTop: 100}}></Text>
@@ -71,7 +96,7 @@ export default class Home extends Component {
             onPress={this.goToPayment.bind(this)} 
             title="Go to Payments Page"
         />
-        <CameraView navigator={this.props.navigation}/>
+        {cameraComponent()}
       </View>
     );
   }

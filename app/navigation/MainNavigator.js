@@ -11,8 +11,7 @@ import Payment from '../payment';
 import Tos from '../login/tos';
 import generatedQR from '../qr-codes/generatedQR';
 import confirmPay from '../confirmPayment';
-import AddPayNavigator from '../addPayments/addPayment'
-import Wallet from '../wallet'
+import AddPayNavigator from '../addPayments/addPayment';
 import {store} from '../store';
 
 // const MenuButton = (
@@ -32,7 +31,6 @@ const MainNavigator = createStackNavigator({
 	Payment: {screen: Payment},
 	Generated: {screen: generatedQR},
 	ConfirmPayment: {screen: confirmPay},
-	Wallet: {screen: Wallet},
 	AddPayment: {screen : AddPayNavigator},
 	Main: { screen: AppNavigator,
 		navigationOptions: ({ navigation }) => ({
