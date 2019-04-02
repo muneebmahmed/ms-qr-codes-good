@@ -13,7 +13,8 @@ import Help from '../help';
 import transNavigator from '../transactions/transactions';
 import LogOut from '../LogOut';
 import generatedQR from '../qr-codes/generatedQR';
-import {store} from '../store'
+import {store} from '../store';
+import {menuColor} from '../constants';
 
 const DrawerContent = (props) => (
   <View style={
@@ -24,7 +25,7 @@ const DrawerContent = (props) => (
   }>
     <View
       style={{
-        backgroundColor: '#46c487',
+        backgroundColor: menuColor,
         height: 80,
         alignItems: 'center',
         justifyContent: 'center',

@@ -13,6 +13,7 @@ import generatedQR from '../qr-codes/generatedQR';
 import confirmPay from '../confirmPayment';
 import AddPayNavigator from '../addPayments/addPayment';
 import {store} from '../store';
+import {menuColor} from '../constants';
 
 // const MenuButton = (
 // 	<View>
@@ -52,7 +53,7 @@ const MainNavigator = createStackNavigator({
     /* The header config from HomeScreen is now here */
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: '#46c487',
+        backgroundColor: menuColor,
       },
       headerTintColor: '#fff',
       headerTitleStyle: {

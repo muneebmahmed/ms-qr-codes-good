@@ -8,4 +8,6 @@ export const updateStripeEndpoint = '/api/user/updateStripe';
 export const transaction = '/api/user/transaction';
 export const generateQREndpoint = '/api/user/generateQRCode';
 export const deleteQRCode = '/api/user/deleteQRCode';
+export const menuColor = '#0070c0';
+//export const menuColor = '#46c487';
 
