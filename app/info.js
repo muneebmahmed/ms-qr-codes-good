@@ -27,9 +27,7 @@ export default class Info extends React.Component {
       this.resetNavigation('LoginScreen');
     }
   }
-  _onPressButton() {
-    Alert.alert('You tapped the button!')
-  }
+
   componentDidUpdate(){
     this.authenticate();
   }
@@ -48,7 +46,7 @@ export default class Info extends React.Component {
         
         <View style={styles.button}>
           <Button
-            onPress={this._onPressButton}
+            onPress={() => navigate('Tos')}
             title="Terms of Use"
           />
         </View>
