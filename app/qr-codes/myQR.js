@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, FlatList, TouchableHighlight, Alert } from 'react-native';
+import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, FlatList, TouchableOpacity, Alert, Modal } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import QRCode from 'react-native-qrcode-svg';
 import Swipeout from 'react-native-swipeout';
@@ -9,7 +9,7 @@ import {host, getQRCodes, deleteQRCode} from '../constants';
 export default class myQR extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { dataAvailable: false, refreshing: false, qrcodes: [] };
+    this.state = { dataAvailable: false, refreshing: false, qrcodes: [], modalVisible: false };
     this.authenticate();
   }
   resetNavigation(targetRoute) {
@@ -87,7 +87,7 @@ export default class myQR extends React.Component {
     .then((response) => response.json())
     .then((responseJson) => {
       this.setState({
-        qrcodes: responseJson.qrcodes,
+        qrcodes: this.state.qrcodes.filter(function(value, i, arr) { return i != index; }),
       })
       Alert.alert(responseJson.message);
     })
@@ -108,12 +108,16 @@ export default class myQR extends React.Component {
       <Swipeout right={swipeoutBtns} autoClose={true}>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1,}} />
           <View style={styles.container}>
+            <TouchableOpacity
+              onPress={() => {this.setState({modalVisible: true, viewQr: this.state.qrcodes[index].qrCodeData})}}
+            >
             <QRCode
               logo={{uri: item.qrCodeData}}
               size={40}
               logoSize={40}
               logoBackgroundColor='transparent'
             />
+            </TouchableOpacity>
             <Text style={{fontSize:26}}>
               {item.qrCodeName}
             </Text>
@@ -172,6 +176,12 @@ export default class myQR extends React.Component {
     }
     return jsx;*/
   }
+  saveCode(){
+    //Code is in this.state.viewQR
+  }
+  _setModalVisible = visible => {
+      this.setState({modalVisible: visible});
+  };
   componentDidMount(){
     this.fetchQR();
   }
@@ -194,6 +204,23 @@ export default class myQR extends React.Component {
             />
           }
         >
+          <Modal
+            animationType='slide'
+            transparent={false}
+            visible={this.state.modalVisible}
+            onRequestClose={() => Alert.alert('Modal closed')}
+          >
+            <View style={styles.container}>
+              <QRCode
+                logo={{uri: this.state.viewQr}}
+                size={300}
+                logoSize={300}
+                logoBackgroundColor='transparent'
+              />
+              <Button onPress={this.saveCode.bind(this)} title='Save' />
+              <Button onPress={() => {this.setState({modalVisible: false})}} title='Close' />
+            </View>
+          </Modal>
           {this.getQR()}
         </ScrollView>
       </View>
