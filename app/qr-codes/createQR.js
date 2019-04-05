@@ -91,14 +91,11 @@ export default class CreateQR extends React.Component {
     this.props.navigation.dispatch(resetAction);
   }
 
-  navigation(targetRoute) {
-    const resetAction = StackActions.push({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({ routeName: targetRoute }),
-      ],
-    });
-    this.props.navigation.dispatch(resetAction);
+  _navigation(navi, route) {
+    this.setState({
+      modalVisible: false,
+    })
+    navi(route);
   }
   
   authenticate(){
@@ -149,7 +146,7 @@ export default class CreateQR extends React.Component {
               <AwesomeButtonRick stretch={true} onPress={this.saveCode.bind(this)} type="primary">Save</AwesomeButtonRick>
               </View>
               <View style={s.row}>
-              <AwesomeButtonRick stretch={true} onPress={() => this.navigation('Saved QR Codes')} type="secondary">Close</AwesomeButtonRick>
+              <AwesomeButtonRick stretch={true} onPress={this._navigation.bind(this, navigate, 'Saved QR Codes')} type="secondary">Close</AwesomeButtonRick>
               </View>
               </View>
             </View>

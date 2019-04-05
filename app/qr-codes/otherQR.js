@@ -32,7 +32,7 @@ export default class otherQR extends React.Component {
     }
   }
   fetchQR(){
-    var debug = true;
+    var debug = false;
     this.setState( { refreshing: true })
     var endpoint = host + getOtherCodes;
     if (!debug){
