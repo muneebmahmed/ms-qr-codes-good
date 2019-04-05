@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, Alert } from 'react-native';
+import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, Alert, FlatList } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import QRCode from 'react-native-qrcode-svg';
 import Swipeout from 'react-native-swipeout';
 import {store} from '../store';
+import {host, getOtherCodes} from '../constants';
 
 export default class otherQR extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { dataAvailable: false, refreshing: false };
+    this.state = { dataAvailable: false, refreshing: false, qrcodes: [] };
     this.authenticate();
   }
   resetNavigation(targetRoute) {
@@ -33,7 +34,7 @@ export default class otherQR extends React.Component {
   fetchQR(){
     var debug = true;
     this.setState( { refreshing: true })
-    var endpoint = '';
+    var endpoint = host + getOtherCodes;
     if (!debug){
     fetch(endpoint, {
       method: 'GET',
@@ -47,8 +48,7 @@ export default class otherQR extends React.Component {
     .then((responseJson) =>{
       this.setState({
         dataAvailable: true,
-        names: responseJson.names,
-        amounts: responseJson.amounts,
+        qrcodes: responseJson.qrcodes,
         refreshing: false
       })
     })
@@ -79,24 +79,33 @@ export default class otherQR extends React.Component {
           <View style={styles.container}>
             <QRCode
               logo={{uri: item.qrCodeData}}
-              size={40}
-              logoSize={40}
+              size={50}
+              logoSize={50}
               logoBackgroundColor='transparent'
             />
             <Text style={{fontSize:26}}>
-              {item.qrCodeName}
+              Donation
             </Text>
             <View style={{flexDirection: 'row'}}>
                 <Text style={{fontSize:20}}>                Default: </Text>
                 <Text style={{fontSize:20}}>${Number(item.qrCodeDefaultAmount).toFixed(2)}</Text>
             </View>
-              <Text style={{fontSize:20}}>                Me</Text>
+              <Text style={{fontSize:20}}>                {item.qrCodeUser}</Text>
             </View>
       </Swipeout>
     );
   }
   getQR(){
     var jsx = [];
+    return(
+      <View>
+        <FlatList
+          data={this.state.qrcodes}
+          renderItem={({item, index}) => this._renderItem(item, index)}
+        />
+      </View>
+    );
+    /*
     for (i in this.state.amounts){
       let name = this.state.names[i];
       let amount = this.state.amounts[i];
@@ -128,7 +137,7 @@ export default class otherQR extends React.Component {
         </View>
       );
     }
-    return jsx;
+    return jsx;*/
   }
   componentDidMount(){
     this.fetchQR();

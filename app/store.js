@@ -11,6 +11,7 @@ export let store = {
     pendingRedirect: false,
     redirectDest: null,
     pendingPayment: false,
+    biometryType: 'None',
     scannedId: null,
     scannedAmount: null,
     scannedType: null,

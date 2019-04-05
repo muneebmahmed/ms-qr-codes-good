@@ -3,6 +3,7 @@ import {Button, Text, View, TextInput, Modal, TouchableHighlight, Picker, StyleS
 import {StackActions, NavigationActions} from 'react-navigation';
 import {store} from './store';
 import {host, cardEndpoint, transaction} from './constants';
+import TouchID from 'react-native-touch-id';
 
 export default class confirmPay extends React.Component {
 	constructor(props){
@@ -38,6 +39,8 @@ export default class confirmPay extends React.Component {
 			var confirm = responseJson['success'];
 			if (confirm) {
 				Alert.alert('Transfer Completed!');
+				store.scannedId = null;
+				store.scannedAmount = null;
 				navigate('Main')
 			} else
 				Alert.alert(responseJson['message']);
@@ -96,6 +99,49 @@ export default class confirmPay extends React.Component {
   			</View>
   		);
   	}
+  	_touchPayment(){
+  		const {navigate} = this.props.navigation;
+		console.log(store.email, store.scannedId, store.scannedAmount, store.authToken);
+		var endpoint = host + transaction;
+		fetch(endpoint, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': store.authToken,
+			},
+			body: JSON.stringify({
+				receiverID: store.scannedId,
+				amount: store.scannedAmount,
+			}),
+		})
+		.then((response) => response.json())
+		.then((responseJson) => {
+			var confirm = responseJson['success'];
+			if (confirm) {
+				Alert.alert('Transfer Completed!');
+				store.scannedAmount = null;
+				store.scannedId = null;
+				navigate('Main')
+			} else
+				Alert.alert(responseJson['message']);
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+  	}
+  	renderTouchID(){
+    	if (store.biometryType == 'None'){
+      		return null;
+    	}
+    	return(
+        	<Button
+          		title={'Pay with ' + store.biometryType}
+          		style={styles.input}
+          		onPress={this._touchPayment.bind(this)}
+        	/>
+    	);
+  	}
   	componentDidMount(){
   		this.fetchCardData();
   	}
@@ -151,6 +197,7 @@ export default class confirmPay extends React.Component {
 		          style={styles.input}
 		          onPress={this.initiatePayment.bind(this)}
 		        />
+		        {this.renderTouchID()}
 			</View>
 		);
 	}

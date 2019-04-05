@@ -28,6 +28,7 @@ class CameraView extends Component {
       store.pendingPayment = true;
       store.scannedAmount = obj['a'];
       store.scannedType = obj['p'];
+      store.scannedData = e.data;
       this.pushNavigation('Payment');
     }
     //setTimeout(() => {this.scanner.reactivate()}, 3000);

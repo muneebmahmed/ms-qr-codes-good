@@ -124,19 +124,21 @@ class Login extends Component {
       });
     })
     .catch(error => {
-      Alert.alert('Authentication Failure')
+      console.log(error);
     })
   }
   getBioString(){
     TouchID.isSupported()
     .then(biometryType => {
       if (biometryType == 'FaceID'){
+        store.biometryType = 'Face ID';
         this.setState({
           dataAvailable: true,
           bioString: 'Face ID',
         });
       }
       else{
+        store.biometryType = 'Touch ID';
         this.setState({
           dataAvailable: true,
           bioString: 'Touch ID',
@@ -149,6 +151,18 @@ class Login extends Component {
         bioString: 'None',
       })
     });
+  }
+  renderTouchID(){
+    if (this.state.bioString == 'None'){
+      return null;
+    }
+    return(
+        <Button
+          title={'Use ' + this.state.bioString}
+          style={styles.input}
+          onPress={this._touchLogin.bind(this)}
+        />
+    )
   }
   componentDidMount(){
     this.getBioString();
@@ -179,11 +193,7 @@ class Login extends Component {
           style={styles.input}
           onPress={this._confirmLogin.bind(this)}
         />
-        <Button
-          title={'Use ' + this.state.bioString}
-          style={styles.input}
-          onPress={this._touchLogin.bind(this)}
-        />
+        {this.renderTouchID()}
         <Button
             onPress={() => navigate('Create')}
             title="Create New Account"

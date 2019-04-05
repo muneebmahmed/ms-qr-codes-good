@@ -3,6 +3,7 @@ import {Button, Text, View, TextInput } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {styles} from './styles';
 import {store} from './store';
+import {host, saveCodePoint} from './constants';
 
 
 export default class Payments extends React.Component {
@@ -31,6 +32,28 @@ export default class Payments extends React.Component {
     if (new Date() > store.logOutTime || !store.loggedIn){
       store.pendingPayment = true;
       this.resetNavigation('LoginScreen');
+    }
+    else if (store.scannedId != null) {
+      endpoint = host + saveCodePoint;
+      fetch(endpoint, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': store.authToken,
+        },
+        body: {
+          userID: store.scannedId,
+          qrcodeData: store.scannedData,
+          amount: store.scannedAmount,
+        },
+      })
+      .then((response) => response.json())
+      .then((responseJson) =>{
+      })
+      .catch((error) =>{
+        console.error(error);
+    });
     }
   }
   increase(){
