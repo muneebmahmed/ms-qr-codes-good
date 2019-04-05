@@ -17,6 +17,7 @@
     "react-native-gesture-handler": "^1.0.15",
     "react-native-qrcode-scanner": "^1.1.2",
     "react-native-qrcode-svg": "^5.1.2",
+    "react-native-really-awesome-button": "^1.4.2",
     "react-native-simple-radio-button": "^2.7.3",
     "react-native-svg": "^9.3.6",
     "react-native-swipeout": "^2.3.6",

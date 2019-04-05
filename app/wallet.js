@@ -99,7 +99,7 @@ export default class Wallet extends React.Component {
       })
     }
     return(
-      <View>
+      <View >
         <FlatList
           data={cards}
           renderItem={({item, index}) => this._renderItem(item, index)}
@@ -129,7 +129,7 @@ export default class Wallet extends React.Component {
       }
     ]
     return(
-      <Swipeout right={swipeoutBtns} autoClose={true}>
+      <Swipeout right={swipeoutBtns} autoClose={true} style={{paddingBottom: 15}}>
           <Card title={item.title}>
             <Text style={{marginBottom: 10}}> Card Holder: {item.user} </Text>
             <Text sytle={{marginBottom: 10}}> Card Number: {item.cardNumber} </Text>
@@ -145,6 +145,7 @@ export default class Wallet extends React.Component {
     this.authenticate();
   }
   render() {
+    
     const {navigate} = this.props.navigation;
     if (!this.state.dataAvailable){
       return (
@@ -155,29 +156,23 @@ export default class Wallet extends React.Component {
     }
     return (
       <View style={styles.container}>
-        <View style={styles.row}>
-          <Button
-            icon={<Icon name='code' color='#ffffff' />}
-            backgroundColor='#03A9F4'
-            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-            title='Edit' />
-        </View>
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this.fetchCardData.bind(this)}
-            />
-          }
-        >
-          {this.getCards()}
-        </ScrollView>
-        <Button
+          <ScrollView 
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this.fetchCardData.bind(this)}
+              />
+            }
+          >
+            {this.getCards()}
+          </ScrollView>
+        <View style={styles.bottom}>
+        <Button 
           icon={<Icon name='code' color='#ffffff' />}
           onPress={() => navigate('AddPayment')}
           backgroundColor='#03A9F4'
-          buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
           title='Add New Payment Method' />
+          </View>
       </View>
     );
   }
@@ -203,5 +198,10 @@ const styles = StyleSheet.create({
   padding: 10,
   justifyContent: 'center',
   marginRight: 0
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 36
   }
 });
