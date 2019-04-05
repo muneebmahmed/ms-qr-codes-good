@@ -160,9 +160,11 @@ class Login extends Component {
     }
     const str = 'Use ' + this.state.bioString;
     return(
-      <View style={styles.row}>
-        <AwesomeButtonRick stretch={true} onPress={this._touchLogin.bind(this)} type="primary">{str}</AwesomeButtonRick></View>
- 
+        <Button
+          title={'Use ' + this.state.bioString}
+          style={styles.input}
+          onPress={this._touchLogin.bind(this)}
+        />
     )
   }
   componentDidMount(){
@@ -189,12 +191,16 @@ class Login extends Component {
           secureTextEntry={true}
           style={styles.input}
         />
-        <View style={styles.row}>
-        <AwesomeButtonRick stretch={true} onPress={this._confirmLogin.bind(this)} type="primary">Login</AwesomeButtonRick></View>
-        
+        <Button
+          title={'Login'}
+          style={styles.input}
+          onPress={this._confirmLogin.bind(this)}
+        />
         {this.renderTouchID()}
-        <View style={styles.row}>
-        <AwesomeButtonRick stretch={true} onPress={() => navigate('Create')} type="primary">Create New Account</AwesomeButtonRick></View>
+        <Button
+            onPress={() => navigate('Create')}
+            title="Create New Account"
+        />
 
       </View>
       ); 
