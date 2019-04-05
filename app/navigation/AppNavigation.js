@@ -52,7 +52,6 @@ const AppNavigator = createDrawerNavigator({
 	Info: { screen: Info},
 	Help: { screen: Help},
   "Log Out": { screen: LogOut},
-  Generated: {screen: generatedQR},
   },
   {
     initialRouteName: 'Home',

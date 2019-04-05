@@ -5,6 +5,8 @@ import TouchID from 'react-native-touch-id';
 import DeviceInfo from 'react-native-device-info';
 import {store} from '../store';
 import {host, loginEndpoint, touchEndpoint} from '../constants';
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
+
 //import {styles} from './styles'
 
 class Login extends Component {
@@ -156,12 +158,11 @@ class Login extends Component {
     if (this.state.bioString == 'None'){
       return null;
     }
+    const str = 'Use ' + this.state.bioString;
     return(
-        <Button
-          title={'Use ' + this.state.bioString}
-          style={styles.input}
-          onPress={this._touchLogin.bind(this)}
-        />
+      <View style={styles.row}>
+        <AwesomeButtonRick stretch={true} onPress={this._touchLogin.bind(this)} type="primary">{str}</AwesomeButtonRick></View>
+ 
     )
   }
   componentDidMount(){
@@ -188,17 +189,13 @@ class Login extends Component {
           secureTextEntry={true}
           style={styles.input}
         />
-        <Button
-          title={'Login'}
-          style={styles.input}
-          onPress={this._confirmLogin.bind(this)}
-        />
-        {this.renderTouchID()}
-        <Button
-            onPress={() => navigate('Create')}
-            title="Create New Account"
-        />
+        <View style={styles.row}>
+        <AwesomeButtonRick stretch={true} onPress={this._confirmLogin.bind(this)} type="primary">Login</AwesomeButtonRick></View>
         
+        {this.renderTouchID()}
+        <View style={styles.row}>
+        <AwesomeButtonRick stretch={true} onPress={() => navigate('Create')} type="primary">Create New Account</AwesomeButtonRick></View>
+
       </View>
       ); 
         /* TODO: forgot password page
@@ -223,6 +220,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     marginBottom: 10,
+  },row: {
+    width: 200,
+    flexDirection: "row",
+    textAlign: 'right',
+    padding: 10,
+    justifyContent: 'flex-end'
   },
 });
 

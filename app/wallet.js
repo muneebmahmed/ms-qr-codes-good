@@ -5,6 +5,8 @@ import {StackActions, NavigationActions} from 'react-navigation';
 import Swipeout from 'react-native-swipeout';
 import {store} from './store';
 import {host, cardEndpoint} from './constants';
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
+
 
 const debug = false;
 
@@ -167,11 +169,9 @@ export default class Wallet extends React.Component {
             {this.getCards()}
           </ScrollView>
         <View style={styles.bottom}>
-        <Button 
-          icon={<Icon name='code' color='#ffffff' />}
-          onPress={() => navigate('AddPayment')}
-          backgroundColor='#03A9F4'
-          title='Add New Payment Method' />
+        <View style={styles.row}>
+        <AwesomeButtonRick stretch={true} onPress={() => navigate('AddPayment')} type="primary">Add New Payment Method</AwesomeButtonRick></View>
+
           </View>
       </View>
     );
@@ -203,5 +203,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     marginBottom: 36
-  }
+  },
 });
