@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, FlatList, TouchableOpacity, Alert, Modal } from 'react-native';
+import { Platform, CameraRoll, Dimensions, Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, FlatList, TouchableOpacity, Alert, Modal } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import QRCode from 'react-native-qrcode-svg';
 import Swipeout from 'react-native-swipeout';
 import {store} from '../store';
 import {host, getQRCodes, deleteQRCode} from '../constants';
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
+
+const HEIGHT = Dimensions.get('window').height;
+const WIDTH = Dimensions.get('window').width;
 
 export default class myQR extends React.Component {
   constructor(props) {
@@ -12,6 +16,7 @@ export default class myQR extends React.Component {
     this.state = { dataAvailable: false, refreshing: false, qrcodes: [], modalVisible: false };
     this.authenticate();
   }
+
   resetNavigation(targetRoute) {
     const resetAction = StackActions.reset({
       index: 0,
@@ -140,44 +145,26 @@ export default class myQR extends React.Component {
         />
       </View>
     );
-    /*for (i in this.state.qrcodes){
-      let name = this.state.qrcodes[i].qrCodeName;
-      let amount = this.state.qrcodes[i].qrCodeDefaultAmount;
-      let imgsource = this.state.qrcodes[i].qrCodeData;
-      jsx.push(
-        <View>
-          <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 1,
-            }}
-          />
-          <View style={styles.container}>
-            <QRCode
-              logo={{uri: imgsource}}
-              size={40}
-              logoSize={40}
-              logoBackgroundColor='transparent'
-              />
-              <Text style={{fontSize:26}}>
-              {name}
-              </Text>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={{fontSize:20}}>                Default: </Text>
-                <Text style={{fontSize:20}}>${Number(amount).toFixed(2)}</Text>
-              </View>
-              <Text style={{fontSize:20}}>                Me</Text>
-          </View>
-        </View>
-      );
-    }
-    if (!this.state.qrcodes || this.state.qrcodes.length < 1){
-      jsx.push(<View><Text>No codes here!</Text></View>);
-    }
-    return jsx;*/
   }
   saveCode(){
-    //Code is in this.state.viewQR
+    const image = this.state.viewQr;
+    console.log("hi", image);
+    if (Platform.OS === 'android') {
+      RNFetchBlob
+        .config({
+          fileCache : true,
+          appendExt : 'png'
+        })
+        .fetch('GET', image)
+        .then((res) => {
+          CameraRoll.saveToCameraRoll(res.path())
+            .then(Alert.alert('Success', 'Photo added to camera roll!'))
+            .catch(err => console.log('err:', err))
+        })
+    } else {
+        CameraRoll.saveToCameraRoll(image)
+          .then(Alert.alert('Success', 'Photo added to camera roll!'))
+    }
   }
   _setModalVisible = visible => {
       this.setState({modalVisible: visible});
@@ -189,6 +176,8 @@ export default class myQR extends React.Component {
     this.authenticate();
   }
   render() {
+
+
     if (!this.state.dataAvailable){
       return null;
     }
@@ -211,14 +200,22 @@ export default class myQR extends React.Component {
             onRequestClose={() => Alert.alert('Modal closed')}
           >
             <View style={styles.container}>
+              <View style={styles.qr}>
               <QRCode
                 logo={{uri: this.state.viewQr}}
-                size={300}
-                logoSize={300}
+                size={WIDTH * .7}
+                logoSize={WIDTH * .7}
                 logoBackgroundColor='transparent'
               />
-              <Button onPress={this.saveCode.bind(this)} title='Save' />
-              <Button onPress={() => {this.setState({modalVisible: false})}} title='Close' />
+              </View>
+              <View style={styles.bottom}>
+              <View style={styles.row}>
+              <AwesomeButtonRick stretch={true} onPress={this.saveCode.bind(this)} type="primary">Save</AwesomeButtonRick>
+              </View>
+              <View style={styles.row}>
+              <AwesomeButtonRick stretch={true} onPress={() => {this.setState({modalVisible: false})}} type="secondary">Close</AwesomeButtonRick>
+              </View>
+              </View>
             </View>
           </Modal>
           {this.getQR()}
@@ -265,5 +262,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     padding: 5
+  },
+  qr: {
+    flex: 1,
+    margin: WIDTH * .15,
+    marginTop: HEIGHT * .3
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: HEIGHT * .1
   }
 });
