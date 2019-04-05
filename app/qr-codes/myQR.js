@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, CameraRoll, Dimensions, Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, FlatList, TouchableOpacity, Alert, Modal } from 'react-native';
+import { Platform, CameraRoll, Dimensions, Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, FlatList, TouchableHighlight, Alert, Modal } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import QRCode from 'react-native-qrcode-svg';
 import Swipeout from 'react-native-swipeout';
@@ -113,7 +113,7 @@ export default class myQR extends React.Component {
       <Swipeout right={swipeoutBtns} autoClose={true}>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1,}} />
           <View style={styles.container}>
-            <TouchableOpacity
+            <TouchableHighlight
               onPress={() => {this.setState({modalVisible: true, viewQr: this.state.qrcodes[index].qrCodeData})}}
             >
             <QRCode
@@ -122,7 +122,7 @@ export default class myQR extends React.Component {
               logoSize={40}
               logoBackgroundColor='transparent'
             />
-            </TouchableOpacity>
+            </TouchableHighlight>
             <Text style={{fontSize:26}}>
               {item.qrCodeName}
             </Text>
