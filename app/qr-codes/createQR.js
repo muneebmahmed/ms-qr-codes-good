@@ -1,10 +1,15 @@
 import React from 'react';
-import {Button, Text, View, TextInput, Image, Alert, StyleSheet } from 'react-native';
+import {Platform, CameraRoll, Dimensions, Button, Modal, View, TextInput, Image, Alert, StyleSheet } from 'react-native';
 import { Card, Icon, CheckBox } from 'react-native-elements';
 import {StackActions, NavigationActions} from 'react-navigation';
-import {styles} from '../styles'
-import {store} from '../store'
+import {styles} from '../styles';
+import QRCode from 'react-native-qrcode-svg';
+import {store} from '../store';
 import {host, generateQREndpoint} from '../constants';
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
+
+const HEIGHT = Dimensions.get('window').height;
+const WIDTH = Dimensions.get('window').width;
 
 export default class CreateQR extends React.Component {
   constructor(props) {
@@ -12,11 +17,34 @@ export default class CreateQR extends React.Component {
     this.state = {
       amount: '',
       QRcodeName: '',
-      checked: []
+      checked: [],
+      modalVisible: false,
     };
     this.authenticate();
   }
+
+  saveCode(){
+    const image = store.createdCode;
+    console.log("hi", image);
+    if (Platform.OS === 'android') {
+      RNFetchBlob
+        .config({
+          fileCache : true,
+          appendExt : 'png'
+        })
+        .fetch('GET', image)
+        .then((res) => {
+          CameraRoll.saveToCameraRoll(res.path())
+            .then(Alert.alert('Success', 'Photo added to camera roll!'))
+            .catch(err => console.log('err:', err))
+        })
+    } else {
+        CameraRoll.saveToCameraRoll(image)
+          .then(Alert.alert('Success', 'Photo added to camera roll!'))
+    }
+  }
   onPressSubmit() {
+    var success = false;
     //const {navigate} = this.props.navigation;
     var endpoint = host + generateQREndpoint;
     fetch(endpoint, {
@@ -36,13 +64,21 @@ export default class CreateQR extends React.Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      store.createdCode = responseJson.qrcodeData;
-      Alert.alert(responseJson.message);
-      this.pushNavigation('Generated');
+      if (responseJson) {
+        success = true;
+        store.createdCode = responseJson.qrcodeData;
+        Alert.alert(responseJson.message);
+      }
+        else {
+          Alert.alert(responseJson.message);
+          store.createdCode = null;
+      
+      }
     })
     .catch((error) => {
       console.error(error);
     });
+      this.setState({modalVisible: true})
   }
 
   resetNavigation(targetRoute) {
@@ -54,12 +90,17 @@ export default class CreateQR extends React.Component {
     });
     this.props.navigation.dispatch(resetAction);
   }
-  pushNavigation(targetRoute){
-    const pushAction = StackActions.push({
-      routeName: targetRoute,
+
+  navigation(targetRoute) {
+    const resetAction = StackActions.push({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: targetRoute }),
+      ],
     });
-    this.props.navigation.dispatch(pushAction);
+    this.props.navigation.dispatch(resetAction);
   }
+  
   authenticate(){
     if (new Date() > store.logOutTime || !store.loggedIn){
       if (store.loggedIn){
@@ -88,6 +129,31 @@ export default class CreateQR extends React.Component {
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
+      <Modal
+            animationType='slide'
+            transparent={false}
+            visible={this.state.modalVisible}
+            onRequestClose={() => Alert.alert('Modal closed')}
+          >
+            <View style={s.container}>
+              <View style={s.qr}>
+              <QRCode
+                logo={{uri: store.createdCode}}
+                size={WIDTH * .7}
+                logoSize={WIDTH * .7}
+                logoBackgroundColor='transparent'
+              />
+              </View>
+              <View style={s.bottom}>
+              <View style={s.row}>
+              <AwesomeButtonRick stretch={true} onPress={this.saveCode.bind(this)} type="primary">Save</AwesomeButtonRick>
+              </View>
+              <View style={s.row}>
+              <AwesomeButtonRick stretch={true} onPress={() => this.navigation('Saved QR Codes')} type="secondary">Close</AwesomeButtonRick>
+              </View>
+              </View>
+            </View>
+          </Modal>
       <TextInput
         value={this.state.QRcodeName}
         style={s.input}
@@ -107,7 +173,6 @@ export default class CreateQR extends React.Component {
           onPress={this.onPressSubmit.bind(this)}
           title="Submit"
           color="#841584"
-          accessibilityLabel="Learn more about this purple button"
         />
       </View>
       );
@@ -124,4 +189,51 @@ const s = StyleSheet.create({
     borderColor: 'black',
     marginBottom: 10,
   },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#ecf0f1',
+    padding: 8,
+  },
+   headline: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 36,
+    marginTop: 0,
+    width: '100%',
+    padding: 10
+  },
+  row: {
+    flexDirection: "row",
+    textAlign: 'right',
+    padding: 10,
+    justifyContent: 'flex-end'
+  },
+  keepitsmall: {
+    width: 34,
+    height: 34
+  },
+   leftContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    padding: 10
+  },
+  rightContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding: 5
+  },
+  qr: {
+    flex: 1,
+    margin: WIDTH * .15,
+    marginTop: HEIGHT * .3
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: HEIGHT * .1
+  }
 });
