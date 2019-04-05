@@ -42,11 +42,11 @@ export default class Payments extends React.Component {
           'Content-Type': 'application/json',
           'Authorization': store.authToken,
         },
-        body: {
+        body: JSON.stringify({
           userID: store.scannedId,
           qrcodeData: store.scannedData,
           amount: store.scannedAmount,
-        },
+        }),
       })
       .then((response) => response.json())
       .then((responseJson) =>{
