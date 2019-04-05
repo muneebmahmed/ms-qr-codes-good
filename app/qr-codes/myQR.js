@@ -113,24 +113,23 @@ export default class myQR extends React.Component {
       <Swipeout right={swipeoutBtns} autoClose={true}>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1,}} />
           <View style={styles.container}>
+          <View style={{ flex: 1, flexDirection: 'row', padding: 5 }}>
             <TouchableHighlight
               onPress={() => {this.setState({modalVisible: true, viewQr: this.state.qrcodes[index].qrCodeData})}}
             >
             <QRCode
               logo={{uri: item.qrCodeData}}
-              size={40}
-              logoSize={40}
+              size={60}
+              logoSize={60}
               logoBackgroundColor='transparent'
             />
             </TouchableHighlight>
-            <Text style={{fontSize:26}}>
-              {item.qrCodeName}
-            </Text>
-            <View style={{flexDirection: 'row'}}>
-                <Text style={{fontSize:20}}>                Default: </Text>
-                <Text style={{fontSize:20}}>${Number(item.qrCodeDefaultAmount).toFixed(2)}</Text>
+            <View style={styles.leftContainer}>
+            <Text style={{fontSize:18}}>Name: {item.qrCodeName}</Text>
+            <Text style={{fontSize:18}}>      Amount: </Text>
+                <Text style={{fontSize:18}}>${Number(item.qrCodeDefaultAmount).toFixed(2)}</Text>
             </View>
-              <Text style={{fontSize:20}}>                Me</Text>
+            </View>
             </View>
       </Swipeout>
     );
@@ -254,19 +253,19 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    padding: 10
+    padding: 15
   },
   rightContainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    padding: 5
+    padding: 2
   },
   qr: {
     flex: 1,
     margin: WIDTH * .15,
-    marginTop: HEIGHT * .3
+    marginTop: HEIGHT * .15
   },
   bottom: {
     flex: 1,

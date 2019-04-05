@@ -48,7 +48,7 @@ export default class Info extends React.Component {
         
         <View style={styles.button}>
           <Button
-            onPress={this._onPressButton}
+            onPress={() => navigate('Tos')}
             title="Terms of Use"
           />
         </View>
