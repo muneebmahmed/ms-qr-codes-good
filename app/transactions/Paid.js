@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, Alert } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
+import {host, getTransactions} from '../constants';
 import {store} from '../store';
 
 export default class Paid extends React.Component {
@@ -29,9 +30,9 @@ export default class Paid extends React.Component {
     }
   }
   fetchData(){
-    var debug = true;
+    var debug = false;
     this.setState( { refreshing: true })
-    var endpoint = '';
+    var endpoint = host + getTransactions;
     if (!debug){
     fetch(endpoint, {
       method: 'GET',
@@ -45,10 +46,7 @@ export default class Paid extends React.Component {
     .then((responseJson) =>{
       this.setState({
         dataAvailable: true,
-        names: responseJson.names,
-        amounts: responseJson.amounts,
-        dates: responseJson.dates,
-        anonymous: responseJson.anonymous,
+        transactions: responseJson.sent,
         refreshing: false
       })
     })
@@ -59,6 +57,7 @@ export default class Paid extends React.Component {
       })
     });
     }
+    else{
     this.setState({
       dataAvailable: true,
       refreshing: false,
@@ -67,17 +66,18 @@ export default class Paid extends React.Component {
       dates: [new Date(2019, 0, 22), new Date(2018, 11, 18), new Date(2018, 9, 13), new Date(2018, 9, 7), new Date(2018, 8, 30), new Date(2018, 9, 13)],
       anonymous: [false, true, false, true, false, false]
     })
+    }
   }
   getData(){
     var jsx = [];
-    for (i in this.state.names){
-      let name = this.state.names[i];
-      let amount = this.state.amounts[i];
-      let date = this.state.dates[i];
+    for (i in this.state.transactions){
+      let name = this.state.transactions[i].name;
+      let amount = this.state.transactions[i].amount;
+      let date = new Date(this.state.transactions[i].date);
       let month = date.getMonth() + 1;
       let day = date.getDate();
       let year = date.getFullYear();
-      let imgsource = this.state.anonymous[i]? require('../images/anonymoususer.png') : require('../images/user.png');
+      let imgsource = this.state.transactions[i].anonymous? require('../images/anonymoususer.png') : require('../images/user.png');
       jsx.push(
         <View>
         <View style={{

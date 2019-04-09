@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, Alert } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
+import {host, getTransactions} from '../constants';
 import {store} from '../store';
 
 export default class Received extends React.Component {
@@ -29,9 +30,9 @@ export default class Received extends React.Component {
     }
   }
   fetchData(){
-    var debug = true;
+    var debug = false;
     this.setState({ refreshing: true })
-    var endpoint = '';
+    var endpoint = host + getTransactions;
     if (!debug){
     fetch(endpoint, {
       method: 'GET',
@@ -45,6 +46,7 @@ export default class Received extends React.Component {
     .then((responseJson) =>{
       this.setState({
         dataAvailable: true,
+        received: responseJson.received,
         names: responseJson.names,
         amounts: responseJson.amounts,
         dates: responseJson.dates,
@@ -58,7 +60,7 @@ export default class Received extends React.Component {
         refreshing: false
       })
     });
-    }
+    }else{
     this.setState({
       dataAvailable: true,
       refreshing: false,
@@ -67,17 +69,18 @@ export default class Received extends React.Component {
       dates: [new Date(2018, 11, 22), new Date(2018, 3, 12), new Date(2018, 2, 1), new Date(2018, 1, 14), new Date(2018, 0, 20), new Date(2018, 0, 13)],
       anonymous: [false, false, true, false, true, false]
     })
+    }
   }
   getData(){
     var jsx = [];
-    for (i in this.state.names){
-      let name = this.state.anonymous[i]? 'Anon' : this.state.names[i];
-      let amount = this.state.amounts[i];
-      let date = this.state.dates[i];
+    for (i in this.state.received){
+      let name = this.state.received[i].anonymous? 'Anon' : this.state.received[i].name;
+      let amount = this.state.received[i].amount;
+      let date = new Date(this.state.received[i].date);
       let month = date.getMonth() + 1;
       let day = date.getDate();
       let year = date.getFullYear();
-      let imgsource = this.state.anonymous[i]? require('../images/anonymoususer.png') : require('../images/user.png');
+      let imgsource = this.state.received[i].anonymous? require('../images/anonymoususer.png') : require('../images/user.png');
       jsx.push(
         <View>
         <View style={{
