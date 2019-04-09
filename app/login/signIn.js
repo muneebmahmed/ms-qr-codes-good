@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {StyleSheet, Button, Text, TextInput, Image, View, Platform, Alert, AsyncStorage } from 'react-native';
+import {StyleSheet, Button, Text, TextInput, Image, View, Platform, Alert, AsyncStorage, TouchableHighlight } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import TouchID from 'react-native-touch-id';
 import DeviceInfo from 'react-native-device-info';
 import {store} from '../store';
-import {host, loginEndpoint, touchEndpoint} from '../constants';
+import {host, loginEndpoint, touchEndpoint, forgotEndpoint} from '../constants';
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
+import Dialog from "react-native-dialog";
 
 //import {styles} from './styles'
 
@@ -167,6 +168,32 @@ class Login extends Component {
         />
     )
   }
+  forgotPassword(){
+    var endpoint = host + forgotEndpoint;
+    fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: this.state.forgotEmail,
+      }),
+    })
+    .then((response) => response.json())
+    .then((responseJson) =>{
+      this.setState({
+        forgotVisible: false,
+      })
+      Alert.alert('Reset email sent');
+    })
+    .catch((error) =>{
+      console.error(error);
+      this.setState({
+        forgotVisible: false,
+      })
+    });
+  }
   componentDidMount(){
     this.getBioString();
   }
@@ -201,6 +228,18 @@ class Login extends Component {
             onPress={() => navigate('Create')}
             title="Create New Account"
         />
+        <TouchableHighlight
+          onPress={() => {this.setState({forgotVisible: true})}}
+        >
+          <Text> Forgot Password? </Text>
+        </TouchableHighlight>
+        <Dialog.Container visible={this.state.forgotVisible}>
+          <Dialog.Title>Forgot Password</Dialog.Title>
+          <Dialog.Description> Please enter your email address </Dialog.Description>
+          <Dialog.Input value={this.state.forgotEmail} onChangeText={(username) => this.setState({forgotEmail: username})} />
+          <Dialog.Button label="Cancel" onPress={() => {this.setState({forgotVisible: false})}} />
+          <Dialog.Button label="OK" onPress={this.forgotPassword.bind(this)} />
+        </Dialog.Container>
 
       </View>
       ); 

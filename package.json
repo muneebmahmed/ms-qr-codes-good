@@ -13,6 +13,7 @@
     "react-native-camera": "^1.6.4",
     "react-native-credit-card-input": "^0.4.1",
     "react-native-device-info": "^1.0.0",
+    "react-native-dialog": "^5.6.0",
     "react-native-elements": "^1.0.0",
     "react-native-gesture-handler": "^1.0.15",
     "react-native-qrcode-scanner": "^1.1.2",

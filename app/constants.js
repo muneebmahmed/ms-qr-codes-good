@@ -11,6 +11,7 @@ export const deleteQRCode = '/api/user/deleteQRCode';
 export const saveCodePoint = '/api/user/saveQRCode';
 export const getOtherCodes = '/api/user/getSavedQRCodes';
 export const getTransactions = '/api/user/transactionHistory';
+export const forgotEndpoint = '/api/user/forgotPassword';
 export const menuColor = '#0070c0';
 //export const menuColor = '#46c487';
 
