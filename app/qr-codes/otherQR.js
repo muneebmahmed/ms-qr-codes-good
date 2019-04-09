@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, Alert, FlatList } from 'react-native';
+import { Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, Alert, FlatList, TouchableHighlight } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import QRCode from 'react-native-qrcode-svg';
 import Swipeout from 'react-native-swipeout';
 import {store} from '../store';
 import {host, getOtherCodes} from '../constants';
+import ModalQR from './ModalQR';
 
 export default class otherQR extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { dataAvailable: false, refreshing: false, qrcodes: [] };
+    this.state = { dataAvailable: false, refreshing: false, qrcodes: [], modalVisible: false };
     this.authenticate();
   }
   resetNavigation(targetRoute) {
@@ -20,6 +21,12 @@ export default class otherQR extends React.Component {
       ],
     });
     this.props.navigation.dispatch(resetAction);
+  }
+  pushNavigation(targetRoute){
+    const pushAction = StackActions.push({
+      routeName: targetRoute,
+    });
+    this.props.navigation.dispatch(pushAction);
   }
   authenticate(){
     if (new Date() > store.logOutTime || !store.loggedIn){
@@ -77,12 +84,16 @@ export default class otherQR extends React.Component {
       <Swipeout right={swipeoutBtns} autoClose={true}>
           <View style={{borderBottomColor: 'black', borderBottomWidth: 1,}} />
           <View style={styles.container}>
+            <TouchableHighlight
+              onPress={() => {this.setState({modalVisible: true, viewQr: this.state.qrcodes[index]})}}
+            >
             <QRCode
               logo={{uri: item.qrCodeData}}
               size={50}
               logoSize={50}
               logoBackgroundColor='transparent'
             />
+            </TouchableHighlight>
             <Text style={{fontSize:26}}>
               Donation
             </Text>
@@ -139,6 +150,16 @@ export default class otherQR extends React.Component {
     }
     return jsx;*/
   }
+  pay(){
+      store.scannedId = this.state.viewQr.qrCodeID;
+      store.pendingPayment = true;
+      store.scannedAmount = this.state.viewQr.qrCodeDefaultAmount;
+      store.scannedType = this.state.viewQr.qrCodeType;
+      store.scannedData = this.state.viewQr.qrCodeData;
+      this.setState({modalVisible: false});
+      //this.props.navigation.navigate('Home');
+      this.pushNavigation('Payment');
+  }
   componentDidMount(){
     this.fetchQR();
   }
@@ -161,6 +182,17 @@ export default class otherQR extends React.Component {
             />
           }
         >
+        <ModalQR
+            animationType='slide'
+            transparent={false}
+            visible={this.state.modalVisible}
+            onRequestClose={() => Alert.alert('Modal closed')}
+            uri={this.state.viewQr == null? this.state.viewQr : this.state.viewQr.qrCodeData}
+            onSavePress={this.pay.bind(this)}
+            onClosePress={() => {this.setState({modalVisible: false})}}
+            firstTitle='Pay'
+            secondTitle='Close'
+        />
           {this.getQR()}
         </ScrollView>
       </View>

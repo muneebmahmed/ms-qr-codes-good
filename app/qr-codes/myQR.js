@@ -6,6 +6,7 @@ import Swipeout from 'react-native-swipeout';
 import {store} from '../store';
 import {host, getQRCodes, deleteQRCode} from '../constants';
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
+import ModalQR from './ModalQR';
 
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -192,31 +193,17 @@ export default class myQR extends React.Component {
             />
           }
         >
-          <Modal
+          <ModalQR
             animationType='slide'
             transparent={false}
             visible={this.state.modalVisible}
             onRequestClose={() => Alert.alert('Modal closed')}
-          >
-            <View style={styles.container}>
-              <View style={styles.qr}>
-              <QRCode
-                logo={{uri: this.state.viewQr}}
-                size={WIDTH * .7}
-                logoSize={WIDTH * .7}
-                logoBackgroundColor='transparent'
-              />
-              </View>
-              <View style={styles.bottom}>
-              <View style={styles.row}>
-              <AwesomeButtonRick stretch={true} onPress={this.saveCode.bind(this)} type="primary">Save</AwesomeButtonRick>
-              </View>
-              <View style={styles.row}>
-              <AwesomeButtonRick stretch={true} onPress={() => {this.setState({modalVisible: false})}} type="secondary">Close</AwesomeButtonRick>
-              </View>
-              </View>
-            </View>
-          </Modal>
+            uri={this.state.viewQr}
+            onSavePress={this.saveCode.bind(this)}
+            onClosePress={() => {this.setState({modalVisible: false})}}
+            firstTitle='Save'
+            secondTitle='Close'
+          />
           {this.getQR()}
         </ScrollView>
       </View>

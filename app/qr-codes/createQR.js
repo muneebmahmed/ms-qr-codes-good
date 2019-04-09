@@ -6,6 +6,7 @@ import {styles} from '../styles';
 import QRCode from 'react-native-qrcode-svg';
 import {store} from '../store';
 import {host, generateQREndpoint} from '../constants';
+import ModalQR from './ModalQR';
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
 
 const HEIGHT = Dimensions.get('window').height;
@@ -126,31 +127,17 @@ export default class CreateQR extends React.Component {
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
-      <Modal
+      <ModalQR
             animationType='slide'
             transparent={false}
             visible={this.state.modalVisible}
             onRequestClose={() => Alert.alert('Modal closed')}
-          >
-            <View style={s.container}>
-              <View style={s.qr}>
-              <QRCode
-                logo={{uri: store.createdCode}}
-                size={WIDTH * .7}
-                logoSize={WIDTH * .7}
-                logoBackgroundColor='transparent'
-              />
-              </View>
-              <View style={s.bottom}>
-              <View style={s.row}>
-              <AwesomeButtonRick stretch={true} onPress={this.saveCode.bind(this)} type="primary">Save</AwesomeButtonRick>
-              </View>
-              <View style={s.row}>
-              <AwesomeButtonRick stretch={true} onPress={this._navigation.bind(this, navigate, 'Saved QR Codes')} type="secondary">Close</AwesomeButtonRick>
-              </View>
-              </View>
-            </View>
-          </Modal>
+            uri={store.createdCode}
+            onSavePress={this.saveCode.bind(this)}
+            onClosePress={this._navigation.bind(this, navigate, 'Saved QR Codes')}
+            firstTitle='Save'
+            secondTitle='Close'
+      />
       <TextInput
         value={this.state.QRcodeName}
         style={s.input}
@@ -226,7 +213,7 @@ const s = StyleSheet.create({
   qr: {
     flex: 1,
     margin: WIDTH * .15,
-    marginTop: HEIGHT * .3
+    marginTop: HEIGHT * .15
   },
   bottom: {
     flex: 1,
