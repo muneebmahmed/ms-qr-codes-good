@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Button, Text, TextInput, Image, View, Platform, Alert, AsyncStorage, TouchableHighlight } from 'react-native';
+import {StyleSheet, Button, Text, TextInput, Image, View, Platform, Alert, AsyncStorage, TouchableHighlight, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import TouchID from 'react-native-touch-id';
 import DeviceInfo from 'react-native-device-info';
@@ -185,7 +185,7 @@ class Login extends Component {
       this.setState({
         forgotVisible: false,
       })
-      Alert.alert('Reset email sent');
+      //Alert.alert('Reset email sent');
     })
     .catch((error) =>{
       console.error(error);
@@ -204,6 +204,7 @@ class Login extends Component {
     }
     const {navigate} = this.props.navigation;
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
         <TextInput
           value={this.state.username}
@@ -242,6 +243,7 @@ class Login extends Component {
         </Dialog.Container>
 
       </View>
+      </TouchableWithoutFeedback>
       ); 
         /* TODO: forgot password page
         <Button

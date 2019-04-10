@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, CameraRoll, Dimensions, Button, Modal, View, TextInput, Image, Alert, StyleSheet } from 'react-native';
+import {Platform, CameraRoll, Dimensions, Button, Modal, View, TextInput, Image, Alert, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Card, Icon, CheckBox } from 'react-native-elements';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {styles} from '../styles';
@@ -126,6 +126,7 @@ export default class CreateQR extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
       <ModalQR
             animationType='slide'
@@ -159,6 +160,7 @@ export default class CreateQR extends React.Component {
           color="#841584"
         />
       </View>
+      </TouchableWithoutFeedback>
       );
 
   }

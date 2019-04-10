@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry, Text, Switch, TextInput, View, Button,StyleSheet, Alert, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { AppRegistry, Text, Switch, TextInput, View, Button,StyleSheet, Alert, ScrollView, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import {host, createEndpoint} from '../constants';
 
@@ -58,6 +58,7 @@ export default class CreateAccount extends React.Component {
 
   render() {
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
 <View style={styles.container}>
 
 <Text style={styles.TextHeader}> Create Account </Text>
@@ -120,6 +121,7 @@ export default class CreateAccount extends React.Component {
 </KeyboardAvoidingView>
 
 </View>
+</TouchableWithoutFeedback>
       ); 
   }
 }
