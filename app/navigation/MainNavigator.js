@@ -13,6 +13,7 @@ import generatedQR from '../qr-codes/generatedQR';
 import confirmPay from '../confirmPayment';
 import AddPayNavigator from '../addPayments/addPayment';
 import AddStripeDetail from '../addPayments/addStripeDetail';
+import EditStripeDetail from '../addPayments/editStripeDetail';
 import {store} from '../store';
 import {menuColor} from '../constants';
 
@@ -35,6 +36,7 @@ const MainNavigator = createStackNavigator({
 	ConfirmPayment: {screen: confirmPay},
 	AddPayment: {screen : AddPayNavigator},
 	AddStripeDetail: {screen : AddStripeDetail},
+	EditStripeDetail: {screen : EditStripeDetail},
 	Main: { screen: AppNavigator,
 		navigationOptions: ({ navigation }) => ({
         title: "MS Give",
