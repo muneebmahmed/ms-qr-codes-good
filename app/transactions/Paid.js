@@ -87,7 +87,7 @@ export default class Paid extends React.Component {
         />
         <View style={{flexDirection: 'row'}}>
           <Text style={{fontSize:26}}>-</Text>
-          <Text style={{fontSize:26}}>${amount.toFixed(2)}</Text>
+          <Text style={{fontSize:26}}>${Number(amount).toFixed(2)}</Text>
         </View>
         <View style={styles.leftContainer}>
           <Text style={{fontSize:16}}>{month}/{day}/{year}</Text>
