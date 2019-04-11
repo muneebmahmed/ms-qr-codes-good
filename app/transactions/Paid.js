@@ -46,7 +46,7 @@ export default class Paid extends React.Component {
     .then((responseJson) =>{
       this.setState({
         dataAvailable: true,
-        transactions: responseJson.sent,
+        transactions: (responseJson.sent)? responseJson.sent.reverse() : null,
         refreshing: false
       })
     })

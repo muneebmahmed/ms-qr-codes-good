@@ -46,11 +46,7 @@ export default class Received extends React.Component {
     .then((responseJson) =>{
       this.setState({
         dataAvailable: true,
-        received: responseJson.received,
-        names: responseJson.names,
-        amounts: responseJson.amounts,
-        dates: responseJson.dates,
-        anonymous: responseJson.anonymous,
+        received: (responseJson.received)? responseJson.received.reverse() : null,
         refreshing: false
       })
     })
