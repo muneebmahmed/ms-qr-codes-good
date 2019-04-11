@@ -229,11 +229,11 @@ class Login extends Component {
             onPress={() => navigate('Create')}
             title="Create New Account"
         />
-        <TouchableHighlight
-          onPress={() => {this.setState({forgotVisible: true})}}
-        >
-          <Text> Forgot Password? </Text>
-        </TouchableHighlight>
+        <Button
+            onPress={() => {this.setState({forgotVisible: true})}}
+            title="Forgot Password?"
+        />
+        
         <Dialog.Container visible={this.state.forgotVisible}>
           <Dialog.Title>Forgot Password</Dialog.Title>
           <Dialog.Description> Please enter your email address </Dialog.Description>

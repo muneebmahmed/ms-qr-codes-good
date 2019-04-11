@@ -50,7 +50,7 @@ class CameraView extends Component {
         cameraStyle={styles.camera}
         topContent={
           <Text style={styles.centerText}>
-            Scan any QR code to see its data!
+            Scan a Give QR Code
           </Text>
         }
       />
