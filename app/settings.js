@@ -1,8 +1,11 @@
 
 import React, { Component } from 'react';
-import { AppRegistry, Text, Switch, TextInput, View, Button,StyleSheet, Alert, ScrollView } from 'react-native';
+import {TouchableHighlight, Text, Switch, TextInput, View, Button,StyleSheet, Alert, ScrollView } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {store} from './store';
+import {host, loginEndpoint, touchEndpoint, updatePersonal} from './constants';
+import { Icon } from 'react-native-elements';
+import Dialog from "react-native-dialog";
 
 export default class Settings2 extends Component {
   constructor(props){
@@ -20,6 +23,52 @@ export default class Settings2 extends Component {
     });
     this.props.navigation.dispatch(resetAction);
   }
+
+  changeInfo(){
+    var success = false;
+    var endpoint = host + updatePersonal;
+    fetch(endpoint, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: store.email,
+        newEmail: this.state.pass ? undefined : this.state.newEmail,
+        name: this.state.name? this.state.newName: null,
+        currentPassword: this.state.oldPass,
+        newPassword: this.state.pass ? this.state.newPass: undefined,
+        confirmNewPassword: this.state.pass ? this.state.confirmPass: undefined,
+      }),
+    })
+    .then((response) => response.json())
+    .then((responseJson) =>{
+      if (this.state.name) {
+        store.name = this.state.newName;
+      }
+      Alert.alert(
+        'Alert',
+        responseJson.message,
+        [
+          {text: 'OK', onPress:() => {this.setState({changeVisible: false})}},
+        ],
+        { cancelable: false }
+      );
+      
+    })
+    .catch((error) =>{
+      console.error(error);
+      Alert.alert(
+        'Error',
+        error,
+        [
+          {text: 'OK', onPress:() => {this.setState({changeVisible: false})}},
+        ],
+        { cancelable: false }
+      )
+    });
+  }
   authenticate(){
     if (new Date() > store.logOutTime || !store.loggedIn){
       if (store.loggedIn){
@@ -33,8 +82,8 @@ export default class Settings2 extends Component {
 state = {
   switchValue1: store.faceID,
   switchValue2: false,
-  switchValue3: false,
-  switchValue4: false,
+  switchValue3: true,
+  switchValue4: true,
 };
 
   _handleToggleSwitch1 = () => {
@@ -66,70 +115,173 @@ state = {
     const {navigate} = this.props.navigation;
     return (
       <ScrollView style={styles.container}>
-      <Text style={styles.Text}> Payment </Text>
-        <View style={styles.ButtonContainer}>
+      <Dialog.Container visible={this.state.changeVisible}>
+          {this.state.name ? <Dialog.Title>Change Name</Dialog.Title> : this.state.pass?<Dialog.Title>Change Password</Dialog.Title> : <Dialog.Title>Change Email</Dialog.Title>}
+          {this.state.name?<Dialog.Description> Please enter your new name</Dialog.Description>: this.state.pass?<Dialog.Description> Please enter your old and new password </Dialog.Description> :<Dialog.Description> Please enter your new Email </Dialog.Description>}
+          {this.state.pass?<Dialog.Input label="Old Password:" value={this.state.oldPass} onChangeText={(username) => this.setState({oldPass: username})} /> : <Dialog.Input label="Email:" value={this.state.newEmail} onChangeText={(username) => this.setState({newEmail: username})} /> }
+          {this.state.pass?<Dialog.Input label="New Password:"value={this.state.newPass} onChangeText={(username) => this.setState({newPass: username})} />: <Dialog.Input label="Password:" value={this.state.oldPass} onChangeText={(username) => this.setState({oldPass: username})} />}
+          {this.state.pass?<Dialog.Input label="Confirm New Password:"value={this.state.confirmPass} onChangeText={(username) => this.setState({confirmPass: username})} />: null}
+          {this.state.name?<Dialog.Input label="Name:"value={this.state.newName} onChangeText={(username) => this.setState({newName: username})} />: null}
+          <Dialog.Button label="Cancel" onPress={() => {this.setState({changeVisible: false})}} />
+          <Dialog.Button label="OK" onPress={this.changeInfo.bind(this)} />
+        </Dialog.Container>
+
+        
+      <Text style={styles.Text}> User Settings </Text>
+
+        <TouchableHighlight onPress={() => navigate('Wallet')}>
+            <View style={styles.ButtonContainer}>
+        <Icon
+          size={40}
+          name='credit-card'
+          type='evilicon'
+          color='#517fa4'
+        />
           <Button
             onPress={() => navigate('Wallet')}
-            title="Bank Account"
+            title="Payment Methods"
+            color="#517fa4"
           />
+          <View style={styles.SwitchButton}>
+          <Icon
+          size={40}
+          name='chevron-right'
+          type='evilicon'
+          color='#517fa4'
+        />
         </View>
+        </View>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => navigate('AddStripeDetail')}>
         <View style={styles.ButtonContainer}>
+        <Icon
+          size={40}
+          name='user'
+          type='evilicon'
+          color='#517fa4'
+        />
           <Button
-            onPress={() => navigate('Wallet')}
-            title="Saved Credit Cards"
+            onPress={() => navigate('EditStripeDetail')}
+            title="Edit Personal Information"
+            color="#517fa4"
             //color="#841584"
           />
+          <View style={styles.SwitchButton}>
+          <Icon
+          size={40}
+          name='chevron-right'
+          type='evilicon'
+          color='#517fa4'
+        />
         </View>
+        </View>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => {this.setState({changeVisible: true, pass:false, name:true})}}>
         <View style={styles.ButtonContainer}>
+        <Icon
+          size={40}
+          name='tag'
+          type='evilicon'
+          color='#517fa4'
+        />
           <Button
-            onPress={() => navigate('AddPayment')}
-            title="Add Payment Method"
+            onPress={() => {this.setState({changeVisible: true, pass:false, name:true})}}
+            title="Edit Name"
+            color="#517fa4"
             //color="#841584"
           />
+          <View style={styles.SwitchButton}>
+          <Icon
+          size={40}
+          name='chevron-right'
+          type='evilicon'
+          color='#517fa4'
+        />
         </View>
-        <Text style={styles.Text}> Account </Text>
+        </View>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => {this.setState({changeVisible: true, pass:false})}}>
         <View style={styles.ButtonContainer}>
+        <Icon
+          size={40}
+          name='envelope'
+          type='evilicon'
+          color='#517fa4'
+        />
           <Button
-            onPress={() => this._onPressButton(store.email)}
-            title="Email"
+            onPress={() => {this.setState({changeVisible: true, pass:false})}}
+            title="Edit Email"
+            color="#517fa4"
             //color="#841584"
           />
+          <View style={styles.SwitchButton}>
+          <Icon
+          size={40}
+          name='chevron-right'
+          type='evilicon'
+          color='#517fa4'
+        />
         </View>
-        <View style={styles.ButtonContainer}>
-          <Button
-            onPress={() => this._onPressButton("Coming Soon!")}
-            title="Change Password"
-            //color="#841584"
-          />
         </View>
+        </TouchableHighlight>
+        
         <Text style={styles.Text}> Security </Text>
+        <TouchableHighlight onPress={() => {this.setState({changeVisible: true})}}>
         <View style={styles.ButtonContainer}>
+        <Icon
+          size={40}
+          name='lock'
+          type='evilicon'
+          color='#517fa4'
+        />
           <Button
-            onPress={() => this._onPressButton("Coming Soon!")}
-            title="Change Passcode"
-            //color="#841584"
+            onPress={() => {this.setState({changeVisible: true, pass:true})}}
+            title="Change Password"
+            color="#517fa4"
           />
+          <View style={styles.SwitchButton}>
+          <Icon
+          size={40}
+          name='chevron-right'
+          type='evilicon'
+          color='#517fa4'
+        />
         </View>
-
-<View style={styles.SwitchParent}>
-    <Button
-      onPress={void(0)}
-      title="Enable Face/Touch ID"
-      />
-   <View style={styles.SwitchButton}>
-    <Switch
-      onValueChange={this._handleToggleSwitch1}
-      value={this.state.switchValue1}
-      />
-  </View>
-</View>
-
+        </View>
+        </TouchableHighlight>
+       
+        <View style={styles.SwitchParent}>
+        <Icon
+          size={40}
+          name='pointer'
+          type='evilicon'
+          color='#517fa4'
+        />
+            <Button
+              onPress={void(0)}
+              title="Enable Face/Touch ID"
+              color="#517fa4"
+              />
+          <View style={styles.SwitchButton}>
+            <Switch
+              onValueChange={this._handleToggleSwitch1}
+              value={this.state.switchValue1}
+              />
+          </View>
+        </View>
         <Text style={styles.Text}> Notifications </Text>
 
 <View style={styles.SwitchParent}>
+<Icon
+          size={36}
+          name='bell'
+          type='evilicon'
+          color='#517fa4'
+        />
     <Button
       onPress={void(0)}
       title="Enable Push Notifications"
+      color="#517fa4"
       />
    <View style={styles.SwitchButton}>
     <Switch
@@ -140,9 +292,17 @@ state = {
 </View>
 
 <View style={styles.SwitchParent}>
+<Icon
+          size={40}
+          name='sc-telegram'
+          type='evilicon'
+          color='#517fa4'
+        />
+
     <Button
       onPress={void(0)}
       title="Enable Emails"
+      color="#517fa4"
       />
 
    <View style={styles.SwitchButton}>
@@ -157,9 +317,17 @@ state = {
 
 
         <View style={styles.SwitchParent}>
+        <Icon
+          size={40}
+          name='chart'
+          type='evilicon'
+          color='#517fa4'
+        />
+        
           <Button
             onPress={void(0)}
             title="Send Annonymous Statistics"
+            color="#517fa4"
             //color="#841584"
           />
           <View style={styles.SwitchButton}>
@@ -168,8 +336,31 @@ state = {
       value={this.state.switchValue4}
       />
   </View>
+  
         </View>
-
+        <TouchableHighlight onPress={() => navigate('Tos')}>
+        <View style={styles.SwitchParent}>
+        <Icon
+          size={40}
+          name='question'
+          type='evilicon'
+          color='#517fa4'
+        />
+          <Button
+            
+            title="Terms of Use"
+            color="#517fa4"
+          />
+          <View style={styles.SwitchButton}>
+          <Icon
+          size={40}
+          name='chevron-right'
+          type='evilicon'
+          color='#517fa4'
+        />
+        </View>
+        </View>
+        </TouchableHighlight>
       </ScrollView>
 
     );
@@ -204,6 +395,7 @@ flexDirection: 'row',
   },
   ButtonContainer: {
     margin: 6,
+    alignItems: 'center',
     flexDirection: 'row',
     borderRadius: 5,
     borderWidth: 1,
