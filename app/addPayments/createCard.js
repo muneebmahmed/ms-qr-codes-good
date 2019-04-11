@@ -65,8 +65,11 @@ export default class CreateCard extends React.Component {
       .then((response) => response.json())
       .then((responseJson) => {
         var confirm = responseJson['cardCreated'];
+        console.log(responseJson)
         if (confirm) {
           Alert.alert('Card Added!');
+          const {navigate} = this.props.navigation;
+          navigate('Wallet');
         } else
           Alert.alert(responseJson['message']);
       })

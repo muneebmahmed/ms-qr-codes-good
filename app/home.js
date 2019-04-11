@@ -100,11 +100,7 @@ export default class Home extends Component {
     }.bind(this)
     return (
       <View style={styles.container}>
-        <Text style={{marginTop: 100}}></Text>
-        <Button 
-            onPress={this.goToPayment.bind(this)} 
-            title="Go to Payments Page"
-        />
+        
         {cameraComponent()}
       </View>
     );

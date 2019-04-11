@@ -2,18 +2,37 @@ import React from 'react';
 import { Text, View, StyleSheet, ScrollView, Button, Alert, KeyboardAvoidingView } from 'react-native';
 import { styles } from '../styles';
 import {store} from '../store';
-import {host, updateStripeEndpoint} from '../constants';
+import {host, verifyStripe} from '../constants';
 import t from 'tcomb-form-native';
+import moment from 'moment';
 
 
 
 const Form = t.form.Form;
 
 const User = t.struct({
-  name: t.String,
-  routing_number: t.String,
-  account_number: t.String
+  Last_4_digits_of_your_Social_Security_Number: t.String,
+  address: t.String,
+  city: t.String,
+  state: t.String,
+  postal_code: t.String,
+  Birthday: t.Date,
 });
+
+let myFormatFunction = (format,date) =>{
+    return moment(date).format(format);
+}
+
+var options = {
+    fields: {
+      Birthday: {
+        mode: 'date',
+        config:{
+            format:(date) => myFormatFunction("MMM DD YYYY",date)
+        }
+      }
+    }
+  };
 
 const formStyles = {
   ...Form.stylesheet,
@@ -60,17 +79,16 @@ const s = StyleSheet.create({
   },
 });
 
-export default class CreateBank extends React.Component {
+export default class AddStripeDetail extends React.Component {
   constructor(props) {
     super(props);
   }
 
   _onSubmit() {
     const data = this._form.getValue();
-    console.log(data);
     if (data) {
-      console.log("lets add a bank")
-      var endpoint = host + updateStripeEndpoint;
+      console.log("lets add a stripe info")
+      var endpoint = host + verifyStripe;
       fetch(endpoint, {
           method: 'POST',
           headers: {
@@ -79,33 +97,24 @@ export default class CreateBank extends React.Component {
               'Authorization': store.authToken,
           },
           body: JSON.stringify({
-              email: store.email,
-              cvc: null,
-              expiry: null,
-              name : data.name,
-              number : null,
-              postalCode : null,
-              type: null,
-              card: false,
-              routing_number: data.routing_number,
-              account_number: data.account_number
+                email: store.email,
+                ssn_last_4: data.Last_4_digits_of_your_Social_Security_Number,
+                dob_day: myFormatFunction("DD",data.Birthday),
+                dob_month: myFormatFunction("MM",data.Birthday),
+                dob_year: myFormatFunction("YYYY",data.Birthday),
+                line1: data.address,
+                city: data.city,
+                state: data.state,
+                postal_code: data.postal_code,
           }),
       })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson['stripeVerified'])
-      var confirm = responseJson['bankCreated'];
+      var confirm = responseJson['verification'];
       if (confirm) {
-          Alert.alert('Bank Added!');
-          if (!responseJson['stripeVerified']) {
-            console.log('redirecting')
-            const {navigate} = this.props.navigation;
-            navigate('AddStripeDetail');
-            
-          } else {
-            const {navigate} = this.props.navigation;
-            navigate('Wallet');
-          }
+          Alert.alert('Verification Sent');
+          const {navigate} = this.props.navigation;
+          navigate('Wallet');
       } else
           Alert.alert(responseJson['message']);
       })
@@ -113,17 +122,19 @@ export default class CreateBank extends React.Component {
           console.error(error);
       });
     } else {
-      Alert.alert('Please enter valid bank information.');
+      Alert.alert('Please enter valid verification information.');
     }
   }
   
   render() {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-
+        <Text>Looks like we need a little more information from you, in order to transfer money to this bank account.</Text>
+        <Text></Text>
         <Form 
           ref={c => this._form = c}
           type={User} 
+          options={options}
         />
         <Button
           onPress={this._onSubmit.bind(this)}
