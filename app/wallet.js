@@ -105,12 +105,13 @@ export default class Wallet extends React.Component {
     .then((responseJson) => {
       this.setState({
         cards: responseJson.stripeData,
+        checked: responseJson.stripeData.primaryCard,
       })
       Alert.alert(responseJson.message);
     })
     .catch((error) => {
       //console.error(error);
-      //Alert.alert(error);
+      Alert.alert(error.message);
     });
   }
 
@@ -121,7 +122,7 @@ export default class Wallet extends React.Component {
       cards.push({
         title: this.state.cards.title[i],
         user: this.state.cards.name[i],
-        cardNumber: '*'.repeat(this.state.cards.numberOfDigits[i]) + this.state.cards.creditCardLastDigits[i],
+        cardNumber: '*'.repeat(this.state.cards.numberOfDigits[i] - this.state.cards.creditCardLastDigits[i].length) + this.state.cards.creditCardLastDigits[i],
         numberOfDigits: this.state.cards.numberOfDigits[i],
         lastDigits: this.state.cards.creditCardLastDigits[i],
         default: this.state.checked[i],
@@ -136,12 +137,30 @@ export default class Wallet extends React.Component {
       </View>
     );
   }
+  confirmDelete(index){
+    Alert.alert(
+      'Delete Payment Method',
+      'Are you sure you want to delete this payment method?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: this.deleteCards.bind(this, index)
+        }
+      ],
+      {cancelable: true},
+    );
+  }
   _renderItem(item, index){
     var swipeoutBtns = [
       {
         text: 'Delete',
         type: 'delete',
-        onPress: this.deleteCards.bind(this, index)
+        onPress: this.confirmDelete.bind(this, index)
       }
     ]
     return(

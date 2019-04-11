@@ -108,11 +108,11 @@ class Login extends Component {
             var now = new Date();
             now.setMinutes(now.getMinutes() + 10);
             store.logOutTime = now;
-            try {
-              AsyncStorage.setItem('TouchToken', responseJson['touchAuthToken']);
-            } catch(error){
-              console.log(error);
-            }
+            // try {
+            //   AsyncStorage.setItem('TouchToken', responseJson['touchAuthToken']);
+            // } catch(error){
+            //   console.log(error);
+            // }
             store.loggedIn = true;
             this.resetNavigation('Main');
           }

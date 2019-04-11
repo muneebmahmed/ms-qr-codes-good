@@ -108,7 +108,8 @@ export default class otherQR extends React.Component {
           style: 'cancel',
         },
         {
-          text: 'Yes',
+          text: 'Delete',
+          style: 'destructive',
           onPress: this.deleteCode.bind(this, index)
         }
       ],

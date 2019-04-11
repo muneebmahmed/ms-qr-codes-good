@@ -12,7 +12,7 @@ import AwesomeButton from "react-native-really-awesome-button/src/themes/blue";
 export default class Payments extends React.Component {
   constructor(props){
     super(props);
-    this.state = { text: '$10.00', amount: (store.scannedAmount == null)? 10 : store.scannedAmount };
+    this.state = { text: '$10.00', amount: (store.scannedAmount == null)? 10 : Number(store.scannedAmount).toFixed(2) };
     store.pendingPayment = false;
     this.authenticate();
   }
@@ -60,15 +60,15 @@ export default class Payments extends React.Component {
     }
   }
   increase(){
-    store.scannedAmount = this.state.amount + 1;
+    store.scannedAmount = Number(this.state.amount) + 1;
     this.setState({
-      amount: store.scannedAmount
+      amount: Number(store.scannedAmount).toFixed(2)
     })
   }
   decrease(){
-    store.scannedAmount = this.state.amount <= 1? 0 : this.state.amount - 1;
+    store.scannedAmount = Number(this.state.amount) <= 1? 0 : Number(this.state.amount) - 1;
     this.setState({
-      amount: store.scannedAmount
+      amount: Number(store.scannedAmount).toFixed(2)
     })
   }
 
@@ -88,7 +88,8 @@ export default class Payments extends React.Component {
           textAlign={'center'}
           keyboardType='numeric'
           onChangeText={(text) => this.setState({amount: text})}
-          value={Number(this.state.amount).toFixed(2)}
+          onBlur={() => this.setState({amount: Number(this.state.amount).toFixed(2)})}
+          value={String(this.state.amount)}
         />
         </View>
         <View style={s.container}>

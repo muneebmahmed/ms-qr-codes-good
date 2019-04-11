@@ -30,6 +30,7 @@ export default class confirmPay extends React.Component {
 			},
 			body: JSON.stringify({
 				email: store.email,
+				password: this.state.password,
 				receiverID: store.scannedId,
 				amount: store.scannedAmount,
 			}),
