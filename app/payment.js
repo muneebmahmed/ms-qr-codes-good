@@ -1,9 +1,12 @@
 import React from 'react';
-import {Button, Text, View, TextInput } from 'react-native';
+import {Button, Text, View, TextInput, StyleSheet} from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
+import { Icon } from 'react-native-elements';
 import {styles} from './styles';
 import {store} from './store';
-import {host, saveCodePoint} from './constants';
+import {host, saveCodePoint, HEIGHT, WIDTH} from './constants';
+import AwesomeButton from "react-native-really-awesome-button/src/themes/blue";
+
 
 
 export default class Payments extends React.Component {
@@ -68,29 +71,58 @@ export default class Payments extends React.Component {
       amount: store.scannedAmount
     })
   }
+
+  go() {
+    this.pushNavigation('ConfirmPayment')
+  }
   render() {
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
+      <View style={{ paddingBottom: HEIGHT*.25, width: WIDTH * .75 }}>
+      <View style={{alignItems: 'center',justifyContent: 'center'}}>
+      <Text style={{color:'#2F4F4F', fontSize: 24, fontWeight: 'bold', paddingBottom: WIDTH*.05}}> Select Amount:</Text>
         <TextInput
-          style={{height: 40, width: 100, borderColor: 'gray', borderWidth: 1, justifyContent: 'center'}}
+          color='#2F4F4F'
+          style={{height: WIDTH * .2, width: WIDTH * .5, borderColor: 'gray', fontSize: 40, borderWidth: 1, justifyContent: 'center'}}
           textAlign={'center'}
           keyboardType='numeric'
           onChangeText={(text) => this.setState({amount: text})}
           value={Number(this.state.amount).toFixed(2)}
         />
-        <Button
-          onPress={this.increase.bind(this)}
-          title="Plus One"/>
-        <Button
-          onPress={this.decrease.bind(this)}
-          title="Minus One"/>
-        <Button
-          title="Next"
-          onPress={() => this.pushNavigation('ConfirmPayment')}
-        />
+        </View>
+        <View style={s.container}>
+        <View style={{padding:20}}>
+            <Icon
+  					name='minus'
+  					type='evilicon'
+  					size={100}
+  					color='#2F4F4F'
+  					onPress={this.decrease.bind(this)}/>
+            </View>
+            <View style={{padding:20}}>
+          <Icon
+  					name='plus'
+  					type='evilicon'
+  					size={100}
+  					color='#2F4F4F'
+  					onPress={this.increase.bind(this)}/>
+            </View>
+        </View>
+        <AwesomeButton stretch onPress={this.go.bind(this)}>Next</AwesomeButton>
+        
+        </View>
       </View>
       );
 
   }
 }
+
+
+const s = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

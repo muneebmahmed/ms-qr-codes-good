@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, CameraRoll, Dimensions, Button, Modal, View, TextInput, Image, Alert, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import {KeyboardAvoidingView, Platform, CameraRoll, Dimensions, Button, Modal, View, TextInput, Image, Alert, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Card, Icon, CheckBox } from 'react-native-elements';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {styles} from '../styles';
@@ -128,6 +128,7 @@ export default class CreateQR extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
+      <KeyboardAvoidingView  behavior="padding" enabled>
       <ModalQR
             animationType='slide'
             transparent={false}
@@ -152,13 +153,16 @@ export default class CreateQR extends React.Component {
           keyboardType='numeric'
           onChangeText={(amount) => this.setState({amount})}
         />
+        <View style={{alignItems: 'center',justifyContent: 'center'}}>
         <CheckBox containerStyle={{width: 130}} title='Service' checked={this.state.checked[0]} onPress={this.updateCheck.bind(this, 0)} />
         <CheckBox containerStyle={{width: 130}} title='Donation' checked={this.state.checked[1]} onPress={this.updateCheck.bind(this, 1)} />
+        </View>
         <Button
           onPress={this.onPressSubmit.bind(this)}
           title="Submit"
           color="#841584"
         />
+        </KeyboardAvoidingView>
       </View>
       </TouchableWithoutFeedback>
       );

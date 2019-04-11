@@ -2,9 +2,7 @@ import React from 'react';
 import { Platform, Dimensions, Text, View, StyleSheet, Button, ScrollView, Image, TouchableHighlight, Modal } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
-
-const HEIGHT = Dimensions.get('window').height;
-const WIDTH = Dimensions.get('window').width;
+import {HEIGHT, WIDTH} from '../constants';
 
 export default class ModalQR extends React.Component{
 	constructor(props){

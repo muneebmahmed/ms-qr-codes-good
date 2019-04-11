@@ -4,8 +4,7 @@ import { Card, Icon, CheckBox } from 'react-native-elements';
 import {StackActions, NavigationActions} from 'react-navigation';
 import Swipeout from 'react-native-swipeout';
 import {store} from './store';
-import {host, cardEndpoint} from './constants';
-import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
+import {host, cardEndpoint, deletePayment} from './constants';
 
 
 const debug = false;
@@ -13,7 +12,7 @@ const debug = false;
 export default class Wallet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { dataAvailable: false, checked: [], refreshing: false};
+    this.state = { dataAvailable: false, cards: [], checked: [], refreshing: false};
     this.authenticate();
   }
   resetNavigation(targetRoute) {
@@ -49,6 +48,7 @@ export default class Wallet extends React.Component {
     })
     .then((response) => response.json())
     .then((responseJson) =>{
+      console.log(responseJson)
       this.setState({
         dataAvailable: true,
         cards: responseJson,
@@ -87,6 +87,33 @@ export default class Wallet extends React.Component {
     this.setState({checked: checked});
   }
 
+  deleteCards(index){
+    var endpoint = host + deletePayment;
+    fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': store.authToken,
+      },
+      body: JSON.stringify({
+        loginAuthToken: store.authToken,
+        deleteIndex: index,
+      }),
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState({
+        cards: responseJson.stripeData,
+      })
+      Alert.alert(responseJson.message);
+    })
+    .catch((error) => {
+      //console.error(error);
+      //Alert.alert(error);
+    });
+  }
+
   getCards(){
     var text = [];
     cards = [];
@@ -108,26 +135,13 @@ export default class Wallet extends React.Component {
         />
       </View>
     );
-    /*
-    for (i in this.state.cards.title){
-      let title = this.state.cards.title[i];
-      let user = this.state.cards.name[i];
-      let cardNumber = '*'.repeat(this.state.cards.numberOfDigits[i]) + this.state.cards.creditCardLastDigits[i];
-      text.push(
-          <Card title={title}>
-            <Text style={{marginBottom: 10}}> Card Holder: {user} </Text>
-            <Text sytle={{marginBottom: 10}}> Card Number: {cardNumber} </Text>
-            <CheckBox title='Primary Payment Method' checked={this.state.checked[i]} onPress={this.updateCheck.bind(this, i)} />
-          </Card>
-      )
-    }
-    return text;*/
   }
   _renderItem(item, index){
     var swipeoutBtns = [
       {
         text: 'Delete',
         type: 'delete',
+        onPress: this.deleteCards.bind(this, index)
       }
     ]
     return(
@@ -168,10 +182,9 @@ export default class Wallet extends React.Component {
           >
             {this.getCards()}
           </ScrollView>
-        <View style={styles.bottom}>
-        <View style={styles.row}>
-        <AwesomeButtonRick stretch={true} onPress={() => navigate('AddPayment')} type="primary">Add New Payment Method</AwesomeButtonRick></View>
-
+          
+          <Button onPress={() => navigate('AddPayment')} title="Add New Payment Method"/>
+          <View style={styles.bottom}>
           </View>
       </View>
     );
@@ -202,6 +215,6 @@ const styles = StyleSheet.create({
   bottom: {
     flex: 1,
     justifyContent: 'flex-end',
-    marginBottom: 36
+    marginBottom: 20,
   },
 });

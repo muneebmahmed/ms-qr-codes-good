@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text, View, StyleSheet, ScrollView, Button, Alert, KeyboardAvoidingView } from 'react-native';
+import { View, Keyboard, StyleSheet, TouchableWithoutFeedback, Button, Alert, KeyboardAvoidingView } from 'react-native';
 import { styles } from '../styles';
 import {store} from '../store';
-import {host, updateStripeEndpoint} from '../constants';
+import {host, updateStripeEndpoint, HEIGHT, WIDTH} from '../constants';
 import t from 'tcomb-form-native';
 
 
@@ -119,8 +119,10 @@ export default class CreateBank extends React.Component {
   
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+      <KeyboardAvoidingView  behavior="padding" enabled>
+      <View style={{ paddingBottom: HEIGHT*.25, width: WIDTH * .75 }}>
         <Form 
           ref={c => this._form = c}
           type={User} 
@@ -129,8 +131,10 @@ export default class CreateBank extends React.Component {
           onPress={this._onSubmit.bind(this)}
           backgroundColor='#03A9F4'
           title='Submit' />
-
+          </View>
       </KeyboardAvoidingView>
+      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
