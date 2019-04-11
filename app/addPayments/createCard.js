@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, View, StyleSheet, ScrollView, Button, Alert, KeyboardAvoidingView } from 'react-native';
+import { TouchableWithoutFeedback, View, StyleSheet, Keyboard, Button, Alert, KeyboardAvoidingView } from 'react-native';
 import { styles } from '../styles';
 import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input";
 import {store} from '../store';
-import {host, updateStripeEndpoint} from '../constants';
+import {host, updateStripeEndpoint, HEIGHT} from '../constants';
 
 const s = StyleSheet.create({
   switch: {
@@ -83,9 +83,11 @@ export default class CreateCard extends React.Component {
   _onChange(formData) { this.setState({ formData }); }
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+      <KeyboardAvoidingView  behavior="padding" enabled>
 
-        <View style={{ width: 400 }}>
+        <View style={{ paddingBottom: HEIGHT*.2, width: 400 }}>
           <CreditCardInput
             autoFocus
             input
@@ -100,13 +102,15 @@ export default class CreateCard extends React.Component {
             placeholderColor={"darkgray"}
             onFocus={this._onFocus}
             onChange={this._onChange.bind(this)} />
-        </View>
+       
         <Button
           onPress={this._onSubmit.bind(this)}
           backgroundColor='#03A9F4'
           title='Submit' />
-
+ </View>
       </KeyboardAvoidingView>
+      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
