@@ -4,7 +4,7 @@ import {StackActions, NavigationActions} from 'react-navigation';
 import QRCode from 'react-native-qrcode-svg';
 import Swipeout from 'react-native-swipeout';
 import {store} from '../store';
-import {host, getOtherCodes} from '../constants';
+import {host, getOtherCodes, deleteSavedCode} from '../constants';
 import ModalQR from './ModalQR';
 
 export default class otherQR extends React.Component {
@@ -73,11 +73,54 @@ export default class otherQR extends React.Component {
       amounts: [10, 10, 10, 10, 10, 10],
     })
   }
+  deleteCode(index){
+    var endpoint = host + deleteSavedCode;
+    fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': store.authToken,
+      },
+      body: JSON.stringify({
+        deleteID: this.state.qrcodes[index].qrCodeID,
+      }),
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState({
+        qrcodes: this.state.qrcodes.filter(function(value, i, arr) { return i != index; }),
+      })
+      Alert.alert(responseJson.message);
+    })
+    .catch((error) => {
+      //console.error(error);
+      //Alert.alert(error);
+    });
+  }
+  confirmDelete(index){
+    Alert.alert(
+      'Delete QR Code',
+      'Are you sure you want to delete this code?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: this.deleteCode.bind(this, index)
+        }
+      ],
+      {cancelable: true},
+    );
+  }
   _renderItem(item, index){
     var swipeoutBtns = [
       {
         text: 'Delete',
         type: 'delete',
+        onPress: this.confirmDelete.bind(this, index)
       }
     ]
     return(
@@ -151,7 +194,7 @@ export default class otherQR extends React.Component {
     return jsx;*/
   }
   pay(){
-      store.scannedId = this.state.viewQr.qrCodeID;
+      store.scannedId = this.state.viewQr.qrCodeUserID;
       store.pendingPayment = true;
       store.scannedAmount = this.state.viewQr.qrCodeDefaultAmount;
       store.scannedType = this.state.viewQr.qrCodeType;

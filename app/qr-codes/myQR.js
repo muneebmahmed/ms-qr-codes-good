@@ -102,12 +102,29 @@ export default class myQR extends React.Component {
       //Alert.alert(error);
     });
   }
+  confirmDelete(index){
+    Alert.alert(
+      'Delete QR Code',
+      'Are you sure you want to delete this code?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: this.deleteCode.bind(this, index)
+        }
+      ],
+      {cancelable: true},
+    );
+  }
   _renderItem(item, index){
     var swipeoutBtns = [
       {
         text: 'Delete',
         type: 'delete',
-        onPress: this.deleteCode.bind(this, index)
+        onPress: this.confirmDelete.bind(this, index)
       }
     ]
     return(
