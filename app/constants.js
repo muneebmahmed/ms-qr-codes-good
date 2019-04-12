@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native';
-export const host = 'https://qrcodes4good.com:8080';
+export const host = 'https://qrcodes4good.com';
 export const cardEndpoint = '/api/user/getCards/';
 export const loginEndpoint = '/api/user/login';
 export const touchEndpoint = '/api/user/bioLogin';

@@ -5,11 +5,9 @@ import {createStackNavigator, createDrawerNavigator, NavigationActions, DrawerAc
 import {styles} from '../styles';
 import Login from '../login/signIn';
 import CreateAccount from '../login/createAccount';
-import ForgotPassword from '../login/forgotPassword';
 import AppNavigator from './AppNavigation';
 import Payment from '../payment';
 import Tos from '../login/tos';
-import generatedQR from '../qr-codes/generatedQR';
 import confirmPay from '../confirmPayment';
 import AddPayNavigator from '../addPayments/addPayment';
 import AddStripeDetail from '../addPayments/addStripeDetail';
@@ -28,11 +26,9 @@ import {menuColor} from '../constants';
 
 const MainNavigator = createStackNavigator({
 	LoginScreen: {screen: Login},
-	Forgot: { screen: ForgotPassword },
 	Create: { screen: CreateAccount},
 	Tos: {screen : Tos},
 	Payment: {screen: Payment},
-	Generated: {screen: generatedQR},
 	ConfirmPayment: {screen: confirmPay},
 	AddPayment: {screen : AddPayNavigator},
 	AddStripeDetail: {screen : AddStripeDetail},
