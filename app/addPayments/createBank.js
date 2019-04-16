@@ -11,8 +11,8 @@ const Form = t.form.Form;
 
 const User = t.struct({
   name: t.String,
-  routing_number: t.String,
-  account_number: t.String
+  routing_number: t.Number,
+  account_number: t.Number
 });
 
 const formStyles = {

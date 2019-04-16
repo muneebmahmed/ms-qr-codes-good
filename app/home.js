@@ -91,6 +91,12 @@ export default class Home extends Component {
   render() {
     
     const {navigate} = this.props.navigation;
+    var debug = false;
+    var debugPay = function() {
+      if (debug){
+        return (<Button onPress={this.goToPayment.bind(this)} title="Go to Payments Page" />)
+      }else { return null}
+    }.bind(this)
     var cameraComponent = function() {
         if (this.state.cameraVisible) {
             return (<CameraView navigator={this.props.navigation}/>)
@@ -101,10 +107,7 @@ export default class Home extends Component {
     return (
       <View style={styles.container}>
         <Text style={{marginTop: 100}}></Text>
-        <Button 
-            onPress={this.goToPayment.bind(this)} 
-            title="Go to Payments Page"
-        />
+        {debugPay()}
         {cameraComponent()}
       </View>
     );

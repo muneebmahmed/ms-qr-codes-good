@@ -15,15 +15,6 @@ import EditStripeDetail from '../addPayments/editStripeDetail';
 import {store} from '../store';
 import {menuColor} from '../constants';
 
-// const MenuButton = (
-// 	<View>
-// 		<Icon
-// 			name="md-menu"
-// 			color='white'
-// 			onPress={() => navigation.navigate('DrawerOpen')}/>
-// 	</View >
-// );
-
 const MainNavigator = createStackNavigator({
 	LoginScreen: {screen: Login},
 	Create: { screen: CreateAccount},

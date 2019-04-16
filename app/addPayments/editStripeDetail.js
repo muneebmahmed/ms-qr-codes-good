@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, ScrollView, Button, Alert, KeyboardAvoidingView } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, Button, Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { styles } from '../styles';
 import {store} from '../store';
 import {host, verifyStripe} from '../constants';
@@ -83,6 +83,15 @@ export default class AddStripeDetail extends React.Component {
   constructor(props) {
     super(props);
   }
+  static navigationOptions = {
+        title: 'Personal Information',
+        headerMode: 'screen',
+        headerTitle: 'Personal Information',
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
+  };
 
   _onSubmit() {
     const data = this._form.getValue();
@@ -128,6 +137,7 @@ export default class AddStripeDetail extends React.Component {
   
   render() {
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <Text>Please enter all current and valid personal information to allow payouts to your bank.</Text>
         <Text></Text>
@@ -142,6 +152,7 @@ export default class AddStripeDetail extends React.Component {
           title='Submit' />
 
       </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     );
   }
 }

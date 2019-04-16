@@ -19,10 +19,9 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import TouchID from 'react-native-touch-id';
 import DeviceInfo from 'react-native-device-info';
 import {store} from '../store';
-import {host, loginEndpoint, touchEndpoint, forgotEndpoint} from '../constants';
+import {host, loginEndpoint, touchEndpoint, forgotEndpoint, HEIGHT, WIDTH} from '../constants';
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
 import Dialog from "react-native-dialog";
-import {HEIGHT, WIDTH} from '../constants';
 import logo from '../images/logo.png';
 
 //import {styles} from './styles'
@@ -233,7 +232,7 @@ class Login extends Component {
       }),
       Animated.timing(this.imageHeight, {
         duration: event.duration,
-        toValue: WIDTH / 4,
+        toValue: WIDTH / 5,
       }),
     ]).start();
   };
@@ -329,7 +328,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding:10,
     marginTop:20
-},
+  },
 });
 
 export default Login;

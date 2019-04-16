@@ -11,6 +11,15 @@ const AddPayNavigator = createMaterialTopTabNavigator({
 },
 {
 	swipeEnabled: false,
-})
+});
+
+AddPayNavigator.navigationOptions = ({ navigation }) => {
+  //const { routeName } = navigation.state.routes[navigation.state.index];
+
+  const headerTitle = "Add Payment Method";
+  return {
+    headerTitle,
+  };
+};
 
 export default AddPayNavigator;

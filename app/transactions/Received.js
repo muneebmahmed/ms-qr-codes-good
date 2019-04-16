@@ -25,7 +25,7 @@ export default class Received extends React.Component {
         Alert.alert("Your token has expired");
       }
       store.pendingRedirect = true;
-      store.redirectDest = 'Transactions';
+      store.redirectDest = 'Transaction History';
       this.resetNavigation('LoginScreen');
     }
   }

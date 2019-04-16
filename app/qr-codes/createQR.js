@@ -105,7 +105,7 @@ export default class CreateQR extends React.Component {
         Alert.alert("Your token has expired");
       }
       store.pendingRedirect = true;
-      store.redirectDest = 'Create QR';
+      store.redirectDest = 'Create QR Code';
       this.resetNavigation('LoginScreen');
     }
   }

@@ -16,6 +16,15 @@ export default class Payments extends React.Component {
     store.pendingPayment = false;
     this.authenticate();
   }
+  static navigationOptions = {
+        title: 'Select Amount',
+        headerMode: 'screen',
+        headerTitle: 'Select Amount',
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
+  };
   resetNavigation(targetRoute) {
     const resetAction = StackActions.reset({
       index: 0,

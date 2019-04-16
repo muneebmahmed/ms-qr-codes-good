@@ -7,7 +7,7 @@ import {host, loginEndpoint, touchEndpoint, updatePersonal} from './constants';
 import { Icon } from 'react-native-elements';
 import Dialog from "react-native-dialog";
 
-export default class Settings2 extends Component {
+export default class Settings extends Component {
   constructor(props){
     super(props);
     this.authenticate();
@@ -35,7 +35,7 @@ export default class Settings2 extends Component {
       },
       body: JSON.stringify({
         email: store.email,
-        newEmail: this.state.pass ? undefined : this.state.newEmail,
+        newEmail: (this.state.pass || this.state.name) ? undefined : this.state.newEmail,
         name: this.state.name? this.state.newName: null,
         currentPassword: this.state.oldPass,
         newPassword: this.state.pass ? this.state.newPass: undefined,
@@ -118,10 +118,10 @@ state = {
       <Dialog.Container visible={this.state.changeVisible}>
           {this.state.name ? <Dialog.Title>Change Name</Dialog.Title> : this.state.pass?<Dialog.Title>Change Password</Dialog.Title> : <Dialog.Title>Change Email</Dialog.Title>}
           {this.state.name?<Dialog.Description> Please enter your new name</Dialog.Description>: this.state.pass?<Dialog.Description> Please enter your old and new password </Dialog.Description> :<Dialog.Description> Please enter your new Email </Dialog.Description>}
-          {this.state.pass?<Dialog.Input label="Old Password:" value={this.state.oldPass} onChangeText={(username) => this.setState({oldPass: username})} /> : <Dialog.Input label="Email:" value={this.state.newEmail} onChangeText={(username) => this.setState({newEmail: username})} /> }
-          {this.state.pass?<Dialog.Input label="New Password:"value={this.state.newPass} onChangeText={(username) => this.setState({newPass: username})} />: <Dialog.Input label="Password:" value={this.state.oldPass} onChangeText={(username) => this.setState({oldPass: username})} />}
-          {this.state.pass?<Dialog.Input label="Confirm New Password:"value={this.state.confirmPass} onChangeText={(username) => this.setState({confirmPass: username})} />: null}
-          {this.state.name?<Dialog.Input label="Name:"value={this.state.newName} onChangeText={(username) => this.setState({newName: username})} />: null}
+          {this.state.pass?<Dialog.Input placeholder="Old Password" value={this.state.oldPass} onChangeText={(username) => this.setState({oldPass: username})} /> : <Dialog.Input placeholder="Email" value={this.state.newEmail} onChangeText={(username) => this.setState({newEmail: username})} /> }
+          {this.state.pass?<Dialog.Input placeholder="New Password"value={this.state.newPass} onChangeText={(username) => this.setState({newPass: username})} />: <Dialog.Input placeholder="Password" value={this.state.oldPass} onChangeText={(username) => this.setState({oldPass: username})} />}
+          {this.state.pass?<Dialog.Input placeholder="Confirm New Password"value={this.state.confirmPass} onChangeText={(username) => this.setState({confirmPass: username})} />: null}
+          {this.state.name?<Dialog.Input placeholder="Name"value={this.state.newName} onChangeText={(username) => this.setState({newName: username})} />: null}
           <Dialog.Button label="Cancel" onPress={() => {this.setState({changeVisible: false})}} />
           <Dialog.Button label="OK" onPress={this.changeInfo.bind(this)} />
         </Dialog.Container>
@@ -200,7 +200,7 @@ state = {
         </View>
         </View>
         </TouchableHighlight>
-        <TouchableHighlight onPress={() => {this.setState({changeVisible: true, pass:false})}}>
+        <TouchableHighlight onPress={() => {this.setState({changeVisible: true, pass:false, name: false})}}>
         <View style={styles.ButtonContainer}>
         <Icon
           size={40}
@@ -209,7 +209,7 @@ state = {
           color='#517fa4'
         />
           <Button
-            onPress={() => {this.setState({changeVisible: true, pass:false})}}
+            onPress={() => {this.setState({changeVisible: true, pass:false, name: false})}}
             title="Edit Email"
             color="#517fa4"
             //color="#841584"
@@ -226,7 +226,7 @@ state = {
         </TouchableHighlight>
         
         <Text style={styles.Text}> Security </Text>
-        <TouchableHighlight onPress={() => {this.setState({changeVisible: true})}}>
+        <TouchableHighlight onPress={() => {this.setState({changeVisible: true, pass: true, name: false})}}>
         <View style={styles.ButtonContainer}>
         <Icon
           size={40}
@@ -235,7 +235,7 @@ state = {
           color='#517fa4'
         />
           <Button
-            onPress={() => {this.setState({changeVisible: true, pass:true})}}
+            onPress={() => {this.setState({changeVisible: true, pass:true, name: false})}}
             title="Change Password"
             color="#517fa4"
           />
@@ -350,6 +350,7 @@ state = {
             
             title="Terms of Use"
             color="#517fa4"
+            onPress={() => navigate('Tos')}
           />
           <View style={styles.SwitchButton}>
           <Icon
@@ -383,7 +384,8 @@ flexDirection: 'row',
   Text: {
    margin: 6,
    fontSize: 18,
-flexDirection: 'row',
+    flexDirection: 'row',
+    color: '#aaaaaa',
 
 
   },

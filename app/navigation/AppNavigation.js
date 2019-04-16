@@ -12,7 +12,6 @@ import Info from '../info';
 import Help from '../help';
 import transNavigator from '../transactions/transactions';
 import LogOut from '../LogOut';
-import generatedQR from '../qr-codes/generatedQR';
 import {store} from '../store';
 import {menuColor} from '../constants';
 
@@ -44,9 +43,9 @@ const DrawerContent = (props) => (
 
 const AppNavigator = createDrawerNavigator({
 	Home: {screen: Home},
-	"Transactions": {screen: transNavigator},
+	"Transaction History": {screen: transNavigator},
   Wallet: { screen: Wallet},
-	"Create QR": {screen: CreateQR},
+	"Create QR Code": {screen: CreateQR},
   "Saved QR Codes": {screen: qrNavigator},
   Settings: {screen: Settings},
 	Info: { screen: Info},

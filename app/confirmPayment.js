@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Text, View, TextInput, Modal, TouchableHighlight, Picker, StyleSheet, Alert } from 'react-native';
+import {Button, Text, View, TextInput, Modal, TouchableHighlight, Picker, StyleSheet, Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {store} from './store';
 import {host, cardEndpoint, transaction} from './constants';
@@ -16,6 +16,15 @@ export default class confirmPay extends React.Component {
 			password: '',
 		}
 	}
+	static navigationOptions = {
+		title: 'Confirm Payment',
+		headerMode: 'screen',
+		headerTitle: 'Confirm Payment',
+		headerTintColor: '#fff',
+		headerTitleStyle: {
+			fontWeight: 'bold',
+		},
+	};
 	initiatePayment(){
 		const {navigate} = this.props.navigation;
 		console.log(store.email, store.scannedId, store.scannedAmount, store.authToken);
@@ -87,20 +96,20 @@ export default class confirmPay extends React.Component {
 	      refreshing: false
 	    })
 	    }
-  	}
-  	_setModalVisible = visible => {
-  		this.setState({modalVisible: visible});
-  	};
-  	getDefaultCard(){
-  		return(
-  			<View>
-  				<TouchableHighlight style={styles.input} onPress={() => {this.setState({modalVisible: true})}}>
-  					<Text>{this.state.cards.title[this.state.selected]} {this.state.cards.creditCardLastDigits[this.state.selected]}</Text>
-  				</TouchableHighlight>
-  			</View>
-  		);
-  	}
-  	_touchPayment(){
+	}
+	_setModalVisible = visible => {
+		this.setState({modalVisible: visible});
+	};
+	getDefaultCard(){
+		return(
+			<View>
+				<TouchableHighlight style={styles.input} onPress={() => {this.setState({modalVisible: true})}}>
+					<Text>{this.state.cards.title[this.state.selected]} {this.state.cards.creditCardLastDigits[this.state.selected]}</Text>
+				</TouchableHighlight>
+			</View>
+		);
+	}
+	_touchPayment(){
   		const {navigate} = this.props.navigation;
 		console.log(store.email, store.scannedId, store.scannedAmount, store.authToken);
 		var endpoint = host + transaction;
@@ -131,32 +140,50 @@ export default class confirmPay extends React.Component {
 			console.error(error);
 		});
   	}
-  	renderTouchID(){
-    	if (store.biometryType == 'None'){
-      		return null;
-    	}
-    	return(
-        	<Button
-          		title={'Pay with ' + store.biometryType}
-          		style={styles.input}
-          		onPress={this._touchPayment.bind(this)}
-        	/>
-    	);
-  	}
-  	componentDidMount(){
-  		this.fetchCardData();
-  	}
+	renderTouchID(){
+		if (store.biometryType == 'None'){
+	  		return null;
+		}
+		return(
+			<Button
+				title={'Pay with ' + store.biometryType}
+				style={styles.input}
+				onPress={this._touchPayment.bind(this)}
+			/>
+		);
+	}
+	componentDidMount(){
+		this.fetchCardData();
+	}
+	confirmPay(){
+		Alert.alert(
+			'Payment',
+			'Are you sure you want to pay $' + String(store.scannedAmount) + '?',
+			[
+				{
+					text: 'Cancel',
+					style: 'cancel',
+				},
+				{
+					text: 'Confirm',
+					onPress: this.initiatePayment.bind(this)
+				}
+			],
+			{cancelable: true},
+		);
+	}
 	render(){
 		if (!this.state.dataAvailable){
-	      return (
-	        <View style={styles.container}>
-	        	<Text> Data Unavailable </Text>
-	        </View>
-	      );
-    	}
-    	var options = this.state.cards.title;
+			return (
+				<View style={styles.container}>
+					<Text> Data Unavailable </Text>
+				</View>
+			);
+		}
+		var options = this.state.cards.title;
 		return(
-			<View style={styles.container}>
+			<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+			<KeyboardAvoidingView style={styles.container}>
 				{this.getDefaultCard()}
 				
 				<Modal
@@ -181,25 +208,26 @@ export default class confirmPay extends React.Component {
 				</Modal>
 				
 				<TextInput
-		          value={this.state.username}
-		          onChangeText={(username) => this.setState({username})}
-		          placeholder={'Username'}
-		          style={styles.input}
-		        />
-		        <TextInput
-		          value={this.state.password}
-		          onChangeText={(password) => this.setState({password})}
-		          placeholder={'Password'}
-		          secureTextEntry={true}
-		          style={styles.input}
-		        />
-		        <Button
-		          title={'Pay'}
-		          style={styles.input}
-		          onPress={this.initiatePayment.bind(this)}
-		        />
-		        {this.renderTouchID()}
-			</View>
+					value={this.state.username}
+					onChangeText={(username) => this.setState({username})}
+					placeholder={'Username'}
+					style={styles.input}
+				/>
+				<TextInput
+					value={this.state.password}
+					onChangeText={(password) => this.setState({password})}
+					placeholder={'Password'}
+					secureTextEntry={true}
+					style={styles.input}
+				/>
+				<Button
+					title={'Pay'}
+					style={styles.input}
+					onPress={this.confirmPay.bind(this)}
+				/>
+				{/*this.renderTouchID()*/}
+			</KeyboardAvoidingView>
+			</TouchableWithoutFeedback>
 		);
 	}
 }

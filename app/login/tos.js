@@ -12,6 +12,15 @@ export default class Tos extends React.Component {
     super(props);
     this.authenticate();
   }
+  static navigationOptions = {
+        title: 'Terms of Service',
+        headerMode: 'screen',
+        headerTitle: 'Terms of Service',
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
+  };
   resetNavigation(targetRoute) {
     const resetAction = StackActions.reset({
       index: 0,
