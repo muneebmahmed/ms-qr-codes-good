@@ -1,5 +1,20 @@
 import React, {Component} from 'react';
-import {StyleSheet, Button, Text, TextInput, Image, View, Platform, Alert, AsyncStorage, TouchableHighlight, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import {
+  StyleSheet,
+  Button,
+  Text,
+  TextInput,
+  Image,
+  View,
+  Platform,
+  Alert,
+  AsyncStorage,
+  TouchableHighlight,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Animated
+} from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import TouchID from 'react-native-touch-id';
 import DeviceInfo from 'react-native-device-info';
@@ -7,6 +22,8 @@ import {store} from '../store';
 import {host, loginEndpoint, touchEndpoint, forgotEndpoint} from '../constants';
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick';
 import Dialog from "react-native-dialog";
+import {HEIGHT, WIDTH} from '../constants';
+import logo from '../images/logo.png';
 
 //import {styles} from './styles'
 
@@ -20,6 +37,8 @@ class Login extends Component {
       dataAvailable: false,
       bioString: '',
     };
+    this.keyboardHeight = new Animated.Value(0);
+    this.imageHeight = new Animated.Value(WIDTH / 2);
   };
   static navigationOptions = {
     title: 'Login',
@@ -197,6 +216,40 @@ class Login extends Component {
   componentDidMount(){
     this.getBioString();
   }
+  componentWillMount () {
+    this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
+    this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
+  }
+
+  componentWillUnmount() {
+    this.keyboardWillShowSub.remove();
+    this.keyboardWillHideSub.remove();
+  }
+  keyboardWillShow = (event) => {
+    Animated.parallel([
+      Animated.timing(this.keyboardHeight, {
+        duration: event.duration,
+        toValue: event.endCoordinates.height,
+      }),
+      Animated.timing(this.imageHeight, {
+        duration: event.duration,
+        toValue: WIDTH / 4,
+      }),
+    ]).start();
+  };
+
+  keyboardWillHide = (event) => {
+    Animated.parallel([
+      Animated.timing(this.keyboardHeight, {
+        duration: event.duration,
+        toValue: 0,
+      }),
+      Animated.timing(this.imageHeight, {
+        duration: event.duration,
+        toValue: WIDTH / 2,
+      }),
+    ]).start();
+  };
 
   render() {
     if (!this.state.dataAvailable){
@@ -205,7 +258,8 @@ class Login extends Component {
     const {navigate} = this.props.navigation;
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
+      <Animated.View style={[styles.container, { paddingBottom: this.keyboardHeight }]}>
+        <Animated.Image source={logo} style={[styles.logo, { height: this.imageHeight }]} />
         <TextInput
           value={this.state.username}
           onChangeText={(username) => this.setState({username})}
@@ -242,14 +296,9 @@ class Login extends Component {
           <Dialog.Button label="OK" onPress={this.forgotPassword.bind(this)} />
         </Dialog.Container>
 
-      </View>
+      </Animated.View>
       </TouchableWithoutFeedback>
       ); 
-        /* TODO: forgot password page
-        <Button
-            onPress={() => navigate('Forgot')}
-            title="Forgot Password?"
-        />*/
   }
 };
 
@@ -274,6 +323,13 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'flex-end'
   },
+  logo: {
+    height: WIDTH / 2,
+    resizeMode: 'contain',
+    marginBottom: 20,
+    padding:10,
+    marginTop:20
+},
 });
 
 export default Login;
