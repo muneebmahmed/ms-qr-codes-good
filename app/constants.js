@@ -18,6 +18,7 @@ export const getOtherCodes = '/api/user/getSavedQRCodes';
 export const getTransactions = '/api/user/transactionHistory';
 export const forgotEndpoint = '/api/user/forgotPassword';
 export const deleteSavedCode = '/api/user/deleteSavedQRCode';
+export const tosEndpoint = '/api/user/tosUpdate';
 export const menuColor = '#0070c0';
 export let HEIGHT = Dimensions.get('window').height;
 export let WIDTH = Dimensions.get('window').width;

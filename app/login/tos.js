@@ -4,11 +4,8 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import TouchID from 'react-native-touch-id';
 import DeviceInfo from 'react-native-device-info';
 import {store} from '../store';
-import {styles} from '../styles'
-//import {styles} from './styles'
-
-const host = 'https://qrcodes4good.com:8080';
-const tosEndpoint = '/api/user/tosUpdate';
+import {styles} from '../styles';
+import {host, tosEndpoint} from '../constants';
 
 export default class Tos extends React.Component {
   constructor(props){
@@ -38,6 +35,7 @@ export default class Tos extends React.Component {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': store.authToken,
       },
       body: JSON.stringify({
         email: store.email,
