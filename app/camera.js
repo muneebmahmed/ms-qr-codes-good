@@ -4,6 +4,7 @@ import {
   View,
   Text,
   StyleSheet,
+  Alert,
 } from "react-native";
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {store} from './store';
@@ -30,9 +31,17 @@ class CameraView extends Component {
       store.scannedType = obj['p'];
       store.scannedData = e.data;
       this.pushNavigation('Payment');
+    } else{
+      Alert.alert('Scanned Code', 
+        'This is not a Give QR code', 
+        [
+          {text: 'OK', style: 'cancel', onPress: () => {this.scanner.reactivate()}},
+        ],
+        {cancelable: false},
+      );
     }
     //setTimeout(() => {this.scanner.reactivate()}, 3000);
-    this.scanner.reactivate();
+    //this.scanner.reactivate();
   }
   pushNavigation(targetRoute){
     const pushAction = StackActions.push({

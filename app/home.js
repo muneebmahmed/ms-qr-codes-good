@@ -92,6 +92,16 @@ export default class Home extends Component {
     
     const {navigate} = this.props.navigation;
     var debug = false;
+    var loginComponent = function() {
+      if (!store.loggedIn){
+        return ( 
+          <View>
+          <Text>You are not logged in </Text>
+          <Button onPress={() => {this.resetNavigation('LoginScreen')}} title="Sign In" />
+          </View>
+        )
+      }else { return null}
+    }.bind(this)
     var debugPay = function() {
       if (debug){
         return (<Button onPress={this.goToPayment.bind(this)} title="Go to Payments Page" />)
@@ -107,6 +117,7 @@ export default class Home extends Component {
     return (
       <View style={styles.container}>
         <Text style={{marginTop: 100}}></Text>
+        {loginComponent()}
         {debugPay()}
         {cameraComponent()}
       </View>

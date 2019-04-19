@@ -262,7 +262,7 @@ class Login extends Component {
         <TextInput
           value={this.state.username}
           onChangeText={(username) => this.setState({username})}
-          placeholder={'Username'}
+          placeholder={'Email'}
           style={styles.input}
         />
         <TextInput
