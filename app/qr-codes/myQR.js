@@ -1,3 +1,13 @@
+/*
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE in the project root for license information.
+ *
+ *  @author Muneeb Ahmed
+ *  @author Corey Miner
+ *  @author Amanda Chesin
+ *
+ */
+
 import * as React from 'react';
 import { Platform, CameraRoll, Dimensions, Text, View, StyleSheet, Button, ScrollView, Image, RefreshControl, FlatList, TouchableHighlight, Alert, Modal } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';

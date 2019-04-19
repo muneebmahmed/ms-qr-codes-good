@@ -1,3 +1,13 @@
+/*
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE in the project root for license information.
+ *
+ *  @author Muneeb Ahmed
+ *  @author Corey Miner
+ *  @author Amanda Chesin
+ *
+ */
+
 import React from 'react';
 import { Platform, Dimensions, Text, View, StyleSheet, Button, ScrollView, Image, TouchableHighlight, Modal } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';

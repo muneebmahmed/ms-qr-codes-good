@@ -1,3 +1,13 @@
+/*
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE in the project root for license information.
+ *
+ *  @author Muneeb Ahmed
+ *  @author Corey Miner
+ *  @author Amanda Chesin
+ *
+ */
+
 import { Dimensions } from 'react-native';
 export const host = 'https://qrcodes4good.com';
 export const cardEndpoint = '/api/user/getCards/';

@@ -1,3 +1,13 @@
+/*
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE in the project root for license information.
+ *
+ *  @author Muneeb Ahmed
+ *  @author Corey Miner
+ *  @author Amanda Chesin
+ *
+ */
+
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import {createStackNavigator, createAppNavigator, createAppContainer} from 'react-navigation';
