@@ -14,7 +14,7 @@ import { Card, Icon, CheckBox } from 'react-native-elements';
 import {StackActions, NavigationActions} from 'react-navigation';
 import Swipeout from 'react-native-swipeout';
 import {store} from './store';
-import {host, cardEndpoint, deletePayment} from './constants';
+import {host, cardEndpoint, deletePayment, updateDefaultPayment} from './constants';
 
 
 const debug = false;
@@ -93,8 +93,25 @@ export default class Wallet extends React.Component {
         checked[i] = false;
       }
     }
-    //make call to server here
-    this.setState({checked: checked});
+    var endpoint = host + updateDefaultPayment;
+    fetch(endpoint, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': store.authToken,
+      },
+      body: JSON.stringify({
+        defaultIndex: num,
+      }),
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState({checked: checked});
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   deleteCards(index){
