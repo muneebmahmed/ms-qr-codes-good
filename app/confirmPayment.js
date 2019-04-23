@@ -88,6 +88,7 @@ export default class confirmPay extends React.Component {
 	        dataAvailable: true,
 	        cards: responseJson,
 	        checked: responseJson.primaryCard,
+	        selected: responseJson.primaryCard.indexOf(true) == -1? 0 : responseJson.primaryCard.indexOf(true),
 	        refreshing: false
 	      })
 	    })

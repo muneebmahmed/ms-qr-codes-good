@@ -75,10 +75,11 @@ export default class CreateQR extends React.Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      if (responseJson) {
+      if (responseJson && responseJson.hasOwnProperty('qrcodeData')) {
         success = true;
         store.createdCode = responseJson.qrcodeData;
-        Alert.alert(responseJson.message);
+        this.setState({modalVisible: true});
+        //Alert.alert(responseJson.message);
       }
         else {
           Alert.alert(responseJson.message);
@@ -89,7 +90,6 @@ export default class CreateQR extends React.Component {
     .catch((error) => {
       console.error(error);
     });
-      this.setState({modalVisible: true})
   }
 
   resetNavigation(targetRoute) {
