@@ -138,7 +138,7 @@ class Login extends Component {
         var confirm = responseJson['loggedIn'];
         if (confirm) {
           store.name = responseJson['name'];
-          store.email = this.state.username;
+          store.email = credentials.username;
           store.authToken = responseJson['loginAuthToken'];
           //store.touchToken = responseJson['touchAuthToken'];
           var now = new Date();
