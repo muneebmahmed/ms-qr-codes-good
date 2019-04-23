@@ -26,6 +26,7 @@ import {
   Animated
 } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
+import * as Keychain from 'react-native-keychain';
 import TouchID from 'react-native-touch-id';
 import DeviceInfo from 'react-native-device-info';
 import {store} from '../store';
@@ -89,6 +90,14 @@ class Login extends Component {
         store.logOutTime = now;
         try {
           AsyncStorage.setItem('TouchToken', responseJson['touchAuthToken']);
+          Keychain.resetGenericPassword()
+          .then(
+            Keychain.setGenericPassword(
+              this.state.username,
+              this.state.password,
+              {accessControl: Keychain.ACCESS_CONTROL.USER_PRESENCE, accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED}
+            )
+          )
         } catch(error){
           console.log(error);
         }
@@ -109,82 +118,157 @@ class Login extends Component {
   }
   _touchLogin(){
     const {navigate} = this.props.navigation;
-    TouchID.authenticate('Log in to Give')
-    .then(success => {
-      AsyncStorage.getItem('TouchToken')
-      .then((touchToken) => {
-
-        var endpoint = host + touchEndpoint;
-        fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            touchAuthToken: touchToken,
-            devID: DeviceInfo.getUniqueID(),
-          }),
-        })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          var confirm = responseJson['loggedIn'];
-          if (confirm) {
-            store.name = responseJson['name'];
-            store.authToken = responseJson['loginAuthToken'];
-            store.email = responseJson['email'];
-            var now = new Date();
-            now.setMinutes(now.getMinutes() + 10);
-            store.logOutTime = now;
-            // try {
-            //   AsyncStorage.setItem('TouchToken', responseJson['touchAuthToken']);
-            // } catch(error){
-            //   console.log(error);
-            // }
-            store.loggedIn = true;
+    Keychain.getGenericPassword({authenticationPrompt: 'Log in to Give'})
+    .then((credentials) => {
+      var endpoint = host + loginEndpoint;
+      fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: credentials.username,
+          inputPassword: credentials.password,
+          devID: DeviceInfo.getUniqueID(),
+        }),
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        var confirm = responseJson['loggedIn'];
+        if (confirm) {
+          store.name = responseJson['name'];
+          store.email = this.state.username;
+          store.authToken = responseJson['loginAuthToken'];
+          //store.touchToken = responseJson['touchAuthToken'];
+          var now = new Date();
+          now.setMinutes(now.getMinutes() + 10);
+          store.logOutTime = now;
+          store.loggedIn = true;
+          if (responseJson['tosAccepted']) {
             this.resetNavigation('Main');
+          } else {
+            this.resetNavigation('Tos');
           }
-          else{
-            Alert.alert(responseJson['message']);
-          }
-        })
-        .catch((error) => {
-          //console.error(error);
+        }
+        else
           Alert.alert('Authentication Failure')
-        });
+
+      })
+      .catch((error) => {
+        console.error(error);
       });
     })
-    .catch(error => {
-      console.log(error);
-    })
+    // TouchID.authenticate('Log in to Give')
+    // .then(success => {
+    //   AsyncStorage.getItem('TouchToken')
+    //   .then((touchToken) => {
+
+    //     var endpoint = host + touchEndpoint;
+    //     fetch(endpoint, {
+    //       method: 'POST',
+    //       headers: {
+    //         Accept: 'application/json',
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({
+    //         touchAuthToken: touchToken,
+    //         devID: DeviceInfo.getUniqueID(),
+    //       }),
+    //     })
+    //     .then((response) => response.json())
+    //     .then((responseJson) => {
+    //       var confirm = responseJson['loggedIn'];
+    //       if (confirm) {
+    //         store.name = responseJson['name'];
+    //         store.authToken = responseJson['loginAuthToken'];
+    //         store.email = responseJson['email'];
+    //         var now = new Date();
+    //         now.setMinutes(now.getMinutes() + 10);
+    //         store.logOutTime = now;
+    //         // try {
+    //         //   AsyncStorage.setItem('TouchToken', responseJson['touchAuthToken']);
+    //         // } catch(error){
+    //         //   console.log(error);
+    //         // }
+    //         store.loggedIn = true;
+    //         this.resetNavigation('Main');
+    //       }
+    //       else{
+    //         Alert.alert(responseJson['message']);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       //console.error(error);
+    //       Alert.alert('Authentication Failure')
+    //     });
+    //   });
+    // })
+    // .catch(error => {
+    //   console.log(error);
+    // })
   }
   getBioString(){
-    TouchID.isSupported()
-    .then(biometryType => {
-      if (biometryType == 'FaceID'){
-        store.biometryType = 'Face ID';
+    AsyncStorage.getItem('Settings')
+    .then((item) => {
+      if (item){
+        var settings = JSON.parse(item);
+      }else{
+        var settings = store.defaultSettings;
+        try{
+          AsyncStorage.setItem('Settings', JSON.stringify(settings));
+        }catch(error){}
+      }
+      Keychain.getSupportedBiometryType()
+      .then(biometryType => {
+        if (biometryType == Keychain.BIOMETRY_TYPE.FACE_ID){
+          store.biometryType = 'Face ID';
+        } else if (biometryType == Keychain.BIOMETRY_TYPE.TOUCH_ID){
+          store.biometryType = 'Touch ID';
+        } else if (biometryType == Keychain.BIOMETRY_TYPE.FINGERPRINT){
+          store.biometryType = 'Fingerprint';
+        } else { 
+          store.biometryType = 'None';
+        }
         this.setState({
+          settings: settings,
           dataAvailable: true,
-          bioString: 'Face ID',
+          bioString: store.biometryType,
         });
-      }
-      else{
-        store.biometryType = 'Touch ID';
+      })
+      .catch((error) =>{
         this.setState({
           dataAvailable: true,
-          bioString: 'Touch ID',
+          bioString: 'None',
         })
-      }
-    })
-    .catch(error =>{
-      this.setState({
-        dataAvailable: true,
-        bioString: 'None',
-      })
+      });
     });
+    // TouchID.isSupported()
+    // .then(biometryType => {
+    //   if (biometryType == 'FaceID'){
+    //     store.biometryType = 'Face ID';
+    //     this.setState({
+    //       dataAvailable: true,
+    //       bioString: 'Face ID',
+    //     });
+    //   }
+    //   else{
+    //     store.biometryType = 'Touch ID';
+    //     this.setState({
+    //       dataAvailable: true,
+    //       bioString: 'Touch ID',
+    //     })
+    //   }
+    // })
+    // .catch(error =>{
+    //   this.setState({
+    //     dataAvailable: true,
+    //     bioString: 'None',
+    //   })
+    // });
   }
   renderTouchID(){
-    if (this.state.bioString == 'None'){
+    if (this.state.bioString == 'None' || !this.state.settings.USE_BIOMETRY){
       return null;
     }
     const str = 'Use ' + this.state.bioString;

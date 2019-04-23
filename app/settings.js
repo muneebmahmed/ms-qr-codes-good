@@ -9,12 +9,13 @@
  */
 
 import React, { Component } from 'react';
-import {TouchableHighlight, Text, Switch, TextInput, View, Button,StyleSheet, Alert, ScrollView } from 'react-native';
+import {TouchableHighlight, Text, Switch, TextInput, View, Button,StyleSheet, Alert, ScrollView, AsyncStorage } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {store} from './store';
 import {host, loginEndpoint, touchEndpoint, updatePersonal} from './constants';
 import { Icon } from 'react-native-elements';
 import Dialog from "react-native-dialog";
+import * as Keychain from 'react-native-keychain';
 
 export default class Settings extends Component {
   constructor(props){
@@ -96,10 +97,23 @@ state = {
 };
 
   _handleToggleSwitch1 = () => {
-    this.setState(state => ({
-      switchValue1: !state.switchValue1,
-    }));
-    store.faceID= this.state.switchValue1;
+    var settings = this.state.settings;
+    settings['USE_BIOMETRY'] = !settings['USE_BIOMETRY'];
+    this.setState({
+      settings: settings
+    })
+    AsyncStorage.setItem('Settings', JSON.stringify(settings));
+    if(!settings['USE_BIOMETRY']){
+      Keychain.resetGenericPassword();
+      Alert.alert('Credentials deleted. You must provide your username and password to re-enable Touch ID');
+    }
+    else{
+      Alert.alert('You will need to log in with your credentials one more time to re-enable Touch ID');
+    }
+    // this.setState(state => ({
+    //   switchValue1: !state.switchValue1,
+    // }));
+    // store.faceID= this.state.switchValue1;
   }
 
   _handleToggleSwitch2 = () => this.setState(state => ({
@@ -120,8 +134,28 @@ state = {
   componentDidUpdate(){
     this.authenticate();
   }
+  componentDidMount(){
+    try{
+      AsyncStorage.getItem('Settings')
+      .then((item) =>{
+        this.setState({
+          settings: JSON.parse(item),
+          dataAvailable: true,
+        })
+      })
+      .catch((error) => {
+        this.setState({
+          settings: store.defaultSettings,
+          dataAvailable: true,
+        })
+      })
+    } catch (error) {}
+  }
   render() {
     const {navigate} = this.props.navigation;
+    if (!this.state.dataAvailable){
+      return null;
+    }
     return (
       <ScrollView style={styles.container}>
       <Dialog.Container visible={this.state.changeVisible}>
@@ -274,7 +308,7 @@ state = {
           <View style={styles.SwitchButton}>
             <Switch
               onValueChange={this._handleToggleSwitch1}
-              value={this.state.switchValue1}
+              value={this.state.settings.USE_BIOMETRY}
               />
           </View>
         </View>

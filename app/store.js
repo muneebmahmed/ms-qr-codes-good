@@ -33,5 +33,8 @@ export let store = {
         creditCardLastDigits: ['1234', '', '98765', '5432'],
         creditCardType: [],
         numberOfDigits: [13, 0, 12, 12]
+    },
+    defaultSettings: {
+        USE_BIOMETRY: true,
     }
 }
