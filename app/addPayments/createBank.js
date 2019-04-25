@@ -97,8 +97,8 @@ export default class CreateBank extends React.Component {
               postalCode : null,
               type: null,
               card: false,
-              routing_number: data.routing_number,
-              account_number: data.account_number
+              routing_number: String(data.routing_number),
+              account_number: String(data.account_number)
           }),
       })
       .then((response) => response.json())

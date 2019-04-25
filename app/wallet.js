@@ -146,10 +146,11 @@ export default class Wallet extends React.Component {
     var text = [];
     cards = [];
     for (i in this.state.cards.title){
+      var repeatNum = (this.state.cards.numberOfDigits[i] == null)? 10 : Math.max(this.state.cards.numberOfDigits[i] - this.state.cards.creditCardLastDigits[i].length, 0);
       cards.push({
         title: this.state.cards.title[i],
         user: this.state.cards.name[i],
-        cardNumber: '*'.repeat(this.state.cards.numberOfDigits[i] - this.state.cards.creditCardLastDigits[i].length) + this.state.cards.creditCardLastDigits[i],
+        cardNumber: '*'.repeat(repeatNum) + this.state.cards.creditCardLastDigits[i],
         numberOfDigits: this.state.cards.numberOfDigits[i],
         lastDigits: this.state.cards.creditCardLastDigits[i],
         default: this.state.checked[i],
