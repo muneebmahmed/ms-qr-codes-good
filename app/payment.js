@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import {Button, Text, View, TextInput, StyleSheet} from 'react-native';
+import {Button, Text, View, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import {styles} from './styles';
@@ -97,17 +97,17 @@ export default class Payments extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
       <View style={{ paddingBottom: HEIGHT*.25, width: WIDTH * .75 }}>
       <View style={{alignItems: 'center',justifyContent: 'center'}}>
-      <Text style={{color:'#2F4F4F', fontSize: 24, fontWeight: 'bold', paddingBottom: WIDTH*.05}}> Select Amount:</Text>
+        <Text style={{color:'#2F4F4F', fontSize: 24, fontWeight: 'bold', paddingBottom: WIDTH*.05}}> Select Amount:</Text>
         <TextInput
-          color='#2F4F4F'
           style={{height: WIDTH * .2, width: WIDTH * .5, borderColor: 'gray', fontSize: 40, borderWidth: 1, justifyContent: 'center'}}
           textAlign={'center'}
           keyboardType='numeric'
           onChangeText={(text) => this.setState({amount: text})}
-          onBlur={() => this.setState({amount: Number(this.state.amount).toFixed(2)})}
+          onBlur={() => {store.scannedAmount = Number(this.state.amount); this.setState({amount: Number(this.state.amount).toFixed(2)});}}
           value={String(this.state.amount)}
         />
         </View>
@@ -133,6 +133,7 @@ export default class Payments extends React.Component {
         
         </View>
       </View>
+      </TouchableWithoutFeedback>
       );
 
   }

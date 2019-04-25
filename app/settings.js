@@ -93,7 +93,7 @@ state = {
   switchValue1: store.faceID,
   switchValue2: false,
   switchValue3: true,
-  switchValue4: true,
+  switchValue4: false,
 };
 
   _handleToggleSwitch1 = () => {
@@ -161,9 +161,9 @@ state = {
       <Dialog.Container visible={this.state.changeVisible}>
           {this.state.name ? <Dialog.Title>Change Name</Dialog.Title> : this.state.pass?<Dialog.Title>Change Password</Dialog.Title> : <Dialog.Title>Change Email</Dialog.Title>}
           {this.state.name?<Dialog.Description> Please enter your new name</Dialog.Description>: this.state.pass?<Dialog.Description> Please enter your old and new password </Dialog.Description> :<Dialog.Description> Please enter your new Email </Dialog.Description>}
-          {this.state.pass?<Dialog.Input placeholder="Old Password" value={this.state.oldPass} onChangeText={(username) => this.setState({oldPass: username})} /> : <Dialog.Input placeholder="Email" value={this.state.newEmail} onChangeText={(username) => this.setState({newEmail: username})} /> }
-          {this.state.pass?<Dialog.Input placeholder="New Password"value={this.state.newPass} onChangeText={(username) => this.setState({newPass: username})} />: <Dialog.Input placeholder="Password" value={this.state.oldPass} onChangeText={(username) => this.setState({oldPass: username})} />}
-          {this.state.pass?<Dialog.Input placeholder="Confirm New Password"value={this.state.confirmPass} onChangeText={(username) => this.setState({confirmPass: username})} />: null}
+          {this.state.pass?<Dialog.Input placeholder="Old Password" value={this.state.oldPass} secureTextEntry={true} onChangeText={(username) => this.setState({oldPass: username})} /> : <Dialog.Input placeholder="Email" value={this.state.newEmail} onChangeText={(username) => this.setState({newEmail: username})} /> }
+          {this.state.pass?<Dialog.Input placeholder="New Password"value={this.state.newPass} secureTextEntry={true} onChangeText={(username) => this.setState({newPass: username})} />: <Dialog.Input placeholder="Password" value={this.state.oldPass} secureTextEntry={true} onChangeText={(username) => this.setState({oldPass: username})} />}
+          {this.state.pass?<Dialog.Input placeholder="Confirm New Password"value={this.state.confirmPass} secureTextEntry={true} onChangeText={(username) => this.setState({confirmPass: username})} />: null}
           {this.state.name?<Dialog.Input placeholder="Name"value={this.state.newName} onChangeText={(username) => this.setState({newName: username})} />: null}
           <Dialog.Button label="Cancel" onPress={() => {this.setState({changeVisible: false})}} />
           <Dialog.Button label="OK" onPress={this.changeInfo.bind(this)} />
@@ -302,7 +302,7 @@ state = {
         />
             <Button
               onPress={void(0)}
-              title="Enable Face/Touch ID"
+              title={"Enable " + store.biometryType}
               color="#517fa4"
               />
           <View style={styles.SwitchButton}>
@@ -312,7 +312,8 @@ state = {
               />
           </View>
         </View>
-        <Text style={styles.Text}> Notifications </Text>
+        {/*
+          <Text style={styles.Text}> Notifications </Text>
 
 <View style={styles.SwitchParent}>
 <Icon
@@ -355,7 +356,7 @@ state = {
       />
   </View>
 </View>
-
+*/}
         <Text style={styles.Text}> Privacy </Text>
 
 
@@ -369,7 +370,7 @@ state = {
         
           <Button
             onPress={void(0)}
-            title="Send Annonymous Statistics"
+            title="Send Anonymous Payments"
             color="#517fa4"
             //color="#841584"
           />
