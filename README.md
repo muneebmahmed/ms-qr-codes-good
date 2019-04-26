@@ -1,4 +1,4 @@
-# ms-qr-codes-good
+﻿# ms-qr-codes-good
 
 This is the repository for Team 18080 for our Senior Design Project. This repo stores the data for the mobile applications- both Android and iOS.
 
@@ -26,6 +26,7 @@ https://www.christianengvall.se/install-react-native/
 ## Running on Android
 1. Go into Settings-> About phone and tap the “Build number” seven times. If “Build number” doesn’t automatically show up in that section, search for it and it should come up. Tapping it specifically 7 times allows you to be a developer on the phone, not just a regular user.
     1. For the HTC one, "Build number" is not searchable. Go to Settings->About->Software Information->More and that is where you will  find Build number. Go through the same protocol of tapping 7 times
+    2. For the Redmi 6, "Build Number" does not exist. Under About Phone, select MIUI version 7 times to enable you to become a developer. For more information, follow this link: https://www.softwarert.com/enable-developer-options-xiaomi-redmi-phone/
 2. Then go to Settings-\>Developer options and enable “USB debugging”. Again, if it doesn’t automatically show up in that section, search for it and it should come up.
 3. Connect the device via USB to the computer and make sure the computer acknowledges the phone (i.e. it shows up in My Computer/Finder). If not, you may have to change the way in which the USB cord works.
     1. on the Google Pixel, when the phone is first connected to a PC, it is set to “Use USB to Charge this device”. 
@@ -54,6 +55,7 @@ $ react-native bundle --platform android --dev false --entry-file index.js --bun
     and [AndroidCentral](https://www.androidcentral.com/installing-android-sdk-windows-mac-and-linux-tutorial)
     3.	Once sdkmanager is installed, it is only compatible with Java8, so make sure that is the 
     version you have [downloaded](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+    4. One of the libraries we used on this project, flipcard, did not test their code to make sure it works on Android. It works just fine on iOS, but in order for it to run on Android, one must go into node_modules/react-native-flip-card/lib/FlipCard.js and delete line 173 (a redefinition of style). Until this problem is fixed within the library, the app cannot be loaded on Androids and this process must be done manually. 
 13. After working through any errors, repeat steps 10 and 11. Once you receive a "BUILD SUCCESSFUL" in the command prompt, look for a new app on the phone entitled "Give". Open the app, and select Allow when asked "Allow Give to take pictures and record video?" App should now be fully accessible!
 
 ### Android Reloading Tip
