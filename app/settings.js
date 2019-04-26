@@ -370,7 +370,7 @@ state = {
         
           <Button
             onPress={void(0)}
-            title="Send Anonymous Payments"
+            title="Make Payments Anonymously"
             color="#517fa4"
             //color="#841584"
           />
