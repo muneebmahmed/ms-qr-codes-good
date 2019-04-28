@@ -123,9 +123,14 @@ state = {
   _handleToggleSwitch3 = () => this.setState(state => ({
     switchValue3: !state.switchValue3,
   }))
-  _handleToggleSwitch4 = () => this.setState(state => ({
-    switchValue4: !state.switchValue4,
-  }))
+  _handleToggleSwitch4 = () => {
+    var settings = this.state.settings;
+    settings['anonymous'] = !settings['anonymous'];
+    this.setState({
+      settings: settings
+    })
+    AsyncStorage.setItem('Settings', JSON.stringify(settings));
+  }
 
   _onPressButton(message) {
     Alert.alert(message)
@@ -138,8 +143,15 @@ state = {
     try{
       AsyncStorage.getItem('Settings')
       .then((item) =>{
+        var settings = JSON.parse(item);
+        if (!settings.hasOwnProperty('anonymous')){
+          settings['anonymous'] = false;
+          try{
+            AsyncStorage.setItem('Settings', JSON.stringify(settings));
+          }catch(error){}
+        }
         this.setState({
-          settings: JSON.parse(item),
+          settings: settings,
           dataAvailable: true,
         })
       })
@@ -377,7 +389,7 @@ state = {
           <View style={styles.SwitchButton}>
     <Switch
       onValueChange={this._handleToggleSwitch4}
-      value={this.state.switchValue4}
+      value={this.state.settings.anonymous}
       />
   </View>
   

@@ -36,5 +36,6 @@ export let store = {
     },
     defaultSettings: {
         USE_BIOMETRY: true,
+        anonymous: false,
     }
 }

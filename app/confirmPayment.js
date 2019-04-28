@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import {Button, Text, View, TextInput, Modal, TouchableHighlight, Picker, StyleSheet, Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import {Button, Text, View, TextInput, Modal, TouchableHighlight, Picker, StyleSheet, Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, AsyncStorage } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import {store} from './store';
 import {host, cardEndpoint, transaction} from './constants';
@@ -50,6 +50,7 @@ export default class confirmPay extends React.Component {
 			body: JSON.stringify({
 				email: store.email,
 				password: this.state.password,
+				anonymous: this.state.anonymous,
 				receiverID: store.scannedId,
 				amount: store.scannedAmount,
 			}),
@@ -84,13 +85,25 @@ export default class confirmPay extends React.Component {
 	    })
 	    .then((response) => response.json())
 	    .then((responseJson) =>{
-	      this.setState({
-	        dataAvailable: true,
-	        cards: responseJson,
-	        checked: responseJson.primaryCard,
-	        selected: responseJson.primaryCard.indexOf(true) == -1? 0 : responseJson.primaryCard.indexOf(true),
-	        refreshing: false
-	      })
+	    	AsyncStorage.getItem('Settings')
+	    	.then((item) => {
+				if (item){
+					var settings = JSON.parse(item);
+				}else{
+					var settings = store.defaultSettings;
+					try{
+						AsyncStorage.setItem('Settings', JSON.stringify(settings));
+					}catch(error){}
+				}
+		 		this.setState({
+					dataAvailable: true,
+					anonymous: settings.anonymous,
+					cards: responseJson,
+					checked: responseJson.primaryCard,
+					selected: responseJson.primaryCard.indexOf(true) == -1? 0 : responseJson.primaryCard.indexOf(true),
+					refreshing: false
+				})
+			})
 	    })
 	    .catch((error) =>{
 	      console.error(error);
