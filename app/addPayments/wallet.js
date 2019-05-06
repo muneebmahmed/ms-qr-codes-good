@@ -13,8 +13,8 @@ import {Button, Text, View, ScrollView, Alert, StyleSheet, RefreshControl, FlatL
 import { Card, Icon, CheckBox } from 'react-native-elements';
 import {StackActions, NavigationActions} from 'react-navigation';
 import Swipeout from 'react-native-swipeout';
-import {store} from './store';
-import {host, cardEndpoint, deletePayment, updateDefaultPayment} from './constants';
+import {store} from '../store';
+import {host, cardEndpoint, deletePayment, updateDefaultPayment} from '../constants';
 
 
 const debug = false;

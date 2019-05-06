@@ -10,7 +10,7 @@
 
 import React, {Component} from 'react';
 import { StackActions, NavigationActions } from 'react-navigation';
-import {store} from './store';
+import {store} from '../store';
 
 export default class LogOut extends React.Component {
 	constructor(props){

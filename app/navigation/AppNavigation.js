@@ -16,12 +16,11 @@ import Home from '../home';
 import Settings from '../settings';
 import CreateQR from '../qr-codes/createQR';
 import qrNavigator from '../qr-codes/ViewQR';
-import Payment from '../payment';
-import Wallet from '../wallet';
-import Info from '../info';
-import Help from '../help';
+import Wallet from '../addPayments/wallet';
+import Info from '../help/info';
+import Help from '../help/help';
 import transNavigator from '../transactions/transactions';
-import LogOut from '../LogOut';
+import LogOut from '../login/LogOut';
 import {store} from '../store';
 import {menuColor} from '../constants';
 

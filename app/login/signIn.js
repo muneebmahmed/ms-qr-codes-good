@@ -89,15 +89,20 @@ class Login extends Component {
         now.setMinutes(now.getMinutes() + 10);
         store.logOutTime = now;
         try {
-          AsyncStorage.setItem('TouchToken', responseJson['touchAuthToken']);
+          //AsyncStorage.setItem('TouchToken', responseJson['touchAuthToken']);
           Keychain.resetGenericPassword()
-          .then(
-            Keychain.setGenericPassword(
-              this.state.username,
-              this.state.password,
-              {accessControl: Keychain.ACCESS_CONTROL.USER_PRESENCE, accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED}
-            )
-          )
+          .then(() => {
+            if (Platform.OS == 'ios'){
+              Keychain.setGenericPassword(
+                this.state.username,
+                this.state.password,
+                {accessControl: Keychain.ACCESS_CONTROL.USER_PRESENCE, accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED}
+              )
+            }else{
+              //Hopefully this fixes Android issue with react native keychain
+              Keychain.setGenericPassword(this.state.username, this.state.password);
+            }
+          })
         } catch(error){
           console.log(error);
         }
@@ -140,7 +145,6 @@ class Login extends Component {
           store.name = responseJson['name'];
           store.email = credentials.username;
           store.authToken = responseJson['loginAuthToken'];
-          //store.touchToken = responseJson['touchAuthToken'];
           var now = new Date();
           now.setMinutes(now.getMinutes() + 10);
           store.logOutTime = now;

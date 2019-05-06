@@ -12,9 +12,9 @@ import React from 'react';
 import {Button, Text, View, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
 import { Icon } from 'react-native-elements';
-import {styles} from './styles';
-import {store} from './store';
-import {host, saveCodePoint, HEIGHT, WIDTH} from './constants';
+import {styles} from '../styles';
+import {store} from '../store';
+import {host, saveCodePoint, HEIGHT, WIDTH} from '../constants';
 import AwesomeButton from "react-native-really-awesome-button/src/themes/blue";
 
 

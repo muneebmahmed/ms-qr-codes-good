@@ -11,7 +11,7 @@
 import React from 'react';
 import {Button, Text, View, StyleSheet, Alert, Image } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
-import {store} from './store';
+import {store} from '../store';
 
 export default class Info extends React.Component {
   constructor(props){
@@ -50,7 +50,7 @@ export default class Info extends React.Component {
 
         <Image
         style={styles.keepitsmall}
-        source={require('./images/microsoftlogo.png')} />
+        source={require('../images/microsoftlogo.png')} />
 
      
         <Text style={styles.Text}> Microsoft Give </Text>

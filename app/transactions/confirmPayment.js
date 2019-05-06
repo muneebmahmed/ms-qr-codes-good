@@ -11,8 +11,8 @@
 import React from 'react';
 import {Button, Text, View, TextInput, Modal, TouchableHighlight, Picker, StyleSheet, Alert, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, AsyncStorage } from 'react-native';
 import {StackActions, NavigationActions} from 'react-navigation';
-import {store} from './store';
-import {host, cardEndpoint, transaction} from './constants';
+import {store} from '../store';
+import {host, cardEndpoint, transaction} from '../constants';
 import TouchID from 'react-native-touch-id';
 
 export default class confirmPay extends React.Component {

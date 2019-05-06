@@ -105,15 +105,11 @@ state = {
     AsyncStorage.setItem('Settings', JSON.stringify(settings));
     if(!settings['USE_BIOMETRY']){
       Keychain.resetGenericPassword();
-      Alert.alert('Credentials deleted. You must provide your username and password to re-enable Touch ID');
+      Alert.alert('Credentials deleted. You must provide your username and password to re-enable');
     }
     else{
-      Alert.alert('You will need to log in with your credentials one more time to re-enable Touch ID');
+      Alert.alert('You will need to log in with your credentials one more time to re-enable');
     }
-    // this.setState(state => ({
-    //   switchValue1: !state.switchValue1,
-    // }));
-    // store.faceID= this.state.switchValue1;
   }
 
   _handleToggleSwitch2 = () => this.setState(state => ({
