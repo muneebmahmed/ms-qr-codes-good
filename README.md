@@ -1,26 +1,32 @@
 ﻿# ms-qr-codes-good
 
-This is the repository for Team 18080 for our Senior Design Project. This repo stores the data for the mobile applications- both Android and iOS.
+This repository was created by the University of Arizona's 2019 Engineering Design Team 18080, QR Codes for Good.
+This repo stores the data for the project's mobile applications - both Android and iOS.
 
-## Bundling
-Normally React Native apps are tested by running a Metro server on the host
-machine, which the phone connects to. To use the app without requiring a server
-connection, it needs to be bundled. To enable bundling, you must change the
-scheme from 'Testing' to 'Release'. Alternatively, you could add the following
-line to `ios/msqrc4g/AppDelegate.m`
+## Dependencies
+This project was designed using [React Native](https://facebook.github.io/react-native/),
+an open source framework for designing universal applications using a single code base.
+Detailed instructions for installing React Native on your development machine 
+can be found [here](https://facebook.github.io/react-native/)
 
-```objectivec
-#undef DEBUG
-```
-
-In the latter case, you will need to bundle the Javascript from the project root:
-
-```
-$ react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
-```
+[Node.js](https://nodejs.org) is required for React Native, including npm
+React native can be installed with `npm install -g react-native-cli`
 
 how to get react native working:
 https://www.christianengvall.se/install-react-native/
+
+## Running on iOS
+Building the application for an iOS device can be done through Xcode on a Mac.
+There are a few changes that must be made to run the application using a different developer profile.
+
+After opening the `ios/msqrc4g.xcodeproj` file using Xcode, open the project from the Project Navigator.
+1. Under "Identity", change the Bundle Identifier from "org.reactjs.native.ua.msqrc4g" to any other unique identifier.
+2. Under "Signing"->"Team", select your Apple ID. It may be necessary to also do this after changing the target from "msqrc4g" to "msqrc4gTests"
+
+Running the application for release instead of a debug build can be configured by changing the scheme (`⌘<`).
+A debug build must have a connection to the Metro Bundler for its JS files, while a release build can be standalone.
+
+The application can be installed and launch by selecting the proper build target from the Active Scheme dropdown, and then running (`⌘R`)
 
 
 ## Running on Android
