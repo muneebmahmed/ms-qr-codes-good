@@ -1,7 +1,8 @@
 ﻿# ms-qr-codes-good
 
 This repository was created by the University of Arizona's 2019 Engineering Design Team 18080, QR Codes for Good.
-This repo stores the data for the project's mobile applications - both Android and iOS.
+It stores the data for the project's mobile applications - both Android and iOS.
+The repository for all of the code, including the server and website, can be found [here](https://github.com/muneebmahmed/Qr-Master)
 
 ## Dependencies
 This project was designed using [React Native](https://facebook.github.io/react-native/),
